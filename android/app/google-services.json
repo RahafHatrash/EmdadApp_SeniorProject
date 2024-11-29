@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "43810042262",
+    "project_id": "emdad-a95b5",
+    "storage_bucket": "emdad-a95b5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43810042262:android:e82a599816950c9e816db7",
+        "android_client_info": {
+          "package_name": "com.emdad.emdad_cpit499"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQDN69MntHC2jQQQI1FpHa7_bPlgl6MBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43810042262:android:8ee9705d7b74efe8816db7",
+        "android_client_info": {
+          "package_name": "com.emdad.emdadproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQDN69MntHC2jQQQI1FpHa7_bPlgl6MBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
