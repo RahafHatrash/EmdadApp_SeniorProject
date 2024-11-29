@@ -14,7 +14,6 @@ import 'StartPages/Loginpage.dart';
 import 'StartPages/forgetpassword.dart';
 import 'StartPages/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
