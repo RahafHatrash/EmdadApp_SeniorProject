@@ -107,7 +107,7 @@ class StartPage extends StatelessWidget {
                         ),
                         SizedBox(height: 15),
                         CustomButton(
-                          text: '  دخ تسجيل',
+                          text: ' تسجيل',
                           onPressed: () {
                             Navigator.pushNamed(context, '/signup');
                           },
