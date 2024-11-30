@@ -307,7 +307,7 @@ class FarmDetails extends StatelessWidget {
 
       // Bottom navigation bar
       bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: 0,
+        currentIndex: -1,
         onTap: (index) {
           // Add navigation logic if needed
         },

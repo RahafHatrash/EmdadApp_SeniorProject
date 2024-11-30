@@ -23,17 +23,20 @@ class _AddFundsPageState extends State<AddFundsPage> {
         return;
       }
 
-      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final walletDoc =
+          FirebaseFirestore.instance.collection('wallets').doc(userId);
       final timestamp = FieldValue.serverTimestamp();
 
       await walletDoc.update({
         'currentBalance': FieldValue.increment(amount),
         'lastUpdated': timestamp,
-        'transactions': FieldValue.arrayUnion([{
-          'type': type,
-          'amount': amount,
-          'timestamp': DateTime.now(),
-        }]),
+        'transactions': FieldValue.arrayUnion([
+          {
+            'type': type,
+            'amount': amount,
+            'timestamp': DateTime.now(),
+          }
+        ]),
       });
 
       print('تمت إضافة الأموال وتسجيل العملية بنجاح');
@@ -72,7 +75,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
     Navigator.pop(context);
   }
 
-  Widget _buildStyledTextField(String labelText, TextEditingController controller) {
+  Widget _buildStyledTextField(
+      String labelText, TextEditingController controller) {
     FocusNode _focusNode = FocusNode();
 
     return Column(
@@ -198,92 +202,94 @@ class _AddFundsPageState extends State<AddFundsPage> {
                 children: [
                   Align(
                     alignment: Alignment.centerRight,
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Align(
-    alignment: Alignment.centerRight,
-    child: Text(
-    'اختر حسابك',
-    style: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    color: Color.fromARGB(216, 53, 94, 79),
-    ),
-    textAlign: TextAlign.right,
-    ),
-    ),
-    const SizedBox(height: 10),
-    _buildAccountOption(
-    "SA846... البنك السعودي للاستثمار",
-    "SA03 8000 0000 6080 1016 7519",
-    ),
-    const SizedBox(height: 50),
-    _buildStyledTextField(
-    'ادخل مبلغ الشحن',
-    _amountController,
-    ),
-    Center(
-    child: GestureDetector(
-    onTap: () => _handleNextButton(context),
-    child: Container(
-    width: MediaQuery.of(context).size.width * 0.5,
-    padding: const EdgeInsets.symmetric(vertical: 5),
-    decoration: BoxDecoration(
-    gradient: const LinearGradient(
-    colors: [
-    Color(0xFF345E50),
-    Color(0xFFA8B475),
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    ),
-    borderRadius: BorderRadius.circular(20),
-    ),
-    child: const Center(
-    child: Text(
-    'التالي',
-    style: TextStyle(
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontSize: 20,
-    ),
-    ),
-    ),
-    ),
-    ),
-    ),
-    const SizedBox(height: 10),
-    TextButton.icon(
-    onPressed: () {
-    Navigator.push(
-    context,
-    MaterialPageRoute(
-    builder: (context) => AddBankAccountPage(),
-    ),
-    );
-    },
-
-    icon: const Icon(Icons.add),
-    label: const Text("أضف حساب جديد" ,
-      textAlign: TextAlign.center,) ,
-    style: TextButton.styleFrom(
-    foregroundColor: const Color(0xFF335D4F),
-    ),
-    ),
-    ],
-    ),
-
-    ),
-       ],
-          ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'اختر حسابك',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromARGB(216, 53, 94, 79),
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _buildAccountOption(
+                          "SA846... البنك السعودي للاستثمار",
+                          "SA03 8000 0000 6080 1016 7519",
+                        ),
+                        const SizedBox(height: 50),
+                        _buildStyledTextField(
+                          'ادخل مبلغ الشحن',
+                          _amountController,
+                        ),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () => _handleNextButton(context),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF345E50),
+                                    Color(0xFFA8B475),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'التالي',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Center(  // Centering the text
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AddBankAccountPage(), // انتقال إلى صفحة AddFundsPage
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'أضف حساب جديد +',
+                              style: TextStyle(
+                                color: Colors.blueAccent, // لون النص
+                                fontSize: 13, // حجم النص
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(
             top: 50,
             right: 15,
             child: IconButton(
-              icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Colors.white, size: 30),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -312,7 +318,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
                 : Colors.grey.shade300,
           ),
           boxShadow: [
-            BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
           ],
         ),
         child: Row(

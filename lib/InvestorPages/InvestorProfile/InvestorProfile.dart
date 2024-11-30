@@ -386,12 +386,12 @@ class _InvestorProfileState extends State<InvestorProfile> {
       ),
       child: TextButton(
         onPressed: () {
+          Navigator.of(context).pop(); // Close the dialog
           if (isLogout) {
             _logoutUser();
           } else if (isDeleteAccount) {
             _deleteUserAccount();
           }
-          Navigator.of(context).pop(); // Close the dialog
         },
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero, // Remove padding to respect fixed height

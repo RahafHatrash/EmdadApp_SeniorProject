@@ -73,7 +73,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                 bottomRight: Radius.circular(20),
               ),
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.33,
+                height: MediaQuery.of(context).size.height * 0.32,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFF335D4F), Color(0xFFA8B475)],

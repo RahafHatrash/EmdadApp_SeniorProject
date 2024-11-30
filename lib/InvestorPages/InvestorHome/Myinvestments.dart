@@ -54,7 +54,6 @@ class _MyInvestmentsState extends State<MyInvestments> {
         for (var returnDoc in returnsHistorySnapshot.docs) {
           projectReturns += returnDoc['amount'] as double;
         }
-
         // تحديث المجموعات
         tempTotalInvestments += investmentAmount;
         tempTotalReturns += projectReturns;

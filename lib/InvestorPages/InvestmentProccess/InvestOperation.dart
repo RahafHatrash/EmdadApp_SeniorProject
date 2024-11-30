@@ -1,16 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../custom_bottom_nav_bar.dart';
+import '../InvestorWallet/FundsOperation/add_funds_page.dart'; // Make sure to import your custom bottom nav bar
 
 class Investoperation extends StatefulWidget {
   final String projectName; // اسم المشروع الذي سيتم تمريره
   final String projectId; // إضافة projectId كمعامل جديد
 
   const Investoperation({
-    super.key,
+    Key? key,
     required this.projectName,
-    required this.projectId,
-  });
+    required this.projectId, // التأكد من تمريره
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _InvestmentPageState();
@@ -32,8 +34,7 @@ class _InvestmentPageState extends State<Investoperation> {
 
   Future<void> _fetchWalletBalance() async {
     try {
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
       final snapshot = await walletDoc.get();
 
       if (snapshot.exists) {
@@ -97,10 +98,8 @@ class _InvestmentPageState extends State<Investoperation> {
         return;
       }
 
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
-      final investmentsCollection =
-          FirebaseFirestore.instance.collection('investments');
+      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final investmentsCollection = FirebaseFirestore.instance.collection('investments');
       final projectDoc = FirebaseFirestore.instance
           .collection('investmentOpportunities')
           .doc(widget.projectId);
@@ -111,19 +110,6 @@ class _InvestmentPageState extends State<Investoperation> {
 
       if (currentBalance < totalInvestment) {
         _showFailureMessage('رصيد المحفظة غير كافٍ');
-        return;
-      }
-
-      // جلب بيانات المشروع وتحقق من المبلغ المتبقي
-      final projectSnapshot = await projectDoc.get();
-      final projectData = projectSnapshot.data();
-      final targetAmount = projectData?['targetAmount'] ?? 0.0;
-      final currentInvestment = projectData?['currentInvestment'] ?? 0.0;
-
-      if (currentInvestment + totalInvestment > targetAmount) {
-        _showFailureMessage(
-          'المشروع وصل إلى الحد الأقصى للاستثمار ولا يمكن الاستثمار فيه.',
-        );
         return;
       }
 
@@ -156,7 +142,17 @@ class _InvestmentPageState extends State<Investoperation> {
         'currentInvestment': FieldValue.increment(totalInvestment),
       });
 
-      _showSuccessMessage('تم استثمار المبلغ بنجاح!');
+      // التحقق من اكتمال المشروع
+      final projectSnapshot = await projectDoc.get();
+      final projectData = projectSnapshot.data();
+      final targetAmount = projectData?['targetAmount'] ?? 0.0;
+      final currentInvestment = projectData?['currentInvestment'] ?? 0.0;
+
+      if (currentInvestment >= targetAmount) {
+        await projectDoc.update({'status': 'مكتملة'});
+      }
+
+      _showSuccessMessage('تم الاستثمار بنجاح!');
     } catch (e) {
       _showFailureMessage('حدث خطأ أثناء عملية الاستثمار: $e');
     }
@@ -184,86 +180,187 @@ class _InvestmentPageState extends State<Investoperation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor: Colors.white,
       body: Stack(
+
         children: [
-          Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF345E50), Color(0xFFA8B475)],
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'استثمر في ${widget.projectName}',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+          _buildAppBar(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Spacer(), // إضافة مساحة فارغة فوق البوكس
+                SizedBox(
+                  height: 350, // ارتفاع البوكس الأبيض
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white, // خلفية بيضاء
+                      borderRadius: BorderRadius.circular(40), // زوايا مستديرة
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26, // لون الظل
+                          blurRadius: 6.0, // تمويه الظل
+                          offset: Offset(0, 2), // موقع الظل
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Text('رصيد المحفظة: ${walletBalance.toStringAsFixed(2)} ر.س'),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  if (unitCount > 1) unitCount--;
+                                });
+                              },
+                            ),
+                            Text('$unitCount وحدة', style: const TextStyle(fontSize: 18)),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  unitCount++;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'إجمالي مبلغ الاستثمار: ${totalInvestment.toStringAsFixed(2)} ر.س',
+                          style: const TextStyle(fontSize: 18),
+                        ),
+
+                        const SizedBox(height: 20),
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: _processInvestment, // استدعاء دالة الاستثمار عند الضغط
+                          child: Container(
+                            height: 35,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.0),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFF4B7960),
+                                  Color(0xFF728F66),
+                                  Color(0xFFA2AA6D),
+                                ],
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text(
+                              'استثمر',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15), // مسافة صغيرة بين الزر والنص
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const AddFundsPage(), // انتقال إلى صفحة AddFundsPage
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            ' شحن رصيد المحفظة +',
+                            style: TextStyle(
+                              color: Colors.blue, // لون النص
+                              fontSize: 13, // حجم النص
+                              // إضافة خط تحت النص
+                            ),
+                          ),
+                        ),
+
+                      ],
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text(
-                          'رصيد المحفظة: ${walletBalance.toStringAsFixed(2)} ر.س'),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              setState(() {
-                                if (unitCount > 1) unitCount--;
-                              });
-                            },
-                          ),
-                          Text('$unitCount وحدة',
-                              style: const TextStyle(fontSize: 18)),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                unitCount++;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'إجمالي الاستثمار: ${totalInvestment.toStringAsFixed(2)} ر.س',
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _processInvestment,
-                        child: const Text('استثمر'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                const Spacer(),
+              ],
+            ),
           ),
           Positioned(
             top: 50,
-            left: 15,
+            right: 15,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 30, color: Colors.white),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Colors.white, size: 30),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
               },
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: -1, // Update the index based on the current page
+        onTap: (index) {
+          // Handle navigation based on the selected index
+          // Example: Navigator.of(context).pushNamed('/pageName');
+        },
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(20),
+        bottomRight: Radius.circular(20),
+      ),
+      child: Container(
+        height: 320,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF345E50), Color(0xFF49785E), Color(0xFFA8B475)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 150.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    'استثمر الان',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'يمكنك هنا متابعة جميع استثماراتك في الفُرص الزراعية، ومراجعة التفاصيل المتعلقة بها.',
+                    style: TextStyle(fontSize: 15, color: Colors.white70),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 4),
+
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

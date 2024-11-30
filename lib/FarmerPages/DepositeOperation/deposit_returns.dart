@@ -12,8 +12,8 @@ class DepositReturnsScreen extends StatefulWidget {
 }
 
 class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
-  String? selectedPaymentMethod = 'mada';
   final TextEditingController amountController = TextEditingController();
+  String? selectedAccount; // For selected bank account
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                 colors: [
                   Color(0xFF345E50),
                   Color(0xFF49785E),
-                  Color(0xFFA8B475)
+                  Color(0xFFA8B475),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -71,7 +71,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'يرجى إدخال قيمة العائد مع اختيار طريقة الدفع\n المناسبة لإتمام العملية',
+                          'يرجى إدخال قيمة العائد مع اختيار حسابك\n المناسب لإتمام العملية',
                           style: TextStyle(fontSize: 15, color: Colors.white70),
                           textAlign: TextAlign.center,
                         ),
@@ -110,13 +110,13 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                         const SizedBox(height: 5),
                         _buildAmountInput(),
                         _buildDivider(),
-                        const SizedBox(height: 50),
-                        _buildLabel('اختر طريقة الدفع'),
-                        _buildPaymentMethod(
-                            'mada', 'assets/icons/MadaIcon.png'),
-                        const SizedBox(height: 10),
-                        _buildPaymentMethod(
-                            'applePay', 'assets/icons/applepayIcon.png'),
+                        const SizedBox(height: 40),
+                        _buildLabel('اختر حسابك'),
+                        const SizedBox(height: 15),
+                        _buildAccountOption(
+                          "SA846... البنك السعودي للاستثمار",
+                          "SA03 8000 0000 6080 1016 7519",
+                        ),
                         const SizedBox(height: 40),
                         _buildDepositButton(), // Button to execute deposit and update status
                       ],
@@ -174,40 +174,55 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     );
   }
 
-  // Payment method selection widget
-  Widget _buildPaymentMethod(String method, String assetPath) {
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedPaymentMethod = method;
-              });
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Radio<String>(
-                  value: method,
-                  groupValue: selectedPaymentMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                  activeColor: const Color(0xFF4B7960),
-                ),
-                Image.asset(
-                  assetPath,
-                  height: 50,
-                  width: 50,
-                ),
-              ],
-            ),
+  // Bank account selection widget
+  Widget _buildAccountOption(String accountName, String accountNumber) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedAccount = accountName; // Set the selected account
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selectedAccount == accountName
+                ? Color(0xFF4B7960)
+                : Colors.grey.shade300,
           ),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
+          ],
         ),
-      ],
+        child: Row(
+          children: [
+            Icon(
+              selectedAccount == accountName
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
+              color: Color(0xFF4B7960),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(accountName,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87)),
+                  Text(accountNumber,
+                      style: TextStyle(fontSize: 14, color: Colors.black54)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -215,7 +230,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
   Widget _buildDepositButton() {
     return Center(
       child: Container(
-        width: 200,
+        width: 150,
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50.0),
@@ -249,10 +264,17 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
   // Method to deposit returns and update status
   Future<void> _depositReturns() async {
     final amount =
-        double.tryParse(amountController.text); // قيمة العائد المدخلة
+    double.tryParse(amountController.text); // قيمة العائد المدخلة
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('يرجى إدخال قيمة صحيحة للعوائد')),
+      );
+      return;
+    }
+
+    if (selectedAccount == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يرجى اختيار حساب بنكي')),
       );
       return;
     }
@@ -264,7 +286,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         builder: (context) => AlertDialog(
           title: const Text('تأكيد الإيداع'),
           content:
-              Text('هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
+          Text('هل أنت متأكد من إيداع مبلغ $amount ر.س للحساب المختار؟'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -295,7 +317,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content:
-                Text('تم إيداع العوائد ونقل المشروع إلى القائمة المكتملة')),
+            Text('تم إيداع العوائد ونقل المشروع إلى القائمة المكتملة')),
       );
 
       Navigator.pop(context);

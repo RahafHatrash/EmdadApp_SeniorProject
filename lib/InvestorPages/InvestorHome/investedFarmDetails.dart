@@ -5,19 +5,12 @@ import '../../custom_bottom_nav_bar.dart';
 class InvestedFarmDetails extends StatelessWidget {
   final Map<String, dynamic> farmData;
 
-  InvestedFarmDetails({required this.farmData}) {
-    // Debugging farmData
-    print('Farm Data Received: $farmData');
-  }
+  InvestedFarmDetails({required this.farmData});
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    // Debug farmData keys and values
-    print('Farm Data Keys: ${farmData.keys}');
-    print('Farm Data Values: ${farmData.values}');
 
     return Scaffold(
       backgroundColor: Color(0xFFF8F9F8),
@@ -34,8 +27,7 @@ class InvestedFarmDetails extends StatelessWidget {
                   height: screenHeight * 0.3,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Icon(Icons.broken_image,
-                        size: 70, color: Colors.grey);
+                    return Icon(Icons.broken_image, size: 70, color: Colors.grey);
                   },
                 ),
                 // Dark overlay on the image
@@ -77,7 +69,7 @@ class InvestedFarmDetails extends StatelessWidget {
                   ],
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end, // Align content to the right
                   children: [
                     // Title and location section
                     Row(
@@ -87,8 +79,7 @@ class InvestedFarmDetails extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              farmData['farmName']?.toString() ??
-                                  'اسم غير متوفر',
+                              farmData['farmName'] ?? 'اسم غير متوفر',
                               style: TextStyle(
                                 fontSize: screenWidth * 0.06,
                                 fontWeight: FontWeight.bold,
@@ -107,7 +98,7 @@ class InvestedFarmDetails extends StatelessWidget {
                                 ),
                                 SizedBox(width: 2),
                                 Text(
-                                  farmData['region']?.toString() ?? 'غير محدد',
+                                  farmData['region'] ?? 'غير محدد',
                                   style: TextStyle(
                                     fontSize: screenWidth * 0.035,
                                     color: Colors.grey,
@@ -137,42 +128,35 @@ class InvestedFarmDetails extends StatelessWidget {
                           ProjectDetailItem(
                             icon: Icons.timer,
                             title: 'مدة الاستثمار',
-                            value:
-                                farmData['opportunityDuration']?.toString() ??
-                                    'غير متوفر',
+                            value: farmData['opportunityDuration'] ?? 'غير متوفر',
                           ),
                           ProjectDetailItem(
                             icon: Icons.attach_money,
                             title: 'مبلغ استثمارك',
-                            value: farmData['investmentAmount'] != null
-                                ? '${farmData['investmentAmount']} ريال'
-                                : 'غير متوفر',
+                            value: farmData['investmentAmount'] ?? 'غير متوفر',
                           ),
                           ProjectDetailItem(
                             icon: Icons.pie_chart,
-                            title: 'الربح/الخسارة',
+                            title: 'الربح/الخسارة ',
                             value: _calculateProfitOrLoss(farmData),
                           ),
                           ProjectDetailItem(
                             icon: Icons.bar_chart,
                             title: 'العائد المتوقع',
-                            value: farmData['expectedReturns'] != null
-                                ? '${farmData['expectedReturns']}%'
-                                : 'غير متوفر',
+                            value: farmData['expectedReturns'] ?? 'غير متوفر',
                           ),
                           ProjectDetailItem(
                             icon: Icons.event_available,
                             title: 'حالة الفرصة',
-                            value:
-                                farmData['status']?.toString() ?? 'غير متوفر',
+                            value: farmData['status'] ?? 'غير متوفر',
                           ),
                           ProjectDetailItem(
-                            icon: Icons.event,
+                            icon: Icons.event_available,
                             title: 'العائد الفعلي',
-                            value: farmData['actualReturns'] != null
-                                ? '${farmData['actualReturns']} ريال'
-                                : 'غير متوفر',
+                            value: farmData['actualReturns'] ?? 'غير متوفر', // التأكد من وجود القيمة
                           ),
+
+
                         ],
                       ),
                     ),
@@ -195,15 +179,13 @@ class InvestedFarmDetails extends StatelessWidget {
       ),
     );
   }
-
-  // Calculate profit or loss dynamically
   _calculateProfitOrLoss(farmData) {
-    var investmentAmount =
-        double.tryParse(farmData['investmentAmount']?.toString() ?? '0') ?? 0.0;
-    var actualReturns =
-        double.tryParse(farmData['actualReturns']?.toString() ?? '0') ?? 0.0;
+    // التأكد من أن القيم هي أرقام، إذا كانت تأتي كنصوص يتم تحويلها إلى double
+    var investmentAmount = double.tryParse(farmData['investmentAmount'].toString()) ?? 0.0;
+    var actualReturns = double.tryParse(farmData['amount'].toString()) ?? 0.0;
 
-    if (investmentAmount > 0) {
+    // التأكد من أن القيم صحيحة
+    if (investmentAmount != 0.0 && actualReturns != 0.0) {
       double difference = actualReturns - investmentAmount;
       double percentage = (difference / investmentAmount) * 100;
 
@@ -218,6 +200,7 @@ class InvestedFarmDetails extends StatelessWidget {
       return 'غير متوفر';
     }
   }
+
 }
 
 // Widget for displaying individual project detail items in grid format
