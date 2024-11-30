@@ -3,7 +3,6 @@ import 'package:emdad_cpit499/FarmerPages/FarmAdding/adding_success.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class AddProject extends StatefulWidget {
   const AddProject({super.key});
 
@@ -17,8 +16,10 @@ class _AddProjectFormScreenState extends State<AddProject> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cropTypeController = TextEditingController();
   final TextEditingController totalAreaController = TextEditingController();
-  final TextEditingController opportunityDurationController = TextEditingController();
-  final TextEditingController productionRateController = TextEditingController();
+  final TextEditingController opportunityDurationController =
+      TextEditingController();
+  final TextEditingController productionRateController =
+      TextEditingController();
   final TextEditingController targetAmountController = TextEditingController();
 
   List<String> imagePaths = [
@@ -32,7 +33,9 @@ class _AddProjectFormScreenState extends State<AddProject> {
   Future<void> _addProjectToDatabase() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final projectRef = FirebaseFirestore.instance.collection('investmentOpportunities').doc();
+      final projectRef = FirebaseFirestore.instance
+          .collection('investmentOpportunities')
+          .doc();
 
       // تحديد الصورة الحالية
       String imagePath = imagePaths[currentImageIndex];
@@ -54,6 +57,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
         'imageUrl': imagePath,
         'profitDeposited': false,
         'status': 'تحت المعالجة',
+        'returnsDeposited': false,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
@@ -104,14 +108,19 @@ class _AddProjectFormScreenState extends State<AddProject> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            _buildTextField(projectNameController, 'اسم المشروع'),
+                            _buildTextField(
+                                projectNameController, 'اسم المشروع'),
                             _buildTextField(regionController, 'المنطقة'),
                             _buildTextField(addressController, 'العنوان'),
                             _buildTextField(cropTypeController, 'نوع المحصول'),
-                            _buildTextField(totalAreaController, 'المساحة الكلية (بالأمتار أو الهكتار)'),
-                            _buildTextField(opportunityDurationController, 'مدة الفرصة'),
-                            _buildTextField(productionRateController, 'معدل الإنتاج'),
-                            _buildTextField(targetAmountController, 'المبلغ المطلوب لتحقيق الهدف'),
+                            _buildTextField(totalAreaController,
+                                'المساحة الكلية (بالأمتار أو الهكتار)'),
+                            _buildTextField(
+                                opportunityDurationController, 'مدة الفرصة'),
+                            _buildTextField(
+                                productionRateController, 'معدل الإنتاج'),
+                            _buildTextField(targetAmountController,
+                                'المبلغ المطلوب لتحقيق الهدف'),
                           ],
                         ),
                       ),

@@ -30,7 +30,8 @@ class _SignScreenState extends State<SignScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -77,7 +78,8 @@ class _SignScreenState extends State<SignScreen> {
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 170),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 170),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -108,7 +110,8 @@ class _SignScreenState extends State<SignScreen> {
                                 Color(0xFFA2AA6D),
                               ],
                             ).createShader(
-                              Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                              Rect.fromLTWH(
+                                  0.0, 0.0, bounds.width, bounds.height),
                             ),
                             child: const Text(
                               'حساب جديد',
@@ -153,15 +156,18 @@ class _SignScreenState extends State<SignScreen> {
                             isPassword: true,
                           ),
                           buildGradientLine(),
-                          Container(
+                          SizedBox(
                             height: 50,
                             child: DropdownButtonFormField<String>(
                               decoration: const InputDecoration(
                                 labelText: 'هل أنت مزارع أم مستثمر؟',
                                 alignLabelWithHint: true,
-                                border: UnderlineInputBorder(borderSide: BorderSide.none),
-                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-                                focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+                                border: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide.none),
                               ),
                               value: _selectedRole,
                               items: _roles.map((String role) {
@@ -169,7 +175,8 @@ class _SignScreenState extends State<SignScreen> {
                                   value: role,
                                   child: Text(role,
                                       textAlign: TextAlign.right,
-                                      style: const TextStyle(fontFamily: 'Markazi Text')),
+                                      style: const TextStyle(
+                                          fontFamily: 'Markazi Text')),
                                 );
                               }).toList(),
                               onChanged: (String? newValue) {
@@ -218,7 +225,8 @@ class _SignScreenState extends State<SignScreen> {
                         if (_validateInputs()) {
                           // Inside the onPressed method where you create the user
                           try {
-                            UserCredential userCredential = await FirebaseAuth.instance
+                            UserCredential userCredential = await FirebaseAuth
+                                .instance
                                 .createUserWithEmailAndPassword(
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim(),
@@ -280,7 +288,8 @@ class _SignScreenState extends State<SignScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                       );
                     },
                     child: const Text(
@@ -374,8 +383,10 @@ class _SignScreenState extends State<SignScreen> {
               labelText: label,
               alignLabelWithHint: true,
               border: const UnderlineInputBorder(borderSide: BorderSide.none),
-              enabledBorder: const UnderlineInputBorder(borderSide: BorderSide.none),
-              focusedBorder: const UnderlineInputBorder(borderSide: BorderSide.none),
+              enabledBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
+              focusedBorder:
+                  const UnderlineInputBorder(borderSide: BorderSide.none),
             ),
             cursorColor: const Color(0xFF4B7960),
             style: const TextStyle(fontFamily: 'Markazi Text'),

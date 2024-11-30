@@ -10,10 +10,10 @@ class CustomBottomNavBar extends StatefulWidget {
   final Function(int) onTap;
 
   const CustomBottomNavBar({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   _CustomBottomNavBarState createState() => _CustomBottomNavBarState();
@@ -44,7 +44,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => WalletPage()),
+          MaterialPageRoute(builder: (context) => const WalletPage()),
         );
         break;
       case 4:

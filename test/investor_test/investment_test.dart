@@ -21,27 +21,27 @@ void main() {
 
   group('Investment Logic', () {
     test('wallet has enough balance to invest', () {
-      final walletBalance = 10000.0;
-      final totalInvestment = 3000.0;
-      final remainingAmount = 5000.0;
+      const walletBalance = 10000.0;
+      const totalInvestment = 3000.0;
+      const remainingAmount = 5000.0;
       final result = canInvest(totalInvestment, walletBalance, remainingAmount);
 
       expect(result, true);
     });
 
     test('wallet has not enough balance to invest', () {
-      final walletBalance = 1000.0;
-      final totalInvestment = 3000.0;
-      final remainingAmount = 5000.0;
+      const walletBalance = 1000.0;
+      const totalInvestment = 3000.0;
+      const remainingAmount = 5000.0;
       final result = canInvest(totalInvestment, walletBalance, remainingAmount);
 
       expect(result, false);
     });
 
     test('Process investment and return updated values', () {
-      final walletBalance = 10000.0;
-      final totalInvestment = 3000.0;
-      final currentInvestment = 2000.0;
+      const walletBalance = 10000.0;
+      const totalInvestment = 3000.0;
+      const currentInvestment = 2000.0;
 
       final result =
           processTransaction(walletBalance, totalInvestment, currentInvestment);
@@ -52,9 +52,9 @@ void main() {
     });
 
     test('Fail transaction due to insufficient balance', () {
-      final walletBalance = 2000.0;
-      final totalInvestment = 3000.0;
-      final currentInvestment = 2000.0;
+      const walletBalance = 2000.0;
+      const totalInvestment = 3000.0;
+      const currentInvestment = 2000.0;
 
       final result =
           processTransaction(walletBalance, totalInvestment, currentInvestment);

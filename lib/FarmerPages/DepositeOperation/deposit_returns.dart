@@ -264,17 +264,10 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
   // Method to deposit returns and update status
   Future<void> _depositReturns() async {
     final amount =
-    double.tryParse(amountController.text); // قيمة العائد المدخلة
+        double.tryParse(amountController.text); // قيمة العائد المدخلة
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('يرجى إدخال قيمة صحيحة للعوائد')),
-      );
-      return;
-    }
-
-    if (selectedAccount == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى اختيار حساب بنكي')),
       );
       return;
     }
@@ -286,7 +279,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         builder: (context) => AlertDialog(
           title: const Text('تأكيد الإيداع'),
           content:
-          Text('هل أنت متأكد من إيداع مبلغ $amount ر.س للحساب المختار؟'),
+              Text('هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
@@ -309,6 +302,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           .update({
         'status': 'مكتملة', // Update status to completed
         'totalEarnings': amount,
+        'returnsDeposited': true,
       });
 
       // باقي الكود يبقى كما هو لتوزيع العوائد
@@ -317,7 +311,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content:
-            Text('تم إيداع العوائد ونقل المشروع إلى القائمة المكتملة')),
+                Text('تم إيداع العوائد ونقل المشروع إلى القائمة المكتملة')),
       );
 
       Navigator.pop(context);

@@ -23,8 +23,8 @@ void main() {
   group('Add Funds Logic', () {
     test('Add positive amount to wallet', () {
       // Initial wallet balance
-      final double currentBalance = 1000.0;
-      final double amountToAdd = 500.0;
+      const double currentBalance = 1000.0;
+      const double amountToAdd = 500.0;
 
       // Execute the function
       final result = addFunds(currentBalance, amountToAdd);
