@@ -21,6 +21,9 @@ void main() async {
   runApp(MyApp());
 }
 
+// emdad project // raghad
+var a = 1 + 1;
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
