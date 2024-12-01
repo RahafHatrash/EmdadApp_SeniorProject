@@ -199,11 +199,11 @@ class ProjectDetails extends StatelessWidget {
           ProjectDetailItem(
               icon: Icons.grain,
               title: 'نوع المحصول',
-              value: projectData['cropType'] ?? 'غير معروف'),
+              value: projectData['cropType'] ?? 'غير محدد'),
           ProjectDetailItem(
               icon: Icons.production_quantity_limits,
               title: 'معدل الإنتاج',
-              value: projectData['productionRate']+"٪" ?? 'غير معروف'),
+              value: projectData['productionRate']+"٪" ?? 'غير محدد'),
           ProjectDetailItem(
               icon: Icons.bar_chart,
               title: 'المبلغ المتبقي',
@@ -219,7 +219,7 @@ class ProjectDetails extends StatelessWidget {
           ProjectDetailItem(
               icon: Icons.grain,
               title: 'مدة الفرصة',
-              value: projectData['opportunityDuration'] ?? 'غير معروف'),
+              value: projectData['opportunityDuration'] ?? 'غير محدد'),
 
 
         ],
