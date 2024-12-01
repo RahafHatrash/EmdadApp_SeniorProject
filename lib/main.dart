@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'FarmerPages/DepositeOperation/card_info.dart';
-import 'FarmerPages/DepositeOperation/payment_process.dart';
 import 'FarmerPages/FarmerHome/farmerHome.dart';
 import 'FarmerPages/FarmerHome/projects_list.dart';
 import 'FarmerPages/FarmerProfile/CustomerServiceScreen.dart';
@@ -49,9 +47,7 @@ class MyApp extends StatelessWidget {
         '/farmerterms': (context) => const farmerTerms(),
         '/investorterms': (context) => const investorTerms(),
 
-        // Payment-related routes
-        '/card_info': (context) => const CardInfoScreen(),
-        '/payment-process': (context) => PaymentStatusPage(),
+
       },
     );
   }

@@ -1,5 +1,8 @@
+import 'package:emdad_cpit499/InvestorPages/InvestorWallet/WalletPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import '../../FarmerPages/DepositeOperation/deposit_returns.dart';
 
 /*class MyApp extends StatelessWidget {
   @override
@@ -50,7 +53,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-          additionSuccess ? SuccessScreen() : FailureScreen(),
+          additionSuccess ? SuccessScreen() : SuccessScreen(),
         ),
       );
     });
@@ -320,73 +323,11 @@ class SuccessScreen extends StatelessWidget {
                   GradientButton(
                     text: "العودة للصفحة الرئيسية",
                     onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FailureScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          buildBackgroundWithAppBar(
-            context,
-            'فشلت عملية الإضافة',
-            'حدث خطأ أثناء إضافة الحساب. حاول مرة أخرى.',
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 400,
-              width: MediaQuery.of(context).size.width * 0.9,
-              padding: const EdgeInsets.all(40.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/failure.png', height: 100, width: 100),
-                  SizedBox(height: 20),
-                  Text(
-                    'فشلت عملية إضافة الحساب',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF335D4F),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  GradientButton(
-                    text: "العودة للصفحة الرئيسية",
-                    onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  GradientButton(
-                    text: "حاول مرة أخرى",
-                    onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => WalletPage()), // Replace with your actual wallet page widget
+                            (route) => false, // Removes all the previous routes
+                      );
                     },
                   ),
                 ],
@@ -410,7 +351,7 @@ class GradientButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.4,
+        width: MediaQuery.of(context).size.width * 0.5,
         padding: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           gradient: LinearGradient(

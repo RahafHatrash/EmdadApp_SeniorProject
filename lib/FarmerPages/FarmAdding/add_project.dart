@@ -35,14 +35,14 @@ class _AddProjectFormScreenState extends State<AddProject> {
       int imageNumber;
       do {
         imageNumber = random.nextInt(11) + 1; // Random number between 1 and 11
-      } while (usedImages.contains(imageNumber) && usedImages.length < 11);
+      } while (usedImages.contains(imageNumber) && usedImages.length < 13);
 
       // Add the image to the used list
       usedImages.add(imageNumber);
       String imagePath = 'assets/farm/$imageNumber.png';
 
       await projectRef.set({
-        'id': projectRef.id,
+        'projectId': projectRef.id,
         'projectName': projectNameController.text,
         "userId": userId,
         'region': regionController.text,
