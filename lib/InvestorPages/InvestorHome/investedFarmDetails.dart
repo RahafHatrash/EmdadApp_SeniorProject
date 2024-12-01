@@ -121,7 +121,7 @@ class investedFarmDetails extends StatelessWidget {
             if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == true)
               _buildStatusBadge(Colors.green, 'مكتملة'),
             if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == false)
-              _buildStatusBadge(Color(0xffa1ad71), 'مكتملة (بإنتظار ايداع الارباح)'),
+              _buildStatusBadge(Color(0xffa1ad71), 'تحت المعالجة'),
             const SizedBox(width: 10),
             Flexible(
               child: Text(
