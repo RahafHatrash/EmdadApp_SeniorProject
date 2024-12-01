@@ -77,6 +77,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
           'investmentAmount': investmentAmount.toStringAsFixed(2) + " ريال",
           'actualReturns': projectReturns.toStringAsFixed(2) + " ريال", // إجمالي العوائد
           'investmentDate': investmentDate,
+
           'expectedReturns': investment['expectedReturns'].toStringAsFixed(2) +
               " ريال", // العائد المتوقع
           'imageUrl': farmData['imageUrl'] ?? '',
