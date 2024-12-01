@@ -1,4 +1,3 @@
-import 'package:emdad_cpit499/InvestorPages/InvestorProfile/InvestorTerms.dart';
 import 'package:flutter/material.dart';
 import 'FarmerPages/DepositeOperation/card_info.dart';
 import 'FarmerPages/DepositeOperation/payment_process.dart';
@@ -6,14 +5,16 @@ import 'FarmerPages/FarmerHome/farmerHome.dart';
 import 'FarmerPages/FarmerHome/projects_list.dart';
 import 'FarmerPages/FarmerProfile/CustomerServiceScreen.dart';
 import 'FarmerPages/FarmerProfile/FAQscreen.dart';
+import 'FarmerPages/FarmerProfile/FarmerTerms.dart';
 import 'FarmerPages/FarmerProfile/InfoScreen.dart';
 import 'FarmerPages/FarmerProfile/FarmerProfile.dart';
-import 'FarmerPages/FarmerProfile/FarmerTerms.dart';
 import 'InvestorPages/InvestorHome/InvestorHome.dart';
+import 'InvestorPages/InvestorProfile/InvestorTerms.dart';
 import 'StartPages/Loginpage.dart';
 import 'StartPages/forgetpassword.dart';
 import 'StartPages/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
