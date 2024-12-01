@@ -236,7 +236,7 @@ class _AllInvestmentsState extends State<AllInvestments> {
     );
 
     if (paginatedInvestments.isEmpty) {
-      return const Center(child: Text('لا توجد استثمارات لعرضها.'));
+      return const Center(child: Text('.لا توجد فُرص استثمارية يتم عرضها'));
     }
 
     return ListView.builder(

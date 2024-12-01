@@ -165,7 +165,7 @@ class _ProjectListState extends State<ProjectList> {
             final documentId = document.id;
 
             return _buildProjectItem(
-              imagePath: projectData['imageUrl'] ?? 'assets/images/farm1.png',
+              imagePath: projectData['imageUrl'] ?? 'assets/images/12.png',
               title: projectData['projectName'] ?? 'مشروع زراعي',
               documentId: documentId,
             );

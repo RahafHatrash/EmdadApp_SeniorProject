@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emdad_cpit499/FarmerPages/FarmerHome/projects_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../FarmerProfile/FarmerProfile.dart';
-
 
 class FarmerHomePage extends StatefulWidget {
   const FarmerHomePage({super.key});
@@ -56,6 +54,27 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
         .snapshots()
         .map((snapshot) => snapshot.docs.length);
   }
+
+  final List<Map<String, String>> farmCards = [
+    {
+      'imageUrl': 'assets/images/news1.png',
+      'date': '23/03/1446',
+      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'additionalText': 'قراءة المزيد',
+    },
+    {
+      'imageUrl': 'assets/images/news2.png',
+      'date': '24/03/1446',
+      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'additionalText': 'قراءة المزيد',
+    },
+    {
+      'imageUrl': 'assets/images/news3.png',
+      'date': '24/03/1446',
+      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'additionalText': 'قراءة المزيد',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -225,26 +244,20 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                   height: 220,
                   child: PageView(
                     controller: _pageController,
-                    children: [
-                      buildFarmCard(
-                        imageUrl: 'assets/images/farm1.png',
-                        date: '23/03/1446',
-                        text: '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
-                        additionalText: 'قراءة المزيد',
-                      ),
-                      buildFarmCard(
-                        imageUrl: 'assets /images/farm1.png',
-                        date: '24/03/1446',
-                        text: '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
-                        additionalText: 'قراءة المزيد',
-                      ),
-                    ],
+                    children: farmCards.map((card) {
+                      return buildFarmCard(
+                        imageUrl: card['imageUrl']!,
+                        date: card['date']!,
+                        text: card['text']!,
+                        additionalText: card['additionalText']!,
+                      );
+                    }).toList(),
                   ),
                 ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(2, (index) {
+                    children: List.generate(farmCards.length, (index) {
                       return Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
                         height: 8,

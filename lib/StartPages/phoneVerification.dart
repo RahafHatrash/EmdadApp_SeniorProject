@@ -106,8 +106,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets /images/bg2.png'),
-            fit: BoxFit.cover,
+            image: AssetImage('assets/images/bg2.png'),
+            fit: BoxFit.cover
           ),
         ),
         child: Stack(

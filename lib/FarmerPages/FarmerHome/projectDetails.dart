@@ -84,7 +84,7 @@ class ProjectDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    String imageUrl = projectData['imageUrl'] ?? 'assets/images/farm1.png';
+    String imageUrl = projectData['imageUrl'] ?? 'assets/images/12.png';
 
     return Stack(
       children: [
