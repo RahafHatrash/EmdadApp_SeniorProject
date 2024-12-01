@@ -333,6 +333,7 @@ class _ProjectListState extends State<ProjectList> {
   // Bottom navigation bar for different pages
   BottomNavigationBar _buildBottomNavigation() {
     return BottomNavigationBar(
+      backgroundColor: Colors.white,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
         BottomNavigationBarItem(icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
