@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
 
         // Farmer-related routes
         '/home': (context) => const FarmerHomePage(),
-        '/FarmerProfile': (context) => const Farmerprofile(),
+        '/FarmerProfile': (context) => const FarmerProfile(),
         '/ProjectList': (context) => const ProjectList(),
         '/account': (context) => const InfoScreen(),
         '/customer_service': (context) => const CustomerServiceScreen(),

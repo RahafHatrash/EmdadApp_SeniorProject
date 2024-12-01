@@ -1,113 +1,72 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emdad_cpit499/FarmerPages/FarmerProfile/FarmerTerms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../main.dart';
-import '../FarmerHome/farmerHome.dart';
-import '../FarmerHome/projects_list.dart';
 import 'CustomerServiceScreen.dart';
 import 'FAQscreen.dart';
+import 'FarmerTerms.dart';
 import 'InfoScreen.dart';
+import '../../custom_bottom_nav_bar.dart';
 
-class Farmerprofile extends StatefulWidget {
-  const Farmerprofile({super.key});
+class FarmerProfile extends StatefulWidget {
+  const FarmerProfile({super.key});
 
   @override
-  _FarmerprofileState createState() => _FarmerprofileState();
+  _FarmerProfileState createState() => _FarmerProfileState();
 }
 
-class _FarmerprofileState extends State<Farmerprofile> {
-  int _selectedTabIndex = 0; // الفئة الافتراضية هي "حسابي"
-  String userName = ''; // لتخزين اسم المستخدم
+class _FarmerProfileState extends State<FarmerProfile> {
+  int _selectedTabIndex = 0; // Default selected tab index
+  String userName = ''; // To store the user's name
 
   @override
   void initState() {
     super.initState();
-    _fetchUserName(); // جلب اسم المستخدم عند تحميل الصفحة
+    _fetchUserName(); // Fetch user's name when the page loads
   }
 
-  // دالة لجلب اسم المستخدم من Firestore
   Future<void> _fetchUserName() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
       setState(() {
-        userName = userDoc['name'] ?? 'اسم المستخدم'; // قيمة افتراضية إذا لم يتم العثور على الاسم
+        userName = userDoc['name'] ?? 'اسم المستخدم'; // Default if name is not found
       });
     } catch (e) {
-      print('فشل في جلب اسم المستخدم: $e');
-    }
-  }
-
-  // دالة لحذف حساب المستخدم والبيانات المتعلقة به
-  Future<void> _deleteUserAccount() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        throw Exception("لا يوجد مستخدم مسجّل دخول حاليًا.");
-      }
-
-      final userId = user.uid;
-
-      // حذف وثيقة المستخدم من Firestore
-      await FirebaseFirestore.instance.collection('users').doc(userId).delete();
-
-      // حذف الاستثمارات المتعلقة بالمستخدم
-      final investments = await FirebaseFirestore.instance.collection('investments').where('userId', isEqualTo: userId).get();
-      for (var doc in investments.docs) {
-        await doc.reference.delete();
-      }
-
-      // حذف فرص الاستثمار المتعلقة بالمستخدم
-      final investmentOpportunities = await FirebaseFirestore.instance.collection('investmentOpportunities').where('userId', isEqualTo: userId).get();
-      for (var doc in investmentOpportunities.docs) {
-        await doc.reference.delete();
-      }
-
-      // حذف المستخدم من Firebase Auth
-      await user.delete(); // هذه السطر يقوم بحذف المستخدم من Firebase Auth
-
-      // إعادة التوجيه إلى صفحة البداية بعد الحذف الناجح
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => StartPage()),
-            (route) => false,
-      );
-    } catch (e) {
-      print('خطأ في حذف الحساب: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل في حذف الحساب، حاول مرة أخرى')),
-      );
+      print('Failed to fetch user name: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAF9),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          _buildAppBar(), // رأس صفحة الملف الشخصي مع معلومات المستخدم
+          _buildHeader(), // Profile header with user info
           Padding(
             padding: const EdgeInsets.only(top: 250, left: 20, right: 20),
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildProfileSettings(), // خيارات إعدادات الملف الشخصي
+                  _buildProfileSettings(), // Profile settings section
                   const SizedBox(height: 20),
-                  _buildLogoutButton(), // زر تسجيل الخروج
+                  _buildLogoutButton(), // Logout button
                 ],
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(), // شريط التنقل السفلي
+      bottomNavigationBar: CustomBottomNavBar(
+        currentIndex: _selectedTabIndex,
+        onTap: _onNavBarTapped, // Handle bottom navigation taps
+      ),
     );
   }
 
-  // رأس الصفحة مع أيقونة الملف الشخصي واسم المستخدم
-  Widget _buildAppBar() {
+  // Profile header with avatar and user name
+  Widget _buildHeader() {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(20),
@@ -140,7 +99,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    userName, // عرض اسم المستخدم الذي تم جلبه هنا
+                    userName, // Display fetched user name here
                     style: const TextStyle(
                       fontSize: 24,
                       color: Colors.white,
@@ -158,7 +117,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // قائمة عناصر إعدادات الملف الشخصي
+  // Profile settings section with options
   Widget _buildProfileSettings() {
     return Container(
       padding: const EdgeInsets.all(24.0),
@@ -229,8 +188,9 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // عنصر إعداد واحد مع أيقونة، عنوان، وإجراء onTap
-  Widget buildSettingsItem(BuildContext context, String title, IconData icon, VoidCallback onTap) {
+  // Widget for individual setting items
+  Widget buildSettingsItem(BuildContext context, String title, IconData icon,
+      VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
       leading: Icon(icon, color: const Color(0xFF4B7960)),
@@ -247,18 +207,14 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // زر تسجيل الخروج مع خلفية متدرجة
+  // Logout button
   Widget _buildLogoutButton() {
     return Container(
-      width: 150,
+      width: 170,
       height: 40,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFF4B7960),
-            Color(0xFF728F66),
-            Color(0xFFA2AA6D),
-          ],
+          colors: [Color(0xFF4B7960), Color(0xFF728F66), Color(0xFFA2AA6D)],
         ),
         borderRadius: BorderRadius.circular(50),
       ),
@@ -285,60 +241,14 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // شريط التنقل السفلي
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.green.shade800,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: true,
-      showUnselectedLabels: true,
-      currentIndex: _selectedTabIndex,
-      onTap: (index) {
-        setState(() {
-          _selectedTabIndex = index;
-        });
-
-        // الانتقال إلى شاشات مختلفة بناءً على الفهرس المحدد
-        if (index == 0) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const Farmerprofile()),
-                (route) => false,
-          );
-        } else if (index == 1) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const ProjectList()),
-                (route) => false,
-          );
-        } else if (index == 2) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const FarmerHomePage()),
-                (route) => false,
-          );
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'حسابي',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.nature),
-          label: 'مشاريعي الزراعية',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'الرئيسية',
-        ),
-      ],
-    );
+  // Handle bottom navigation bar taps
+  void _onNavBarTapped(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
   }
 
-  // حوار تغيير اللغة
+  // Show language change dialog
   void _showLanguageChangeDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -382,46 +292,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // حوار تأكيد حذف الحساب
-  void _showDeleteAccountConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "هل أنت متأكد من حذف الحساب؟",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF4B7960),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(
-                        context, "حذف الحساب", isDeleteAccount: true),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // حوار تأكيد تسجيل الخروج
+  // Show logout confirmation dialog
   void _showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -448,11 +319,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(
-                      context,
-                      "تسجيل الخروج",
-                      isLogout: true,
-                    ),
+                    _buildConfirmationButton(context, "تسجيل الخروج", isLogout: true),
                   ],
                 ),
               ],
@@ -463,12 +330,50 @@ class _FarmerprofileState extends State<Farmerprofile> {
     );
   }
 
-  // دالة مساعدة لبناء أزرار التأكيد للحوار
+  // Show delete account confirmation dialog
+  void _showDeleteAccountConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "هل أنت متأكد من حذف الحساب؟",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF4B7960),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildConfirmationButton(context, "الرجوع"),
+                    _buildConfirmationButton(context, "حذف الحساب", isDeleteAccount: true),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // Helper method to build confirmation buttons for dialogs
   Widget _buildConfirmationButton(BuildContext context, String text,
       {bool isLogout = false, bool isDeleteAccount = false}) {
     return Container(
-      width: 120,
-      height: 40,
+      width: 120, // Set a fixed width for the button
+      height: 40, // Set a fixed height for the button
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
@@ -481,41 +386,115 @@ class _FarmerprofileState extends State<Farmerprofile> {
       ),
       child: TextButton(
         onPressed: () {
-          Navigator.of(context).pop(); // إغلاق الحوار
           if (isLogout) {
             _logoutUser();
           } else if (isDeleteAccount) {
-            _deleteUserAccount(); // استدعاء دالة حذف الحساب
+            _deleteUserAccount();
           }
+          Navigator.of(context).pop(); // Close the dialog
         },
         style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.zero, // Remove padding to respect fixed height
         ),
         child: Text(
           text,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 14,
+            fontSize: 14, // Adjust font size as needed
           ),
         ),
       ),
     );
   }
 
-  // دالة لتسجيل خروج المستخدم
+  // Method to log out the user
   Future<void> _logoutUser() async {
     try {
-      await FirebaseAuth.instance.signOut(); // تسجيل الخروج من Firebase
+      await FirebaseAuth.instance.signOut(); // Sign out from Firebase
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // استبدل بصفحتك الرئيسية
+        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
             (route) => false,
       );
     } catch (e) {
-      print('خطأ في تسجيل الخروج: $e');
+      print('Error signing out: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('فشل تسجيل الخروج. حاول مرة أخرى.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Method to delete user account and all related data
+  Future<void> _deleteUserAccount() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Delete user document from Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userId).delete();
+
+      // Delete all related data
+      await _deleteRelatedData(userId);
+
+      // Delete user from Firebase Auth
+      await FirebaseAuth.instance.currentUser!.delete();
+
+      // Navigate to the main page after deletion
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
+            (route) => false,
+      );
+    } catch (e) {
+      print('Error deleting account: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('فشل حذف الحساب. حاول مرة أخرى.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Method to delete related data (wallets, investments, investment opportunities)
+  Future<void> _deleteRelatedData(String userId) async {
+    try {
+      // Delete user-related wallets
+      QuerySnapshot walletsSnapshot = await FirebaseFirestore.instance
+          .collection('wallets')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (var doc in walletsSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete user-related investments
+      QuerySnapshot investmentsSnapshot = await FirebaseFirestore.instance
+          .collection('investments')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (var doc in investmentsSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete user-related investment opportunities
+      QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore.instance
+          .collection('investmentOpportunity')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (var doc in investmentOpportunitiesSnapshot.docs) {
+        await doc.reference.delete();
+      }
+    } catch (e) {
+      print('Error deleting related data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('فشل حذف البيانات المرتبطة. حاول مرة أخرى.'),
           backgroundColor: Colors.red,
         ),
       );

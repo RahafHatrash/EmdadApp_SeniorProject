@@ -291,7 +291,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
           if (index == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Farmerprofile()),
+              MaterialPageRoute(builder: (context) => const FarmerProfile()),
             );
           } else if (index == 1) {
             Navigator.push(

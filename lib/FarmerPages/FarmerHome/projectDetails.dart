@@ -61,7 +61,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       onTap: (index) {
         if (index == 0) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Farmerprofile()));
+              context, MaterialPageRoute(builder: (context) => const FarmerProfile()));
         } else if (index == 1) {
           setState(() => _selectedBottomTabIndex = index);
         } else if (index == 2) {
