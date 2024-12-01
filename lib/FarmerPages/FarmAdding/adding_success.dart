@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../FarmerHome/farmerHome.dart';
 
-class SuccessScreen extends StatelessWidget {
-  const SuccessScreen({super.key});
+class AddingFarmSuccess extends StatelessWidget {
+  const AddingFarmSuccess({super.key});
 
   @override
   Widget build(BuildContext context) {

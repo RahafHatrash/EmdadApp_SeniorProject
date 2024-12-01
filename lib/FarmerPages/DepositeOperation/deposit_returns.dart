@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'AddBankAccountFarmer.dart';
 
 class DepositReturnsScreen extends StatefulWidget {
   final String documentId;
@@ -11,8 +13,8 @@ class DepositReturnsScreen extends StatefulWidget {
 }
 
 class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
-  String? selectedPaymentMethod = 'mada';
   final TextEditingController amountController = TextEditingController();
+  String? selectedAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       backgroundColor: const Color(0xFFF9FAF9),
       body: Stack(
         children: [
-          // Top gradient background with a rounded border at the bottom
+          // Gradient background
           Container(
             height: 320,
             width: double.infinity,
@@ -66,7 +68,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'يرجى إدخال قيمة العائد مع اختيار طريقة الدفع\n المناسبة لإتمام العملية',
+                          'يرجى إدخال قيمة العائد مع اختيار الحساب البنكي\n المناسب لإتمام العملية',
                           style: TextStyle(fontSize: 15, color: Colors.white70),
                           textAlign: TextAlign.center,
                         ),
@@ -106,12 +108,14 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                         _buildAmountInput(),
                         _buildDivider(),
                         const SizedBox(height: 50),
-                        _buildLabel('اختر طريقة الدفع'),
-                        _buildPaymentMethod('mada', 'assets/icons/MadaIcon.png'),
+                        _buildLabel('اختر حسابك البنكي '),
                         const SizedBox(height: 10),
-                        _buildPaymentMethod('applePay', 'assets/icons/applepayIcon.png'),
-                        const SizedBox(height: 40),
-                        _buildDepositButton(), // Button to execute deposit and update status
+                        _buildAccountOption("SA846... البنك السعودي للاستثمار", "SA03 8000 0000 6080 1016 7519"),
+                        const SizedBox(height: 10),
+                        _buildAccountOption("SA123... بنك الرياض", "SA03 8000 0000 1234 5678 9012"),
+                        const SizedBox(height: 30),  // Reduced space
+                        _buildDepositButton(),
+                        _buildAddAccountButton(),
                       ],
                     ),
                   ),
@@ -124,7 +128,6 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     );
   }
 
-  // Label widget
   Widget _buildLabel(String text) {
     return Container(
       alignment: Alignment.centerRight,
@@ -139,7 +142,6 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     );
   }
 
-  // Amount input field
   Widget _buildAmountInput() {
     return TextField(
       controller: amountController,
@@ -154,7 +156,6 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     );
   }
 
-  // Divider widget
   Widget _buildDivider() {
     return Container(
       height: 1,
@@ -167,44 +168,6 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     );
   }
 
-  // Payment method selection widget
-  Widget _buildPaymentMethod(String method, String assetPath) {
-    return Row(
-      children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedPaymentMethod = method;
-              });
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Radio<String>(
-                  value: method,
-                  groupValue: selectedPaymentMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPaymentMethod = value.toString();
-                    });
-                  },
-                  activeColor: const Color(0xFF4B7960),
-                ),
-                Image.asset(
-                  assetPath,
-                  height: 50,
-                  width: 50,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Deposit button widget
   Widget _buildDepositButton() {
     return Center(
       child: Container(
@@ -234,18 +197,48 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
         ),
       ),
     );
   }
 
-  // Method to deposit returns and update status
+  Widget _buildAddAccountButton() {
+    return Center(
+      child: TextButton(
+        onPressed: () {
+          // Navigate to the Add Bank Account Page
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddBankAccountFarmer()),
+          );
+        },
+        child: const Text(
+          'أضف حساب جديد +',
+          style: TextStyle(
+            color: Colors.blueAccent, // لون النص
+            fontSize: 13, // حجم النص
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Future<void> _depositReturns() async {
     final amount = double.tryParse(amountController.text);
+
+    // Check if the amount is valid
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('يرجى إدخال قيمة صحيحة للعوائد')),
+      );
+      return;
+    }
+
+    // Check if an account is selected
+    if (selectedAccount == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('يرجى اختيار حساب بنكي')),
       );
       return;
     }
@@ -343,5 +336,56 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         SnackBar(content: Text('حدث خطأ أثناء توزيع العوائد: $e')),
       );
     }
+  }
+
+  Widget _buildAccountOption(String accountName, String accountNumber) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedAccount = accountName;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selectedAccount == accountName
+                ? const Color(0xFF4B7960)
+                : Colors.grey.shade300,
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: const Offset(0, 4))
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(
+              selectedAccount == accountName
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked,
+              color: const Color(0xFF4B7960),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(accountName,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87)),
+                  Text(accountNumber,
+                      style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math'; // Import for random number generation
-import '../../InvestorPages/InvestmentProccess/InvestVerification.dart';
-import '../FarmerHome/farmerHome.dart';
+import 'adding_success.dart';
 
 class AddProject extends StatefulWidget {
   const AddProject({super.key});
@@ -61,7 +60,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FarmerHomePage()),
+        MaterialPageRoute(builder: (context) => AddingFarmSuccess()),
       );
     } catch (e) {
       print('Error adding project: $e');
