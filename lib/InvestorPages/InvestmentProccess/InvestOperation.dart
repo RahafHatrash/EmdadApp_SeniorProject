@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../custom_bottom_nav_bar.dart';
-import '../InvestorWallet/FundsOperation/add_funds_page.dart'; // Make sure to import your custom bottom nav bar
+import '../InvestorWallet/FundsOperation/add_funds_page.dart';
+import 'InvestVerification.dart'; // Make sure to import your custom bottom nav bar
 
 class Investoperation extends StatefulWidget {
   final String projectName; // اسم المشروع الذي سيتم تمريره
@@ -86,16 +87,15 @@ class _InvestmentPageState extends State<Investoperation> {
       return false;
     }
   }
-
-  Future<void> _processInvestment() async {
+  Future<bool> _processInvestment() async {
     try {
       // التحقق من المشروع أولاً
       final isEligible = await _fetchProjectDetails();
-      if (!isEligible) return;
+      if (!isEligible) return false; // المشروع غير مؤهل للاستثمار
 
       if (totalInvestment > walletBalance) {
         _showFailureMessage('رصيد المحفظة غير كافٍ');
-        return;
+        return false; // الرصيد غير كافٍ
       }
 
       final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
@@ -104,21 +104,12 @@ class _InvestmentPageState extends State<Investoperation> {
           .collection('investmentOpportunities')
           .doc(widget.projectId);
 
-      // جلب الرصيد الحالي
-      final walletSnapshot = await walletDoc.get();
-      final currentBalance = walletSnapshot.data()?['currentBalance'] ?? 0.0;
-
-      if (currentBalance < totalInvestment) {
-        _showFailureMessage('رصيد المحفظة غير كافٍ');
-        return;
-      }
-
       // تحديث المحفظة
       await walletDoc.update({
         'currentBalance': FieldValue.increment(-totalInvestment),
         'transactions': FieldValue.arrayUnion([
           {
-            'type': 'investmentWithdrawal', // نوع العملية
+            'type': 'investmentWithdrawal',
             'projectName': widget.projectName,
             'amount': totalInvestment,
             'investmentDate': DateTime.now(),
@@ -152,11 +143,14 @@ class _InvestmentPageState extends State<Investoperation> {
         await projectDoc.update({'status': 'مكتملة'});
       }
 
-      _showSuccessMessage('تم الاستثمار بنجاح!');
+
+      return true; // العملية ناجحة
     } catch (e) {
       _showFailureMessage('حدث خطأ أثناء عملية الاستثمار: $e');
+      return false; // العملية فشلت
     }
   }
+
 
   void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -242,7 +236,20 @@ class _InvestmentPageState extends State<Investoperation> {
                         const SizedBox(height: 20),
                         const SizedBox(height: 20),
                         GestureDetector(
-                          onTap: _processInvestment, // استدعاء دالة الاستثمار عند الضغط
+                          onTap: () async {
+                            // التحقق وتنفيذ الاستثمار
+                            final isEligible = await _processInvestment();
+
+                            // الانتقال إلى صفحة التحقق فقط إذا كانت العملية ناجحة
+                            if (isEligible) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InvestVerification(), // الانتقال لصفحة InvestVerification
+                                ),
+                              );
+                            }
+                          },
                           child: Container(
                             height: 35,
                             width: 150,
@@ -267,6 +274,8 @@ class _InvestmentPageState extends State<Investoperation> {
                             ),
                           ),
                         ),
+
+
                         const SizedBox(height: 15), // مسافة صغيرة بين الزر والنص
                         GestureDetector(
                           onTap: () {

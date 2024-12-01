@@ -21,8 +21,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
     userId = FirebaseAuth.instance.currentUser?.uid; // الحصول على userId
     _fetchInvestments(); // جلب بيانات الاستثمارات
   }
-
-  // جلب بيانات الاستثمارات مع الصور والبيانات الإضافية
+// جلب بيانات الاستثمارات مع الصور والبيانات الإضافية
   Future<void> _fetchInvestments() async {
     if (userId == null) return;
 
@@ -40,20 +39,23 @@ class _MyInvestmentsState extends State<MyInvestments> {
         String projectId = investment['projectId'];
         String projectName = investment['projectName'];
         double investmentAmount = investment['investmentAmount'];
-        DateTime investmentDate = (investment['investmentDate'] as Timestamp).toDate();
+        DateTime investmentDate =
+        (investment['investmentDate'] as Timestamp).toDate();
 
         double projectReturns = 0.0;
 
         // جلب بيانات returnsHistory
         final returnsHistorySnapshot = await FirebaseFirestore.instance
             .collection('investments')
-            .doc(investment.id)
+            .doc(investment.id) // استخدم معرّف هذا الاستثمار
             .collection('returnsHistory')
             .get();
 
+        // جمع العوائد لكل مستثمر من returnsHistory
         for (var returnDoc in returnsHistorySnapshot.docs) {
-          projectReturns += returnDoc['amount'] as double;
+          projectReturns = returnDoc['amount'] as double;
         }
+
         // تحديث المجموعات
         tempTotalInvestments += investmentAmount;
         tempTotalReturns += projectReturns;
@@ -64,24 +66,28 @@ class _MyInvestmentsState extends State<MyInvestments> {
             .doc(projectId)
             .get();
 
+        Map<String, dynamic> farmData = {};
         if (opportunitySnapshot.exists) {
-          final farmData = opportunitySnapshot.data()!;
-          fetchedInvestments.add({
-            'farmName': projectName,
-            'investmentAmount': investmentAmount.toStringAsFixed(2) + " ريال",
-            'actualReturns': projectReturns.toStringAsFixed(2) + " ريال", // العوائد
-            'investmentDate': investmentDate,
-            'imageUrl': farmData['imageUrl'] ?? '',
-            'region': farmData['region'] ?? 'غير متوفر',
-            'cropType': farmData['cropType'] ?? 'غير متوفر',
-            'status': farmData['status'] ?? 'غير متوفر',
-            'expectedReturns': farmData['expectedReturns'] ??'غير متوفر',
-          });
-          print(fetchedInvestments); // تحقق من القيم المرسلة
-
-
-
+          farmData = opportunitySnapshot.data()!;
         }
+
+        // إضافة البيانات المدمجة إلى القائمة النهائية
+        fetchedInvestments.add({
+          'farmName': projectName,
+          'investmentAmount': investmentAmount.toStringAsFixed(2) + " ريال",
+          'actualReturns': projectReturns.toStringAsFixed(2) + " ريال", // إجمالي العوائد
+          'investmentDate': investmentDate,
+          'expectedReturns': investment['expectedReturns'].toStringAsFixed(2) +
+              " ريال", // العائد المتوقع
+          'imageUrl': farmData['imageUrl'] ?? '',
+          'region': farmData['region'] ?? 'غير متوفر',
+          'cropType': farmData['cropType'] ?? 'غير متوفر',
+          'status': farmData['status'] ?? 'غير متوفر',
+          'opportunityDuration': farmData['opportunityDuration'] ?? 'غير متوفر',
+          'targetAmount': farmData['targetAmount'] ?? 0,
+          'currentInvestment': farmData['currentInvestment'] ?? 0,
+          'profitDeposited': farmData['profitDeposited'] ?? false,
+        });
       }
 
       setState(() {
@@ -93,6 +99,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
       print('Error fetching investments: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +341,6 @@ class _MyInvestmentsState extends State<MyInvestments> {
     }
   }
 
-  // بناء زر التفاصيل
   Widget _buildDetailsButton(Map<String, dynamic> farmData) {
     return Align(
       alignment: Alignment.centerRight,
@@ -353,7 +359,12 @@ class _MyInvestmentsState extends State<MyInvestments> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => InvestedFarmDetails(farmData: farmData),
+                builder: (context) => investedFarmDetails(
+                  imageUrl: farmData['imageUrl'] ?? 'assets/images/default.png',
+                  title: farmData['farmName'] ?? 'اسم غير متوفر',
+                  farmData: farmData,
+                  projectId: farmData['projectId'] ?? '',
+                ),
               ),
             );
           },
@@ -376,4 +387,5 @@ class _MyInvestmentsState extends State<MyInvestments> {
         ),
       ),
     );
-  } }
+  }
+  }
