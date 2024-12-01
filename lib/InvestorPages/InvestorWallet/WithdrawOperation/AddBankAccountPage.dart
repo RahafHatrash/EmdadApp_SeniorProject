@@ -1,19 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-/*class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bank Account Addition',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: AddBankAccountPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}*/
 
 class AddBankAccountPage extends StatefulWidget {
   @override
