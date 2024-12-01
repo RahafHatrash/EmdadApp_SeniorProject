@@ -234,6 +234,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
               fontWeight: FontWeight.bold,
             ),
           ),
+
         ),
       ),
     );
