@@ -344,7 +344,7 @@ class _ProjectListState extends State<ProjectList> {
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         if (index == 0) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const FarmerProfile()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Farmerprofile()));
         } else if (index == 1) {
           setState(() => _selectedBottomTabIndex = index);
         } else if (index == 2) {
