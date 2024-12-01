@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emdad_cpit499/FarmerPages/FarmAdding/adding_success.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:math'; // Import for random number generation
+import '../../InvestorPages/InvestmentProccess/InvestVerification.dart';
+import '../FarmerHome/farmerHome.dart';
 
 class AddProject extends StatefulWidget {
   const AddProject({super.key});
@@ -16,32 +18,29 @@ class _AddProjectFormScreenState extends State<AddProject> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cropTypeController = TextEditingController();
   final TextEditingController totalAreaController = TextEditingController();
-  final TextEditingController opportunityDurationController =
-      TextEditingController();
-  final TextEditingController productionRateController =
-      TextEditingController();
+  final TextEditingController opportunityDurationController = TextEditingController();
+  final TextEditingController productionRateController = TextEditingController();
   final TextEditingController targetAmountController = TextEditingController();
 
-  List<String> imagePaths = [
-    'assets/farm/1.png',
-    'assets/farm/2.png',
-    'assets/farm/3.png',
-    'assets/farm/4.png'
-  ];
-  int currentImageIndex = 0;
+  final ScrollController _scrollController = ScrollController();
+  final List<int> usedImages = []; // List to track used images
+  final Random random = Random(); // Random number generator
 
   Future<void> _addProjectToDatabase() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final projectRef = FirebaseFirestore.instance
-          .collection('investmentOpportunities')
-          .doc();
+      final projectRef = FirebaseFirestore.instance.collection('investmentOpportunities').doc();
 
-      // تحديد الصورة الحالية
-      String imagePath = imagePaths[currentImageIndex];
-      currentImageIndex = (currentImageIndex + 1) % imagePaths.length;
+      // Randomly select an image number
+      int imageNumber;
+      do {
+        imageNumber = random.nextInt(11) + 1; // Random number between 1 and 11
+      } while (usedImages.contains(imageNumber) && usedImages.length < 11);
 
-      // إضافة المشروع إلى قاعدة البيانات
+      // Add the image to the used list
+      usedImages.add(imageNumber);
+      String imagePath = 'assets/farm/$imageNumber.png';
+
       await projectRef.set({
         'id': projectRef.id,
         'projectName': projectNameController.text,
@@ -53,18 +52,16 @@ class _AddProjectFormScreenState extends State<AddProject> {
         'opportunityDuration': opportunityDurationController.text,
         'productionRate': productionRateController.text,
         'targetAmount': double.parse(targetAmountController.text),
-        'currentAmount': 0.0, // المبلغ المبدئي
+        'currentAmount': 0.0,
         'imageUrl': imagePath,
-        'profitDeposited': false,
         'status': 'تحت المعالجة',
-        'returnsDeposited': false,
+        'profitDeposited': false,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      // الانتقال إلى شاشة النجاح
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const SuccessScreen()),
+        MaterialPageRoute(builder: (context) => FarmerHomePage()),
       );
     } catch (e) {
       print('Error adding project: $e');
@@ -87,7 +84,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
               padding: const EdgeInsets.only(top: 200, left: 20, right: 20),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end, // Align children to the right
                   children: [
                     Container(
                       height: 500,
@@ -106,21 +103,16 @@ class _AddProjectFormScreenState extends State<AddProject> {
                       ),
                       child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end, // Right align
                           children: [
-                            _buildTextField(
-                                projectNameController, 'اسم المشروع'),
+                            _buildTextField(projectNameController, 'اسم المشروع'),
                             _buildTextField(regionController, 'المنطقة'),
                             _buildTextField(addressController, 'العنوان'),
                             _buildTextField(cropTypeController, 'نوع المحصول'),
-                            _buildTextField(totalAreaController,
-                                'المساحة الكلية (بالأمتار أو الهكتار)'),
-                            _buildTextField(
-                                opportunityDurationController, 'مدة الفرصة'),
-                            _buildTextField(
-                                productionRateController, 'معدل الإنتاج'),
-                            _buildTextField(targetAmountController,
-                                'المبلغ المطلوب لتحقيق الهدف'),
+                            _buildTextField(totalAreaController, 'المساحة الكلية (بالأمتار أو الهكتار)'),
+                            _buildTextField(opportunityDurationController, 'مدة الفرصة'),
+                            _buildTextField(productionRateController, 'معدل الإنتاج'),
+                            _buildTextField(targetAmountController, 'المبلغ المطلوب لتحقيق الهدف'),
                           ],
                         ),
                       ),
@@ -236,38 +228,55 @@ class _AddProjectFormScreenState extends State<AddProject> {
   }
 
   Widget _buildTextField(TextEditingController controller, String labelText) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        TextField(
-          controller: controller,
-          textAlign: TextAlign.right,
-          decoration: InputDecoration(
-            labelText: labelText,
-            labelStyle: const TextStyle(color: Color(0xFFA09E9E)),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
+    final FocusNode focusNode = FocusNode();
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        focusNode.addListener(() {
+          setState(() {});
+        });
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end, // Align text fields to the right
+          children: [
+            TextField(
+              controller: controller,
+              focusNode: focusNode,
+              textAlign: TextAlign.right,
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                fontSize: focusNode.hasFocus ? 14 : 16,
+              ),
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: TextStyle(
+                  color: focusNode.hasFocus ? Colors.grey : const Color(0xFFA09E9E),
+                ),
+                enabledBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+              ),
             ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.transparent),
+            Container(
+              height: 1,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF4B7960),
+                    Color(0xFF728F66),
+                    Color(0xFFA2AA6D),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-        Container(
-          height: 1,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF4B7960),
-                Color(0xFF728F66),
-                Color(0xFFA2AA6D),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-      ],
+            const SizedBox(height: 10),
+          ],
+        );
+      },
     );
   }
 }
