@@ -261,7 +261,7 @@ class investedFarmDetails extends StatelessWidget {
         _buildProjectDetailItem(Icons.analytics, 'الربح والخسارة', profitOrLoss),
         _buildProjectDetailItem(Icons.bar_chart, 'العائد المتوقع',
             farmData['expectedReturns'] ?? 'غير متوفر'),
-        _buildProjectDetailItem(Icons.location_city, 'مبلغ الاستثمار',
+        _buildProjectDetailItem(Icons.monetization_on, 'مبلغ الاستثمار',
             farmData['investmentAmount'] ?? 'غير متوفر'),
         _buildProjectDetailItem(Icons.trending_up, 'العائد المحقق',
 
