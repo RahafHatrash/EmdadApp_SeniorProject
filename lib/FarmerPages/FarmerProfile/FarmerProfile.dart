@@ -2,20 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../main.dart';
+import '../FarmerHome/farmerHome.dart';
 import 'CustomerServiceScreen.dart';
 import 'FAQscreen.dart';
-import 'FarmerTerms.dart';
 import 'InfoScreen.dart';
-import '../../custom_bottom_nav_bar.dart';
+import '../FarmerHome/projects_list.dart';
+import 'FarmerTerms.dart';
 
-class FarmerProfile extends StatefulWidget {
-  const FarmerProfile({super.key});
+class Farmerprofile extends StatefulWidget {
+  const Farmerprofile({super.key});
 
   @override
-  _FarmerProfileState createState() => _FarmerProfileState();
+  _FarmerprofileState createState() => _FarmerprofileState();
 }
 
-class _FarmerProfileState extends State<FarmerProfile> {
+class _FarmerprofileState extends State<Farmerprofile> {
   int _selectedTabIndex = 0; // Default selected tab index
   String userName = ''; // To store the user's name
 
@@ -58,9 +59,50 @@ class _FarmerProfileState extends State<FarmerProfile> {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.green.shade800,
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         currentIndex: _selectedTabIndex,
-        onTap: _onNavBarTapped, // Handle bottom navigation taps
+        onTap: (index) {
+          setState(() {
+            _selectedTabIndex = index;
+          });
+
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Farmerprofile()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProjectList()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FarmerHomePage()),
+            );
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'حسابي',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.nature),
+            label: 'مشاريعي الزراعية',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'الرئيسية',
+          ),
+        ],
       ),
     );
   }
@@ -241,13 +283,6 @@ class _FarmerProfileState extends State<FarmerProfile> {
     );
   }
 
-  // Handle bottom navigation bar taps
-  void _onNavBarTapped(int index) {
-    setState(() {
-      _selectedTabIndex = index;
-    });
-  }
-
   // Show language change dialog
   void _showLanguageChangeDialog(BuildContext context) {
     showDialog(
@@ -413,7 +448,7 @@ class _FarmerProfileState extends State<FarmerProfile> {
       await FirebaseAuth.instance.signOut(); // Sign out from Firebase
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
+        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your home page
             (route) => false,
       );
     } catch (e) {
@@ -441,10 +476,10 @@ class _FarmerProfileState extends State<FarmerProfile> {
       // Delete user from Firebase Auth
       await FirebaseAuth.instance.currentUser!.delete();
 
-      // Navigate to the main page after deletion
+      // Navigate to the home page after deletion
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
+        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your home page
             (route) => false,
       );
     } catch (e) {
