@@ -143,7 +143,7 @@ class investedFarmDetails extends StatelessWidget {
                 size: 16, color: Color.fromARGB(255, 160, 165, 160)),
             const SizedBox(width: 2),
             Text(
-              "saudi arabia, ${farmData['address'] ?? 'غير متوفر'}",
+              "saudi arabia, ${farmData['region'] ?? 'غير متوفر'}",
               style: TextStyle(
                 fontSize: screenWidth * 0.035,
                 color: Colors.grey,
