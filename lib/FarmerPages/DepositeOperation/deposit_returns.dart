@@ -28,7 +28,11 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF345E50), Color(0xFF49785E), Color(0xFFA8B475)],
+                colors: [
+                  Color(0xFF345E50),
+                  Color(0xFF49785E),
+                  Color(0xFFA8B475)
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -110,10 +114,12 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                         const SizedBox(height: 50),
                         _buildLabel('اختر حسابك البنكي '),
                         const SizedBox(height: 10),
-                        _buildAccountOption("SA846... البنك السعودي للاستثمار", "SA03 8000 0000 6080 1016 7519"),
+                        _buildAccountOption("SA846... البنك السعودي للاستثمار",
+                            "SA03 8000 0000 6080 1016 7519"),
                         const SizedBox(height: 10),
-                        _buildAccountOption("SA123... بنك الرياض", "SA03 8000 0000 1234 5678 9012"),
-                        const SizedBox(height: 30),  // Reduced space
+                        _buildAccountOption("SA123... بنك الرياض",
+                            "SA03 8000 0000 1234 5678 9012"),
+                        const SizedBox(height: 30), // Reduced space
                         _buildDepositButton(),
                         _buildAddAccountButton(),
                       ],
@@ -247,26 +253,30 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       // Confirmation dialog
       final confirmation = await showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('تأكيد الإيداع'),
-          content: Text('هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('إلغاء'),
+        builder: (context) =>
+            AlertDialog(
+              title: const Text('تأكيد الإيداع'),
+              content: Text(
+                  'هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('إلغاء'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('تأكيد'),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('تأكيد'),
-            ),
-          ],
-        ),
       );
 
       if (confirmation != true) return;
 
       // Update status and profitDeposited field
-      await FirebaseFirestore.instance.collection('investmentOpportunities').doc(widget.documentId).update({
+      await FirebaseFirestore.instance.collection('investmentOpportunities')
+          .doc(widget.documentId)
+          .update({
         'status': 'مكتملة',
         'totalEarnings': amount,
         'profitDeposited': true, // Set profitDeposited to true
@@ -280,7 +290,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
 
       if (investmentsSnapshot.docs.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('لا يوجد مستثمرين مرتبطين بهذا المشروع')),
+          const SnackBar(
+              content: Text('لا يوجد مستثمرين مرتبطين بهذا المشروع')),
         );
         return;
       }
@@ -288,7 +299,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       // Calculate total investments and update wallets
       final totalInvestment = investmentsSnapshot.docs.fold<double>(
         0.0,
-            (sum, doc) => sum + (doc.data()['investmentAmount'] as num).toDouble(),
+            (sum, doc) =>
+        sum + (doc.data()['investmentAmount'] as num).toDouble(),
       );
 
       final WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -296,13 +308,16 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       for (var investmentDoc in investmentsSnapshot.docs) {
         final investmentData = investmentDoc.data();
         final userId = investmentData['userId'];
-        final investmentAmount = (investmentData['investmentAmount'] as num).toDouble();
+        final investmentAmount = (investmentData['investmentAmount'] as num)
+            .toDouble();
 
         // Calculate return share
-        final double returnShare = (investmentAmount / totalInvestment) * amount;
+        final double returnShare = (investmentAmount / totalInvestment) *
+            amount;
 
         // Update investor wallet
-        final walletRef = FirebaseFirestore.instance.collection('wallets').doc(userId);
+        final walletRef = FirebaseFirestore.instance.collection('wallets').doc(
+            userId);
         batch.update(walletRef, {
           'currentBalance': FieldValue.increment(returnShare),
           'transactions': FieldValue.arrayUnion([
@@ -316,7 +331,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         });
 
         // Create return history record
-        final returnsHistoryRef = investmentDoc.reference.collection('returnsHistory').doc();
+        final returnsHistoryRef = investmentDoc.reference.collection(
+            'returnsHistory').doc();
         batch.set(returnsHistoryRef, {
           'amount': returnShare,
           'timestamp': FieldValue.serverTimestamp(),
@@ -327,7 +343,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       await batch.commit();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم إيداع العوائد وتوزيعها على المستثمرين بنجاح')),
+        const SnackBar(
+            content: Text('تم إيداع العوائد وتوزيعها على المستثمرين بنجاح')),
       );
 
       Navigator.pop(context);
@@ -357,7 +374,9 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           ),
           boxShadow: [
             BoxShadow(
-                color: Colors.black12, blurRadius: 8, offset: const Offset(0, 4))
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: const Offset(0, 4))
           ],
         ),
         child: Row(
@@ -379,7 +398,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black87)),
                   Text(accountNumber,
-                      style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                      style: const TextStyle(
+                          fontSize: 14, color: Colors.black54)),
                 ],
               ),
             ),

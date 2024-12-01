@@ -16,8 +16,10 @@ class AddingFarmSuccess extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 200), // Position the content lower on the screen
-                _buildContainer(context), // Custom container with success message and button
+                const SizedBox(height: 200),
+                // Position the content lower on the screen
+                _buildContainer(context),
+                // Custom container with success message and button
               ],
             ),
           ),

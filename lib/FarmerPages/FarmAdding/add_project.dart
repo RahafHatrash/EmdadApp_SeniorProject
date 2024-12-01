@@ -28,7 +28,8 @@ class _AddProjectFormScreenState extends State<AddProject> {
   Future<void> _addProjectToDatabase() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final projectRef = FirebaseFirestore.instance.collection('investmentOpportunities').doc();
+      final projectRef = FirebaseFirestore.instance.collection(
+          'investmentOpportunities').doc();
 
       // Randomly select an image number
       int imageNumber;
@@ -83,7 +84,8 @@ class _AddProjectFormScreenState extends State<AddProject> {
               padding: const EdgeInsets.only(top: 200, left: 20, right: 20),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end, // Align children to the right
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  // Align children to the right
                   children: [
                     Container(
                       height: 500,
@@ -102,16 +104,22 @@ class _AddProjectFormScreenState extends State<AddProject> {
                       ),
                       child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end, // Right align
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          // Right align
                           children: [
-                            _buildTextField(projectNameController, 'اسم المشروع'),
+                            _buildTextField(
+                                projectNameController, 'اسم المشروع'),
                             _buildTextField(regionController, 'المنطقة'),
                             _buildTextField(addressController, 'العنوان'),
                             _buildTextField(cropTypeController, 'نوع المحصول'),
-                            _buildTextField(totalAreaController, 'المساحة الكلية (بالأمتار أو الهكتار)'),
-                            _buildTextField(opportunityDurationController, 'مدة الفرصة'),
-                            _buildTextField(productionRateController, 'معدل الإنتاج'),
-                            _buildTextField(targetAmountController, 'المبلغ المطلوب لتحقيق الهدف'),
+                            _buildTextField(totalAreaController,
+                                'المساحة الكلية (بالأمتار أو الهكتار)'),
+                            _buildTextField(
+                                opportunityDurationController, 'مدة الفرصة'),
+                            _buildTextField(
+                                productionRateController, 'معدل الإنتاج'),
+                            _buildTextField(targetAmountController,
+                                'المبلغ المطلوب لتحقيق الهدف'),
                           ],
                         ),
                       ),
@@ -164,7 +172,6 @@ class _AddProjectFormScreenState extends State<AddProject> {
   }
 
   Widget _buildAppBar() {
-
     return ClipRRect(
 
       borderRadius: const BorderRadius.only(
@@ -236,7 +243,8 @@ class _AddProjectFormScreenState extends State<AddProject> {
         });
 
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.end, // Align text fields to the right
+          crossAxisAlignment: CrossAxisAlignment.end,
+          // Align text fields to the right
           children: [
             TextField(
               controller: controller,
@@ -249,7 +257,8 @@ class _AddProjectFormScreenState extends State<AddProject> {
               decoration: InputDecoration(
                 labelText: labelText,
                 labelStyle: TextStyle(
-                  color: focusNode.hasFocus ? Colors.grey : const Color(0xFFA09E9E),
+                  color: focusNode.hasFocus ? Colors.grey : const Color(
+                      0xFFA09E9E),
                 ),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent),
