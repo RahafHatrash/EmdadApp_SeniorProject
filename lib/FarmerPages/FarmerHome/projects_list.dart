@@ -17,8 +17,7 @@ class ProjectList extends StatefulWidget {
 class _ProjectListState extends State<ProjectList> {
   int _selectedTopTabIndex = 0; // Initial tab index
   int _selectedBottomTabIndex = 1; // Default selected bottom navigation tab
-  final String? userId =
-      FirebaseAuth.instance.currentUser?.uid; // Current user ID
+  final String? userId = FirebaseAuth.instance.currentUser?.uid; // الحصول على userId للمستخدم الحالي
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,7 @@ class _ProjectListState extends State<ProjectList> {
                           Expanded(
                             child: Scrollbar(
                               thickness: 5.0,
-                              radius: Radius.circular(20),
+                              radius: const Radius.circular(20),
                               child: SingleChildScrollView(
                                 child: _buildProjectList(),
                               ),
@@ -85,6 +84,7 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
+  // Define _buildAppBar method within _ProjectListState
   Widget _buildAppBar() {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -132,11 +132,12 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
+  // Widget to build the project list from Firestore based on user ID and status
   Widget _buildProjectList() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('investmentOpportunities')
-          .where('userId', isEqualTo: userId) // Filter by current user ID
+          .where('userId', isEqualTo: userId) // تصفية بناءً على userId
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -147,17 +148,15 @@ class _ProjectListState extends State<ProjectList> {
           return const Center(child: Text("لا يوجد لديك أي مشروع زراعي"));
         }
 
-        // Filter projects based on `returnsDeposited`
+        // Filter projects based on the selected tab and profitDeposited status
         final projects = snapshot.data!.docs.where((doc) {
           final projectData = doc.data() as Map<String, dynamic>;
-          return _selectedTopTabIndex == 0
-              ? projectData['returnsDeposited'] == false // Not completed list
-              : projectData['returnsDeposited'] == true; // Completed list
-        }).toList();
+          bool isCompleted = projectData['profitDeposited'] == true;
 
-        if (projects.isEmpty) {
-          return const Center(child: Text("لا توجد مشاريع في هذا القسم"));
-        }
+          return _selectedTopTabIndex == 0
+              ? !isCompleted // Only show projects that are not completed
+              : isCompleted; // Show completed projects
+        }).toList();
 
         return Column(
           children: projects.map((document) {
@@ -165,7 +164,7 @@ class _ProjectListState extends State<ProjectList> {
             final documentId = document.id;
 
             return _buildProjectItem(
-              imagePath: projectData['imageUrl'] ?? 'assets/images/12.png',
+              imagePath: projectData['imageUrl'] ?? 'assets/images/farm1.png',
               title: projectData['projectName'] ?? 'مشروع زراعي',
               documentId: documentId,
             );
@@ -175,12 +174,10 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
-  Widget _buildProjectItem({
-    required String imagePath,
-    required String title,
-    required String documentId,
-  }) {
-    final bool isCompletedTab = _selectedTopTabIndex == 1;
+  // Widget for each project item
+  Widget _buildProjectItem({required String imagePath, required String title, required String documentId}) {
+    // Check if the project status is 'In Process'
+    final bool isInProcess = _selectedTopTabIndex == 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -193,7 +190,7 @@ class _ProjectListState extends State<ProjectList> {
               color: Colors.grey.withOpacity(0.12),
               spreadRadius: 3,
               blurRadius: 4,
-              offset: const Offset(0, 2),
+              offset: const Offset(0, 2), // تحديد اتجاه الظل
             ),
           ],
         ),
@@ -203,8 +200,7 @@ class _ProjectListState extends State<ProjectList> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(imagePath,
-                  width: 60, height: 60, fit: BoxFit.cover),
+              child: Image.asset(imagePath, width: 60, height: 60, fit: BoxFit.cover),
             ),
             const SizedBox(width: 15.0),
             Expanded(
@@ -214,9 +210,7 @@ class _ProjectListState extends State<ProjectList> {
                   Text(
                     title,
                     style: const TextStyle(
-                        color: Color(0xFF345E50),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        color: Color(0xFF345E50), fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(height: 20.0),
@@ -228,8 +222,7 @@ class _ProjectListState extends State<ProjectList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  ProjectDetailsScreen(documentId: documentId),
+                              builder: (context) => ProjectDetailsScreen(documentId: documentId),
                             ),
                           );
                         },
@@ -239,7 +232,7 @@ class _ProjectListState extends State<ProjectList> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      if (!isCompletedTab) _buildDepositButton(documentId),
+                      if (isInProcess) _buildDepositButton(documentId), // Show the button only if in process
                     ],
                   ),
                 ],
@@ -251,6 +244,7 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
+  // Button for depositing returns
   Widget _buildDepositButton(String documentId) {
     return Container(
       width: 90,
@@ -272,8 +266,7 @@ class _ProjectListState extends State<ProjectList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  DepositReturnsScreen(documentId: documentId),
+              builder: (context) => DepositReturnsScreen(documentId: documentId),
             ),
           );
         },
@@ -287,13 +280,13 @@ class _ProjectListState extends State<ProjectList> {
         ),
         child: const Text(
           "إيداع الأرباح",
-          style: TextStyle(
-              color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
+  // Segmented control for toggling between "In Process" and "Completed" projects
   Widget _buildSegmentedControl() {
     return Container(
       padding: const EdgeInsets.all(6),
@@ -315,24 +308,21 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
+  // Tab button to switch between project states
   Widget _buildTabButton(String label, int index) {
     return GestureDetector(
       onTap: () => setState(() => _selectedTopTabIndex = index),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         decoration: BoxDecoration(
-          color: _selectedTopTabIndex == index
-              ? Colors.white54
-              : Colors.transparent,
+          color: _selectedTopTabIndex == index ? Colors.white54 : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 15,
-            color: _selectedTopTabIndex == index
-                ? Color(0xFF345E50)
-                : Colors.white,
+            color: _selectedTopTabIndex == index ? Color(0xFF345E50) : Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -340,12 +330,12 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
+  // Bottom navigation bar for different pages
   BottomNavigationBar _buildBottomNavigation() {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
+        BottomNavigationBarItem(icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
       ],
       currentIndex: _selectedBottomTabIndex,
@@ -353,21 +343,21 @@ class _ProjectListState extends State<ProjectList> {
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         if (index == 0) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Farmerprofile()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Farmerprofile()));
         } else if (index == 1) {
           setState(() => _selectedBottomTabIndex = index);
         } else if (index == 2) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const FarmerHomePage()),
-            (route) => route.isFirst,
+                (route) => route.isFirst,
           );
         }
       },
     );
   }
 
+  // Button to add a new project
   Widget _buildAddProjectButton() {
     return Padding(
       padding: const EdgeInsets.all(5.0),
