@@ -343,7 +343,7 @@ class SuccessScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets /images/correct.png',
+                    'assets/images/correct.png',
                     height: 100,
                     width: 100,
                   ),

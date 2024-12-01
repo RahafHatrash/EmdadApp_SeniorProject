@@ -103,53 +103,11 @@ class investedFarmDetails extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (farmData['status'] != 'مكتملة') _buildInvestNowButton(context),
         Expanded(child: _buildProjectTitleAndLocation(context)),
       ],
     );
   }
 
-  // Method for building the "Invest Now" button
-  Widget _buildInvestNowButton(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF345E50), Color(0xFFA8B475)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: SizedBox(
-        height: 30,
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Investoperation(
-                  projectName: farmData['projectName'],
-                  projectId: projectId,
-                ),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100),
-            ),
-          ),
-          child: const Text(
-            'استثمر الآن',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-    );
-  }
 
   // Method for building project title and location
   Widget _buildProjectTitleAndLocation(BuildContext context) {
@@ -216,7 +174,6 @@ class investedFarmDetails extends StatelessWidget {
       ),
     );
   }
-// Method for building project details grid
   Widget _buildProjectDetailsGrid(BuildContext context) {
     double targetAmount = farmData['targetAmount'] ?? 0.0;
     double currentInvestment = farmData['currentInvestment'] ?? 0.0;
@@ -230,9 +187,10 @@ class investedFarmDetails extends StatelessWidget {
         farmData['actualReturns']?.toString().replaceAll(RegExp(r'[^0-9.]'), '') ?? '0') ??
         0.0;
 
+    // الربح أو الخسارة الافتراضية
     String profitOrLoss = 'غير متوفر';
 
-    if (investmentAmount > 0) {
+    if (investmentAmount > 0 && actualReturns > 0.0) {
       if (actualReturns > investmentAmount) {
         // حساب نسبة الربح
         double profitPercentage = ((actualReturns - investmentAmount) / investmentAmount) * 100;
@@ -240,13 +198,14 @@ class investedFarmDetails extends StatelessWidget {
       } else if (actualReturns < investmentAmount) {
         // حساب نسبة الخسارة
         double lossPercentage = ((investmentAmount - actualReturns) / investmentAmount) * 100;
-        profitOrLoss = 'خسارة: ${lossPercentage.toStringAsFixed(2)}%';
+        profitOrLoss = '- ${lossPercentage.toStringAsFixed(2)}%';
       } else {
         profitOrLoss = 'لا ربح ولا خسارة';
       }
-    } else {
-      print('القيم غير صحيحة: investmentAmount=$investmentAmount, actualReturns=$actualReturns');
     }
+
+    // عرض النص "بإنتظار الايداع" إذا كانت العوائد المحققة تساوي 0
+    String actualReturnsText = actualReturns == 0.0 ? 'بإنتظار الايداع' : '${actualReturns.toStringAsFixed(2)} رس';
 
     return GridView.count(
       crossAxisCount: 3,
@@ -258,16 +217,15 @@ class investedFarmDetails extends StatelessWidget {
       children: [
         _buildProjectDetailItem(Icons.timer, 'مدة الفرصة',
             farmData['opportunityDuration'] ?? 'غير متوفر'),
-        _buildProjectDetailItem(Icons.analytics, 'الربح والخسارة', profitOrLoss),
+        _buildProjectDetailItem(Icons.analytics, 'الربح والخسارة', actualReturns == 0.0 ? 'غير متوفر' : profitOrLoss),
         _buildProjectDetailItem(Icons.bar_chart, 'العائد المتوقع',
             farmData['expectedReturns'] ?? 'غير متوفر'),
         _buildProjectDetailItem(Icons.monetization_on, 'مبلغ الاستثمار',
-            farmData['investmentAmount'] ?? 'غير متوفر'),
+            farmData['investmentAmount'] ?? 'بانتظار الايداع'),
         _buildProjectDetailItem(Icons.trending_up, 'العائد المحقق',
-
-            farmData['actualReturns'] ?? 'بإنتظار الايداع'),
+            actualReturnsText),
         _buildProjectDetailItem(Icons.money, 'المبلغ المتبقي',
-            '${remainingAmount.toStringAsFixed(2)} ريال'),
+            '${remainingAmount.toStringAsFixed(2)} رس'),
       ],
     );
   }
@@ -366,8 +324,9 @@ class ProjectDetailItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12.0),
-      margin: const EdgeInsets.all(3.0),
+      padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12.0),
+      margin: const EdgeInsets.all(0.7),
+
       decoration: BoxDecoration(
         color: Colors.green.shade50, // اللون الأخضر الفاتح
         borderRadius: BorderRadius.circular(15),
@@ -384,7 +343,7 @@ class ProjectDetailItem extends StatelessWidget {
               color: Color.fromARGB(255, 57, 98, 32), // لون النص الأول
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 12),
           Text(
             value,
             style: const TextStyle(

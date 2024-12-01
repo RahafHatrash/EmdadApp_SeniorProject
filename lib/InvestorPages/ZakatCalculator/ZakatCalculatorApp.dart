@@ -68,17 +68,11 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
 
         if (walletDoc.exists) {
           investmentWalletBalance = walletDoc.data()?['currentBalance'] ?? 0.0;
-          walletDepositDate = (walletDoc.data()?['depositDate'] as Timestamp?)
-              ?.toDate(); // Fetch deposit date
         }
       }
 
-      final currentDate = DateTime.now();
-      final isOneYear = walletDepositDate != null &&
-          currentDate.difference(walletDepositDate!).inDays >= 365;
-
       setState(() {
-        if (!isOneYear || investmentWalletBalance < nisab) {
+        if (investmentWalletBalance < nisab) {
           _walletError = true;
           _zakatAmount = 0.0;
         } else {

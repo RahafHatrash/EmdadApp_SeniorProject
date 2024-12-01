@@ -267,6 +267,14 @@ class _MyInvestmentsState extends State<MyInvestments> {
 
   // بناء عنصر استثمار واحد
   Widget _buildInvestmentOption({required Map<String, dynamic> farmData}) {
+    // إزالة النصوص غير الرقمية وتحويل القيم
+    double actualReturns = double.tryParse(
+        farmData['actualReturns']?.toString().replaceAll(RegExp(r'[^0-9.]'), '') ?? '0') ??
+        0.0;
+
+    // نص العوائد المحققة
+    String actualReturnsText = actualReturns == 0.0 ? 'بإنتظار ايداع الارباح' : '${farmData['actualReturns']}';
+
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       color: Colors.white,
@@ -293,15 +301,13 @@ class _MyInvestmentsState extends State<MyInvestments> {
                       color: Color(0xFF345E50),
                     ),
                   ),
-
-
                   Text(
                     'المبلغ المستثمر: ${farmData['investmentAmount']}',
                     textAlign: TextAlign.right,
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   Text(
-                    'العوائد الفعلية: ${farmData['actualReturns']}',
+                    'العوائد المحققة: $actualReturnsText',
                     textAlign: TextAlign.right,
                     style: const TextStyle(fontSize: 14, color: Colors.green),
                   ),
