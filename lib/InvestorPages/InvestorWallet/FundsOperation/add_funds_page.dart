@@ -24,7 +24,7 @@ class _AddFundsPageState extends State<AddFundsPage> {
       }
 
       final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      FirebaseFirestore.instance.collection('wallets').doc(userId);
       final timestamp = FieldValue.serverTimestamp();
 
       await walletDoc.update({
@@ -58,10 +58,22 @@ class _AddFundsPageState extends State<AddFundsPage> {
     final amountText = _amountController.text;
     final amount = double.tryParse(amountText);
 
+    // Check if the amount is valid
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('يرجى إدخال مبلغ الشحن'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Check if an account is selected
+    if (selectedAccount == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يرجى اختيار حساب بنكي'),
           backgroundColor: Colors.red,
         ),
       );
@@ -208,7 +220,7 @@ class _AddFundsPageState extends State<AddFundsPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            'اختر حسابك',
+                            'اختر حسابك البنكي',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -258,20 +270,20 @@ class _AddFundsPageState extends State<AddFundsPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Center(  // Centering the text
+                        Center(
                           child: GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AddBankAccountPage(), // انتقال إلى صفحة AddFundsPage
+                                  builder: (context) => AddBankAccountPage(),
                                 ),
                               );
                             },
                             child: const Text(
                               'أضف حساب جديد +',
                               style: TextStyle(
-                                color: Colors.blueAccent, // لون النص
-                                fontSize: 13, // حجم النص
+                                color: Colors.blueAccent,
+                                fontSize: 13,
                               ),
                               textAlign: TextAlign.center,
                             ),

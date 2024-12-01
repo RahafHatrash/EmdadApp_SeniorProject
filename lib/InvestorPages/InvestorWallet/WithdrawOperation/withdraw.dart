@@ -86,7 +86,6 @@ class _WithdrawPageState extends State<WithdrawPage> {
             ),
           ),
         ),
-
         TextField(
           controller: controller,
           keyboardType: TextInputType.number,
@@ -123,10 +122,22 @@ class _WithdrawPageState extends State<WithdrawPage> {
     final amountText = _withdrawAmountController.text;
     final amount = double.tryParse(amountText);
 
+    // Check if the amount is valid
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('يرجى إدخال مبلغ للسحب'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Check if an account is selected
+    if (selectedAccount == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يرجى اختيار حساب بنكي'),
           backgroundColor: Colors.red,
         ),
       );
@@ -149,7 +160,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.36, // Adjusted height
+                  height: MediaQuery.of(context).size.height * 0.36,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -163,7 +174,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 85), // Add padding if needed
+                      SizedBox(height: 85),
                       Text(
                         'سحب من المحفظة',
                         style: TextStyle(
@@ -172,7 +183,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 4), // Reduced space
+                      SizedBox(height: 4),
                       Text(
                         'اختر الحساب البنكي وأدخل المبلغ الذي تريد سحبه',
                         style: TextStyle(fontSize: 15, color: Colors.white70),
@@ -186,7 +197,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
             ],
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.23, // Adjusted position
+            top: MediaQuery.of(context).size.height * 0.23,
             left: 16,
             right: 16,
             child: Container(
@@ -208,7 +219,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'اختر حسابك',
+                      'اختر حسابك البنكي',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -236,7 +247,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                             _handleWithdrawButton(context);
                           },
                           child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5, // Adjust width as needed
+                            width: MediaQuery.of(context).size.width * 0.5,
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
