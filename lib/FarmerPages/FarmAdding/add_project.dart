@@ -173,7 +173,9 @@ class _AddProjectFormScreenState extends State<AddProject> {
   }
 
   Widget _buildAppBar() {
+
     return ClipRRect(
+
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(20),
         bottomRight: Radius.circular(20),
