@@ -8,7 +8,7 @@ class FarmDetails extends StatelessWidget {
   final Map<String, dynamic> farmData;
   final String projectId;
 
-  FarmDetails({
+  const FarmDetails({super.key, 
     required this.imageUrl,
     required this.title,
     required this.farmData,
@@ -144,7 +144,7 @@ class FarmDetails extends StatelessWidget {
           ),
           child: const Text(
             'استثمر الآن',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontSize: 15),
           ),
         ),
       ),
@@ -163,15 +163,15 @@ class FarmDetails extends StatelessWidget {
             if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == true)
               _buildStatusBadge(Colors.green, 'مكتملة'),
             if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == false)
-              _buildStatusBadge(Color(0xffa1ad71), 'مكتملة'),
+              _buildStatusBadge(const Color(0xffa1ad71), 'مكتملة'),
             const SizedBox(width: 10),
             Flexible(
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: screenWidth * 0.06,
+                  fontSize: screenWidth * 0.08,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF345E50),
+                  color: const Color(0xFF5B8263),
                 ),
                 textAlign: TextAlign.right,
               ),
@@ -187,7 +187,7 @@ class FarmDetails extends StatelessWidget {
             Text(
               "saudi arabia, ${farmData['address'] ?? 'غير متوفر'}",
               style: TextStyle(
-                fontSize: screenWidth * 0.035,
+                fontSize: screenWidth * 0.033,
                 color: Colors.grey,
               ),
               textAlign: TextAlign.right,
@@ -268,7 +268,7 @@ class FarmDetails extends StatelessWidget {
           Text(
             'نسبة التمويل',
             style: TextStyle(
-              fontSize: screenWidth * 0.045,
+              fontSize: screenWidth * 0.05,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF5B8263),
             ),
@@ -304,7 +304,7 @@ class FarmDetails extends StatelessWidget {
           Text(
             '(مقدار التمويل الذي تم جمعه مقارنة بالهدف الإجمالي للمشروع)',
             style: TextStyle(
-              fontSize: screenWidth * 0.035,
+              fontSize: screenWidth * 0.03,
               color: Colors.grey,
             ),
           ),
@@ -330,11 +330,11 @@ class ProjectDetailItem extends StatelessWidget {
   final String value;
 
   const ProjectDetailItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

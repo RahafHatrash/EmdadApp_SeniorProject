@@ -4,6 +4,8 @@ import '../../custom_bottom_nav_bar.dart';
 import 'FarmDetails.dart';
 
 class AllInvestments extends StatefulWidget {
+  const AllInvestments({super.key});
+
   @override
   _AllInvestmentsState createState() => _AllInvestmentsState();
 }
@@ -11,7 +13,7 @@ class AllInvestments extends StatefulWidget {
 class _AllInvestmentsState extends State<AllInvestments> {
   int currentPage = 0;
   final int itemsPerPage = 5;
-  int _selectedTab = 0; // 0 = Completed, 1 = Incomplete
+  int _selectedTab = 1; // 0 = Completed, 1 = Incomplete
 
   List<Map<String, dynamic>> completedInvestments = [];
   List<Map<String, dynamic>> incompleteInvestments = [];
@@ -77,11 +79,11 @@ class _AllInvestmentsState extends State<AllInvestments> {
       children: [
         _buildAppBar(),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.22,
+          top: MediaQuery.of(context).size.height * 0.24,
           left: 0,
           right: 0,
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(40),
@@ -101,14 +103,14 @@ class _AllInvestmentsState extends State<AllInvestments> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.32),
               Expanded(child: _buildInvestmentList()),
               _buildPaginationControls(),
             ],
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.22,
+          top: MediaQuery.of(context).size.height * 0.25,
           left: 0,
           right: 0,
           child: Center(child: _buildSegmentedControl()),
@@ -144,24 +146,24 @@ class _AllInvestmentsState extends State<AllInvestments> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Center(
+        child: const Center(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
+            padding: EdgeInsets.only(top: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 Text(
                   'الفرص الاستثمارية',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'يمكنك هنا متابعة جميع الفرص الاستثمارية، ومراجعة التفاصيل\n المتعلقة بها.',
-                  style: TextStyle(fontSize: 15, color: Colors.white70),
+                  ',يمكنك هنا متابعة جميع الفرص الاستثمارية\n.ومراجعة التفاصيل المتعلقة بها',
+                  style: TextStyle(fontSize: 12, color: Colors.white70),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -213,7 +215,7 @@ class _AllInvestmentsState extends State<AllInvestments> {
         child: Text(
           title,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 14,
             color: _selectedTab == index
                 ? const Color.fromARGB(221, 255, 255, 255)
                 : Colors.white,
@@ -330,7 +332,7 @@ class _AllInvestmentsState extends State<AllInvestments> {
                         'التفاصيل',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 14,
+                          fontSize: 8,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -364,7 +366,7 @@ class _AllInvestmentsState extends State<AllInvestments> {
           ),
         Text(
           '${currentPage + 1} / $totalPages',
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 12),
         ),
         if (currentPage < totalPages - 1)
           IconButton(

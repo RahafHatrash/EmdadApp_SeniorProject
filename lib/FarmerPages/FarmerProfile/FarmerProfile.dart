@@ -46,12 +46,12 @@ class _FarmerprofileState extends State<Farmerprofile> {
         children: [
           _buildHeader(), // Profile header with user info
           Padding(
-            padding: const EdgeInsets.only(top: 250, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 265, left: 20, right: 20),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   _buildProfileSettings(), // Profile settings section
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   _buildLogoutButton(), // Logout button
                 ],
               ),
@@ -270,13 +270,14 @@ class _FarmerprofileState extends State<Farmerprofile> {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
+
         child: const Text(
           "تسجيل الخروج",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 15,
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontFamily: 'Markazi Text',
+            fontFamily: 'Markazi Text'
           ),
         ),
       ),
@@ -344,10 +345,11 @@ class _FarmerprofileState extends State<Farmerprofile> {
                 const Text(
                   "هل أنت متأكد من تسجيل الخروج؟",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF4B7960),
                   ),
+                  textAlign: TextAlign.right,
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -435,7 +437,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
           text,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 14, // Adjust font size as needed
+            fontSize: 12, // Adjust font size as needed
           ),
         ),
       ),
@@ -454,7 +456,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
     } catch (e) {
       print('Error signing out: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('فشل تسجيل الخروج. حاول مرة أخرى.'),
           backgroundColor: Colors.red,
         ),
@@ -485,7 +487,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
     } catch (e) {
       print('Error deleting account: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('فشل حذف الحساب. حاول مرة أخرى.'),
           backgroundColor: Colors.red,
         ),
@@ -518,7 +520,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
 
       // Delete user-related investment opportunities
       QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore.instance
-          .collection('investmentOpportunity')
+          .collection('investmentOpportunities')
           .where('userId', isEqualTo: userId)
           .get();
 
@@ -528,7 +530,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
     } catch (e) {
       print('Error deleting related data: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('فشل حذف البيانات المرتبطة. حاول مرة أخرى.'),
           backgroundColor: Colors.red,
         ),

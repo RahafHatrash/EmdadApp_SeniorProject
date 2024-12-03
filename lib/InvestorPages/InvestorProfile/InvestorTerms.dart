@@ -48,7 +48,7 @@ class investorTerms extends StatelessWidget {
                   ),
                   // Title "الشروط والأحكام" centered in the header
                   const Positioned(
-                    top: 60,
+                    top: 80,
                     left: 0,
                     right: 0,
                     child: Center(
@@ -70,7 +70,7 @@ class investorTerms extends StatelessWidget {
           // Main content section with terms and conditions
           Padding(
             padding: const EdgeInsets.only(
-                top: 130), // Positioning content below the header
+                top: 150), // Positioning content below the header
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -97,7 +97,7 @@ class investorTerms extends StatelessWidget {
                         // Introduction to terms and conditions
                         const Text(
                           'عزيزي المستثمر، إمداد هي منصة إلكترونية تهدف إلى جمع أموال مجموعة من المستثمرين "عملاء المنصة" لغرض تمويل صناديق الاستثمار الزراعية المرخصة... لاستكمال عملية التسجيل يتطلب موافقتك على الشروط والأحكام جميعاً، وهي كالتالي:',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.right,
                         ),
                         const SizedBox(height: 20),
@@ -183,7 +183,7 @@ class investorTerms extends StatelessWidget {
         for (var item in content) ...[
           Text(
             item,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 15),
             textAlign: TextAlign.right,
             textDirection:
                 TextDirection.rtl, // Align text to the right for numbers

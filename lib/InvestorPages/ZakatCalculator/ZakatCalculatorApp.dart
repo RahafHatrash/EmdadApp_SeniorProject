@@ -3,21 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../custom_bottom_nav_bar.dart';
 
-class ZakatCalculatorApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Zakat Calculator',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: ZakatCalculatorPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
 class ZakatCalculatorPage extends StatefulWidget {
+  const ZakatCalculatorPage({super.key});
+
   @override
   _ZakatCalculatorPageState createState() => _ZakatCalculatorPageState();
 }
@@ -115,19 +103,19 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Stack(
+        child: const Stack(
           children: [
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 150.0),
+                padding: EdgeInsets.only(bottom: 130.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text(
                       'حاسبة الزكاة',
                       style: TextStyle(
-                        fontSize: 32,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -135,7 +123,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
                     SizedBox(height: 5),
                     Text(
                       'احسب زكاتك على أموالك المستثمرة بسهولة \n وفقاً للضوابط الشرعية',
-                      style: TextStyle(fontSize: 15, color: Colors.white70),
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -198,7 +186,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
   Widget _buildWalletSelector() {
     return Container(
       padding: const EdgeInsets.all(6),
-      margin: const EdgeInsets.symmetric(vertical: 30),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF345E50), Color(0xFFA8B475)],
@@ -227,7 +215,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
               child: Text(
                 'رصيد المحفظة',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   color: !_manualInput ? Colors.white : Colors.white70,
                   fontWeight: FontWeight.bold,
                 ),
@@ -241,7 +229,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
               });
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
               decoration: BoxDecoration(
                 color: _manualInput
                     ? const Color.fromARGB(92, 255, 255, 255)
@@ -251,7 +239,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
               child: Text(
                 'إدخال المبلغ يدوياً',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 15,
                   color: _manualInput ? Colors.white : Colors.white70,
                   fontWeight: FontWeight.bold,
                 ),
@@ -297,15 +285,15 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Align(
+                              const Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
                                   'أدخل المبلغ الذي ترغب بحساب الزكاة عليه',
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     color:
-                                        const Color.fromARGB(216, 53, 94, 79),
-                                    fontWeight: FontWeight.w700,
+                                        Color.fromARGB(216, 53, 94, 79),
+                                    fontWeight: FontWeight.w800,
                                   ),
                                   textAlign: TextAlign.right,
                                 ),
@@ -315,11 +303,11 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
                             ],
                           ),
                         if (!_manualInput)
-                          Text(
+                          const Text(
                             'سيتم حساب الزكاة بناءً على رصيد المحفظة الاستثماري',
                             style: TextStyle(
                               fontSize: 18,
-                              color: const Color.fromARGB(216, 53, 94, 79),
+                              color: Color.fromARGB(216, 53, 94, 79),
                               fontWeight: FontWeight.w700,
                             ),
                             textAlign: TextAlign.center,
@@ -363,7 +351,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
                         const SizedBox(height: 10),
                         const Text(
                           'الزكاة هي 2.5% من المبلغ الذي يبلغ النصاب وحال عليه الحول، ويُعتبر النصاب ما يعادل 1749.3 ريال سعودي.',
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.center,
                         ),
                       ],

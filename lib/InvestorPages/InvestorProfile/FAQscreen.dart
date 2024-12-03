@@ -36,7 +36,7 @@ class FAQscreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: 150,
+              height: 170,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -68,7 +68,7 @@ class FAQscreen extends StatelessWidget {
                   ),
                   // Centered title "الأسئلة الشائعة"
                   const Positioned(
-                    top: 70,
+                    top: 80,
                     left: 0,
                     right: 0,
                     child: Center(
@@ -89,7 +89,7 @@ class FAQscreen extends StatelessWidget {
           ),
           // FAQ content with questions and expandable answers below the header
           Positioned.fill(
-            top: 110,
+            top: 150,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: ListView.builder(
@@ -100,17 +100,19 @@ class FAQscreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
+                    color: const Color(0xFFF9FAF6), // Set the card color to match the background
                     elevation: 3,
                     child: ExpansionTile(
                       // Display each question as the title
                       title: Text(
                         questions[index],
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF4B7960),
                           fontFamily: 'Markazi Text',
                         ),
+                        textAlign: TextAlign.right,
                       ),
                       // Display the corresponding answer when expanded
                       children: [
@@ -119,10 +121,12 @@ class FAQscreen extends StatelessWidget {
                           child: Text(
                             answers[index],
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 12,
                               color: Colors.black87,
                               fontFamily: 'Markazi Text',
                             ),
+                            textAlign: TextAlign.right,
+
                           ),
                         ),
                       ],

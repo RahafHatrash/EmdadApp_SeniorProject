@@ -142,9 +142,9 @@ class CustomerServiceScreen extends StatelessWidget {
                         const SizedBox(width: 8),
                         // Send button with gradient background
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               colors: [
                                 Color(0xFF4B7960),
                                 Color(0xFF728F66),

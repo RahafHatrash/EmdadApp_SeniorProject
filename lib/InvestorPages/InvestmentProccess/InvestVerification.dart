@@ -5,6 +5,8 @@ import '../InvestorHome/InvestorHome.dart';
 
 // Main class for OTP verification screen
 class InvestVerification extends StatelessWidget {
+  const InvestVerification({super.key});
+
   // Method to handle OTP verification
   void _verifyOtp(BuildContext context) {
     // Navigate to loading screen
@@ -12,7 +14,7 @@ class InvestVerification extends StatelessWidget {
         .push(MaterialPageRoute(builder: (context) => LoadingScreen()));
 
     // Simulate a delay for OTP verification
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       bool isInvestmentSuccessful =
       true; // Modify based on actual verification logic
 
@@ -36,14 +38,14 @@ class InvestVerification extends StatelessWidget {
           Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF345E50),
@@ -70,32 +72,32 @@ class InvestVerification extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
-                  Text(
+                  const SizedBox(height: 70),
+                  const Text(
                     'عملية التحقق',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'لإكمال عملية الدفع، يرجى إدخال الرمز التفعيلي المرسل\nعن طريق رقم الجوال الخاص بك.',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: Colors.white70,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   // OTP entry container
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 8,
@@ -106,29 +108,31 @@ class InvestVerification extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'التحقق من رقم الجوال',
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold,
+                            color: Color(0xFF5B8263),
+                          ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
+                        const SizedBox(height: 10),
+                        const Text(
                           'تم إرسال رمز تفعيلي إلى رقم الجوال الخاص بك',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // OTP input fields
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: List.generate(4, (index) {
                             return Container(
-                              width: 50,
-                              height: 50,
+                              width: 60,
+                              height: 60,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: Colors.grey[200],
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: TextField(
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -145,14 +149,14 @@ class InvestVerification extends StatelessWidget {
                             );
                           }),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 40),
                         // Verify button
                         GestureDetector(
                           onTap: () => _verifyOtp(context),
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                             decoration: BoxDecoration(
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [
                                   Color(0xFF345E50),
                                   Color(0xFFA8B475),
@@ -162,7 +166,7 @@ class InvestVerification extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 'تحقق',
                                 style: TextStyle(
@@ -173,17 +177,18 @@ class InvestVerification extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         // Resend OTP button
                         TextButton(
                           onPressed: () {
                             // Add resend OTP logic here
                           },
-                          child: Text(
+                          child: const Text(
                             'أعد إرسال الرمز',
                             style: TextStyle(
                               color: Color(0xFF4B7960),
                               fontWeight: FontWeight.bold,
+                              fontSize: 13
                             ),
                           ),
                         ),
@@ -202,6 +207,8 @@ class InvestVerification extends StatelessWidget {
 
 // Loading screen displayed during OTP verification
 class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,14 +218,14 @@ class LoadingScreen extends StatelessWidget {
           Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF345E50),
@@ -247,7 +254,7 @@ class LoadingScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -259,12 +266,12 @@ class LoadingScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(
+                  const CircularProgressIndicator(
                     valueColor:
                     AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
                     strokeWidth: 6.0,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'جار التحقق من عملية الاستثمار يرجى الانتظار لحظات قليلة',
                     style: TextStyle(
@@ -285,6 +292,8 @@ class LoadingScreen extends StatelessWidget {
 
 // Success screen displayed after successful investment
 class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -294,14 +303,14 @@ class SuccessScreen extends StatelessWidget {
           Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF345E50),
@@ -330,7 +339,7 @@ class SuccessScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -347,20 +356,20 @@ class SuccessScreen extends StatelessWidget {
                     height: 100,
                     width: 100,
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'عملية استثمار ناجحة',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'تم الاستثمار بنجاح، وسيتم إيداع أرباح الفرصة في محفظتك الأستثمارية قريباً. نشكركم على ثقتكم بنا.',
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   // Home button
                   GestureDetector(
                     onTap: () {
@@ -370,9 +379,9 @@ class SuccessScreen extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             Color(0xFF345E50),
                             Color(0xFFA8B475),
@@ -382,7 +391,7 @@ class SuccessScreen extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'العودة للصفحة الرئيسية',
                           style: TextStyle(
@@ -405,6 +414,8 @@ class SuccessScreen extends StatelessWidget {
 
 // Failure screen displayed after unsuccessful investment
 class FailureScreen extends StatelessWidget {
+  const FailureScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -414,14 +425,14 @@ class FailureScreen extends StatelessWidget {
           Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.4,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF345E50),
@@ -450,7 +461,7 @@ class FailureScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -467,29 +478,29 @@ class FailureScreen extends StatelessWidget {
                     height: 100,
                     width: 100,
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'فشلت عملية الاستثمار',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'حدث خطأ أثناء عملية الدفع. يرجى المحاولة مرة أخرى أو التواصل مع الدعم الفني للمساعدة.',
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   // Home button
                   GestureDetector(
                     onTap: () {
                       Navigator.popUntil(context, (route) => route.isFirst);
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             Color(0xFF345E50),
                             Color(0xFFA8B475),
@@ -499,7 +510,7 @@ class FailureScreen extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'العودة للصفحة الرئيسية',
                           style: TextStyle(
@@ -510,7 +521,7 @@ class FailureScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // Retry button
                   GestureDetector(
                     onTap: () {
@@ -520,9 +531,9 @@ class FailureScreen extends StatelessWidget {
                       ); // Navigate back to retry
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             Color(0xFF345E50),
                             Color(0xFFA8B475),
@@ -532,7 +543,7 @@ class FailureScreen extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'حاول مرة أخرى',
                           style: TextStyle(

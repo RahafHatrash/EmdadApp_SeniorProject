@@ -14,7 +14,8 @@ class ProjectDetailsScreen extends StatefulWidget {
 }
 
 class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
-  int _selectedBottomTabIndex = 1; // Default selected tab (Agricultural Projects)
+  int _selectedBottomTabIndex =
+      1; // Default selected tab (Agricultural Projects)
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return const Center(child: Text('لم يتم العثور على بيانات المشروع.'));
+                  return const Center(
+                      child: Text('لم يتم العثور على بيانات المشروع.'));
                 }
                 var projectData = snapshot.data!.data() as Map<String, dynamic>;
                 return ProjectDetails(projectData: projectData);
@@ -50,9 +52,11 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   // Bottom navigation bar with three tabs
   BottomNavigationBar _buildBottomNavigation() {
     return BottomNavigationBar(
+      backgroundColor: const Color(0xFFF8F9F8),
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
-        BottomNavigationBarItem(icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
       ],
       currentIndex: _selectedBottomTabIndex,
@@ -60,15 +64,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         if (index == 0) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Farmerprofile()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Farmerprofile()));
         } else if (index == 1) {
           setState(() => _selectedBottomTabIndex = index);
         } else if (index == 2) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const FarmerHomePage()),
-                (route) => route.isFirst,
+            (route) => route.isFirst,
           );
         }
       },
@@ -79,7 +83,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 class ProjectDetails extends StatelessWidget {
   final Map<String, dynamic> projectData;
 
-  const ProjectDetails({required this.projectData});
+  const ProjectDetails({super.key, required this.projectData});
 
   @override
   Widget build(BuildContext context) {
@@ -104,14 +108,16 @@ class ProjectDetails extends StatelessWidget {
           top: 50,
           right: 10,
           child: IconButton(
-            icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
+            icon:
+                const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 270.0),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 290.0),
           child: _buildDetailsContainer(context),
         ),
       ],
@@ -157,20 +163,21 @@ class ProjectDetails extends StatelessWidget {
             Text(
               projectData['projectName'] ?? 'مشروع زراعي',
               style: TextStyle(
-                fontSize: screenWidth * 0.06,
+                fontSize: screenWidth * 0.08,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF345E50),
+                color: const Color(0xFF5B8263),
               ),
               textAlign: TextAlign.right,
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                const Icon(Icons.location_on, size: 15, color: Colors.grey),
                 const SizedBox(width: 2),
                 Text(
-                  "saudi arabia, "+ projectData['region'] ?? 'غير معروف',
-                  style: TextStyle(fontSize: screenWidth * 0.035, color: Colors.grey),
+                  "saudi arabia, " + projectData['region'] ?? 'غير معروف',
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.03, color: Colors.grey),
                   textAlign: TextAlign.right,
                 ),
               ],
@@ -203,7 +210,7 @@ class ProjectDetails extends StatelessWidget {
           ProjectDetailItem(
               icon: Icons.production_quantity_limits,
               title: 'معدل الإنتاج',
-              value: projectData['productionRate']+"٪" ?? 'غير محدد'),
+              value: projectData['productionRate'] + "٪" ?? 'غير محدد'),
           ProjectDetailItem(
               icon: Icons.bar_chart,
               title: 'المبلغ المتبقي',
@@ -211,7 +218,7 @@ class ProjectDetails extends StatelessWidget {
           ProjectDetailItem(
               icon: Icons.grain,
               title: 'المساحة الكلية',
-              value: projectData['totalArea']+"متر" ?? 'غير محدد'),
+              value: projectData['totalArea'] + "متر" ?? 'غير محدد'),
           ProjectDetailItem(
               icon: Icons.grain,
               title: 'حالة الفرصة',
@@ -220,8 +227,6 @@ class ProjectDetails extends StatelessWidget {
               icon: Icons.grain,
               title: 'مدة الفرصة',
               value: projectData['opportunityDuration'] ?? 'غير محدد'),
-
-
         ],
       ),
     );
@@ -238,7 +243,7 @@ class ProjectDetails extends StatelessWidget {
         Text(
           'نسبة التمويل',
           style: TextStyle(
-            fontSize: screenWidth * 0.045,
+            fontSize: screenWidth * 0.05,
             fontWeight: FontWeight.bold,
             color: const Color(0xFF5B8263),
           ),
@@ -253,7 +258,7 @@ class ProjectDetails extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'المبلغ المستثمر: ${currentInvestment.toStringAsFixed(2)} ر.س من اصل ${targetAmount.toStringAsFixed(2)} ر.س',
-          style: TextStyle(fontSize: screenWidth * 0.035, color: Colors.grey),
+          style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey),
         ),
       ],
     );
@@ -266,11 +271,11 @@ class ProjectDetailItem extends StatelessWidget {
   final String value;
 
   const ProjectDetailItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +294,7 @@ class ProjectDetailItem extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 13,
               color: Color.fromARGB(255, 57, 98, 32),
             ),
           ),
@@ -307,4 +312,3 @@ class ProjectDetailItem extends StatelessWidget {
     );
   }
 }
-

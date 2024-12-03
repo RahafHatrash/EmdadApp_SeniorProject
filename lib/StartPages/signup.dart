@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emdad_cpit499/StartPages/phoneVerification.dart';
+import 'package:emdad_cpit499/StartPages/Loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'Loginpage.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -44,13 +43,141 @@ class _SignScreenState extends State<SignScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAF9),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF9FAF9),
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                Image.asset('assets/images/Logo1.png', height: 70),
+                const SizedBox(height: 15),
+                Image.asset('assets/images/Logo2.png', height: 50),
+                const SizedBox(height: 30),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Center(
+                      child: Container(
+                        width: 360,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(33),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                  colors: [
+                                    Color(0xFF4B7960),
+                                    Color(0xFF728F66),
+                                    Color(0xFFA2AA6D),
+                                  ],
+                                ).createShader(
+                                  Rect.fromLTWH(
+                                      0.0, 0.0, bounds.width, bounds.height),
+                                ),
+                                child: const Text(
+                                  'حساب جديد',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontFamily: 'Markazi Text',
+                                  ),
+                                ),
+                              ),
+                              buildInputField(
+                                controller: _nameController,
+                                label: 'الاسم الأول والأخير',
+                                icon: Icons.person,
+                              ),
+                              buildGradientLine(),
+                              buildInputField(
+                                controller: _emailController,
+                                label: 'البريد الإلكتروني',
+                                icon: Icons.email,
+                              ),
+                              buildGradientLine(),
+                              buildInputField(
+                                controller: _phoneController,
+                                label: 'رقم الجوال',
+                                icon: Icons.phone,
+                              ),
+                              buildGradientLine(),
+                              buildInputField(
+                                controller: _passwordController,
+                                label: 'كلمة المرور',
+                                icon: Icons.lock,
+                                isPassword: true,
+                              ),
+                              buildGradientLine(),
+                              buildInputField(
+                                controller: _confirmPasswordController,
+                                label: 'تأكيد كلمة المرور',
+                                icon: Icons.lock_outline,
+                                isPassword: true,
+                              ),
+                              buildGradientLine(),
+                              SizedBox(
+                                height: 60,
+                                child: DropdownButtonFormField<String>(
+                                  decoration: const InputDecoration(
+                                    labelText: 'هل أنت مزارع أم مستثمر؟',
+                                    alignLabelWithHint: true,
+                                    border: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                  ),
+                                  value: _selectedRole,
+                                  items: _roles.map((String role) {
+                                    return DropdownMenuItem<String>(
+                                      value: role,
+                                      child: Text(role,
+                                          textAlign: TextAlign.right,
+                                          style: const TextStyle(
+                                              fontFamily: 'Markazi Text')),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectedRole = newValue;
+                                    });
+                                  },
+                                  style: const TextStyle(
+                                      color: Color(0xFF4B7960),
+                                      fontFamily: 'Markazi Text'),
+                                ),
+                              ),
+                              const SizedBox(height: 1),
+                              buildGradientLine(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 60,
+            right: 20,
             child: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -62,146 +189,8 @@ class _SignScreenState extends State<SignScreen> {
               ),
             ),
           ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/bg2.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 170),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    width: 350,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(33),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (bounds) => const LinearGradient(
-                              colors: [
-                                Color(0xFF4B7960),
-                                Color(0xFF728F66),
-                                Color(0xFFA2AA6D),
-                              ],
-                            ).createShader(
-                              Rect.fromLTWH(
-                                  0.0, 0.0, bounds.width, bounds.height),
-                            ),
-                            child: const Text(
-                              'حساب جديد',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontFamily: 'Markazi Text',
-                              ),
-                            ),
-                          ),
-                          buildInputField(
-                            controller: _nameController,
-                            label: 'الاسم الأول والأخير',
-                            icon: Icons.person,
-                          ),
-                          buildGradientLine(),
-                          buildInputField(
-                            controller: _emailController,
-                            label: 'البريد الإلكتروني',
-                            icon: Icons.email,
-                          ),
-                          buildGradientLine(),
-                          buildInputField(
-                            controller: _phoneController,
-                            label: 'رقم الجوال',
-                            icon: Icons.phone,
-                          ),
-                          buildGradientLine(),
-                          buildInputField(
-                            controller: _passwordController,
-                            label: 'كلمة المرور',
-                            icon: Icons.lock,
-                            isPassword: true,
-                          ),
-                          buildGradientLine(),
-                          buildInputField(
-                            controller: _confirmPasswordController,
-                            label: 'تأكيد كلمة المرور',
-                            icon: Icons.lock_outline,
-                            isPassword: true,
-                          ),
-                          buildGradientLine(),
-                          SizedBox(
-                            height: 50,
-                            child: DropdownButtonFormField<String>(
-                              decoration: const InputDecoration(
-                                labelText: 'هل أنت مزارع أم مستثمر؟',
-                                alignLabelWithHint: true,
-                                border: UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                              ),
-                              value: _selectedRole,
-                              items: _roles.map((String role) {
-                                return DropdownMenuItem<String>(
-                                  value: role,
-                                  child: Text(role,
-                                      textAlign: TextAlign.right,
-                                      style: const TextStyle(
-                                          fontFamily: 'Markazi Text')),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  _selectedRole = newValue;
-                                });
-                              },
-                              style: const TextStyle(
-                                  color: Color(0xFF4B7960),
-                                  fontFamily: 'Markazi Text'),
-                            ),
-                          ),
-                          const SizedBox(height: 1),
-                          buildGradientLine(),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
           Positioned(
-            bottom: 30,
+            bottom: 50,
             left: 0,
             right: 0,
             child: Center(
@@ -223,7 +212,6 @@ class _SignScreenState extends State<SignScreen> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_validateInputs()) {
-                          // Inside the onPressed method where you create the user
                           try {
                             UserCredential userCredential = await FirebaseAuth
                                 .instance
@@ -234,7 +222,6 @@ class _SignScreenState extends State<SignScreen> {
 
                             String userId = userCredential.user!.uid;
 
-                            // Navigate to PhoneVerification with user data
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -296,7 +283,7 @@ class _SignScreenState extends State<SignScreen> {
                       'يوجد لديك حساب؟ تسجيل الدخول',
                       style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.normal,
                         fontFamily: 'Markazi Text',
                       ),
@@ -317,32 +304,43 @@ class _SignScreenState extends State<SignScreen> {
     String confirmPassword = _confirmPasswordController.text.trim();
     String phone = _phoneController.text.trim();
 
+    // Check for Arabic characters in email
+    if (email.contains(RegExp(r'[\u0600-\u06FF]'))) {
+      _showAlert('يرجى إدخال بريد إلكتروني صحيح (لا يسمح بالعربية)');
+      return false;
+    }
+
+    // Validate email format
     if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       _showAlert('يرجى إدخال بريد إلكتروني صحيح');
       return false;
     }
 
+    // Validate phone number
     if (phone.isEmpty || phone.length < 10) {
       _showAlert('يرجى إدخال رقم جوال صحيح');
       return false;
     }
 
+    // Validate password
     if (password.isEmpty || password.length < 6) {
       _showAlert('يجب أن تتكون كلمة المرور من 6 أحرف على الأقل');
       return false;
     }
 
+    // Validate password confirmation
     if (password != confirmPassword) {
       _showAlert('كلمة المرور وتأكيد كلمة المرور غير متطابقتين');
       return false;
     }
 
+    // Validate user role selection
     if (_selectedRole == null) {
       _showAlert('يرجى اختيار نوع المستخدم');
       return false;
     }
 
-    return true;
+    return true; // All validations passed
   }
 
   void _showAlert(String message) {
@@ -389,7 +387,10 @@ class _SignScreenState extends State<SignScreen> {
                   const UnderlineInputBorder(borderSide: BorderSide.none),
             ),
             cursorColor: const Color(0xFF4B7960),
-            style: const TextStyle(fontFamily: 'Markazi Text'),
+            style: const TextStyle(
+              fontFamily: 'Markazi Text',
+              fontSize: 14,
+            ),
           ),
         ),
         const SizedBox(width: 1),

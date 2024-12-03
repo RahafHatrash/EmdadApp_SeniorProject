@@ -1,0 +1,639 @@
+@startuml
+set namespaceSeparator ::
+
+left to right direction
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::AddBankAccountFarmer" {
+  +_AddBankAccountFarmerState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::AddBankAccountFarmer"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::_AddBankAccountFarmerState" {
+  -TextEditingController _ibanController
+  -TextEditingController _accountHolderController
+  -TextEditingController _bankNameController
+  -void _processAccountAddition()
+  -Widget _buildStyledTextField()
+  +Widget build()
+}
+
+"emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::_AddBankAccountFarmerState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::_AddBankAccountFarmerState"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::LoadingScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::LoadingScreen"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::SuccessScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::SuccessScreen"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::GradientButton" {
+  +String text
+  +void Function() onPressed
+  +Widget build()
+}
+
+"emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::GradientButton" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::AddBankAccountFarmer.dart::GradientButton"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::deposit_returns.dart::DepositReturnsScreen" {
+  +String documentId
+  +_DepositReturnsScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::deposit_returns.dart::DepositReturnsScreen"
+
+class "emdad_cpit499::FarmerPages::DepositeOperation::deposit_returns.dart::_DepositReturnsScreenState" {
+  +TextEditingController amountController
+  +String? selectedAccount
+  +Widget build()
+  -Widget _buildLabel()
+  -Widget _buildAmountInput()
+  -Widget _buildDivider()
+  -Widget _buildDepositButton()
+  -Widget _buildAddAccountButton()
+  -dynamic _depositReturns()
+  -Widget _buildAccountOption()
+}
+
+"emdad_cpit499::FarmerPages::DepositeOperation::deposit_returns.dart::_DepositReturnsScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::DepositeOperation::deposit_returns.dart::_DepositReturnsScreenState"
+
+
+class "emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::AddProject" {
+  +_AddProjectFormScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::AddProject"
+
+class "emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::_AddProjectFormScreenState" {
+  +TextEditingController projectNameController
+  +TextEditingController regionController
+  +TextEditingController addressController
+  +TextEditingController cropTypeController
+  +TextEditingController totalAreaController
+  +TextEditingController opportunityDurationController
+  +TextEditingController productionRateController
+  +TextEditingController targetAmountController
+  -ScrollController _scrollController
+  +List<int> usedImages
+  +Random random
+  -dynamic _addProjectToDatabase()
+  +Widget build()
+  -Widget _buildAppBar()
+  -Widget _buildTextField()
+}
+
+"emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::_AddProjectFormScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::_AddProjectFormScreenState" o-- "flutter::src::widgets::scroll_controller.dart::ScrollController"
+"emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::_AddProjectFormScreenState" o-- "dart::math::Random"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::FarmAdding::add_project.dart::_AddProjectFormScreenState"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::FarmerHomePage" {
+  +_FarmerHomePageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::FarmerHomePage"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::_FarmerHomePageState" {
+  -int _selectedTabIndex
+  -PageController _pageController
+  -int _currentPage
+  +String userId
+  +List<Map<String, String>> farmCards
+  +void initState()
+  -Stream<int> _getTotalProjectsCount()
+  -Stream<int> _getCompletedProjectsCount()
+  -Stream<int> _getInProcessProjectsCount()
+  +Widget build()
+  +Widget buildFarmCard()
+}
+
+"emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::_FarmerHomePageState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::_FarmerHomePageState"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::ProjectDetailItem" {
+  +IconData icon
+  +String title
+  +String value
+  +Widget build()
+}
+
+"emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::ProjectDetailItem" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::farmerHome.dart::ProjectDetailItem"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetailsScreen" {
+  +String documentId
+  +_ProjectDetailsScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetailsScreen"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::_ProjectDetailsScreenState" {
+  -int _selectedBottomTabIndex
+  +Widget build()
+  -BottomNavigationBar _buildBottomNavigation()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::_ProjectDetailsScreenState"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetails" {
+  +Map<String, dynamic> projectData
+  +Widget build()
+  -Widget _buildDetailsContainer()
+  -Widget _buildHeader()
+  -Widget _buildProjectDetailsGrid()
+  -Widget _buildFundingInformation()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetails"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetailItem" {
+  +IconData icon
+  +String title
+  +String value
+  +Widget build()
+}
+
+"emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetailItem" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projectDetails.dart::ProjectDetailItem"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projects_list.dart::ProjectList" {
+  +_ProjectListState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projects_list.dart::ProjectList"
+
+class "emdad_cpit499::FarmerPages::FarmerHome::projects_list.dart::_ProjectListState" {
+  -int _selectedTopTabIndex
+  -int _selectedBottomTabIndex
+  +String? userId
+  +Widget build()
+  -Widget _buildAppBar()
+  -Widget _buildProjectList()
+  -Widget _buildProjectItem()
+  -Widget _buildDepositButton()
+  -Widget _buildSegmentedControl()
+  -Widget _buildTabButton()
+  -Widget _buildAddProjectButton()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::FarmerHome::projects_list.dart::_ProjectListState"
+
+
+class "emdad_cpit499::FarmerPages::FarmerProfile::FarmerProfile.dart::Farmerprofile" {
+  +_FarmerprofileState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::FarmerPages::FarmerProfile::FarmerProfile.dart::Farmerprofile"
+
+class "emdad_cpit499::FarmerPages::FarmerProfile::FarmerProfile.dart::_FarmerprofileState" {
+  -int _selectedTabIndex
+  +String userName
+  +void initState()
+  -dynamic _fetchUserName()
+  +Widget build()
+  -Widget _buildHeader()
+  -Widget _buildProfileSettings()
+  +Widget buildSettingsItem()
+  -Widget _buildLogoutButton()
+  -void _showLogoutConfirmationDialog()
+  -void _showDeleteAccountConfirmationDialog()
+  -Widget _buildConfirmationButton()
+  -dynamic _logoutUser()
+  -dynamic _deleteUserAccount()
+  -dynamic _deleteRelatedData()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::FarmerPages::FarmerProfile::FarmerProfile.dart::_FarmerprofileState"
+
+
+
+
+class "emdad_cpit499::InvestorPages::InvestmentProccess::InvestOperation.dart::Investoperation" {
+  +String projectName
+  +String projectId
+  +State<StatefulWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestmentProccess::InvestOperation.dart::Investoperation"
+
+class "emdad_cpit499::InvestorPages::InvestmentProccess::InvestOperation.dart::_InvestmentPageState" {
+  {static} +double unitPrice
+  +int unitCount
+  +double walletBalance
+  +String userId
+  +double totalInvestment
+  +void initState()
+  -dynamic _fetchWalletBalance()
+  -dynamic _fetchProjectDetails()
+  -dynamic _processInvestment()
+  -void _showSuccessMessage()
+  -void _showFailureMessage()
+  +Widget build()
+  -Widget _buildAppBar()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestmentProccess::InvestOperation.dart::_InvestmentPageState"
+
+
+class "emdad_cpit499::InvestorPages::InvestorHome::Allinvestments.dart::AllInvestments" {
+  +_AllInvestmentsState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::Allinvestments.dart::AllInvestments"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::Allinvestments.dart::_AllInvestmentsState" {
+  +int currentPage
+  +int itemsPerPage
+  -int _selectedTab
+  +List<Map<String, dynamic>> completedInvestments
+  +List<Map<String, dynamic>> incompleteInvestments
+  -dynamic _investmentsFuture
+  +void initState()
+  -dynamic _fetchInvestments()
+  +Widget build()
+  -Widget _buildContent()
+  -Widget _buildAppBar()
+  -Widget _buildSegmentedControl()
+  -Widget _buildTab()
+  -Widget _buildInvestmentList()
+  -Widget _buildInvestmentOption()
+  -Widget _buildPaginationControls()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorHome::Allinvestments.dart::_AllInvestmentsState"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::FarmDetails.dart::FarmDetails" {
+  +String imageUrl
+  +String title
+  +Map<String, dynamic> farmData
+  +String projectId
+  +Widget build()
+  -Widget _buildTopImageWithOverlay()
+  -Widget _buildMainDetailsContainer()
+  -Widget _buildTitleAndButton()
+  -Widget _buildInvestNowButton()
+  -Widget _buildProjectTitleAndLocation()
+  -Widget _buildStatusBadge()
+  -Widget _buildProjectDetailsGrid()
+  -Widget _buildProjectDetailItem()
+  -Widget _buildFundingProgressSection()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::FarmDetails.dart::FarmDetails"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::FarmDetails.dart::ProjectDetailItem" {
+  +IconData icon
+  +String title
+  +String value
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorHome::FarmDetails.dart::ProjectDetailItem" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::FarmDetails.dart::ProjectDetailItem"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::investedFarmDetails.dart::investedFarmDetails" {
+  +String imageUrl
+  +String title
+  +Map<String, dynamic> farmData
+  +String projectId
+  +Widget build()
+  -Widget _buildTopImageWithOverlay()
+  -Widget _buildMainDetailsContainer()
+  -Widget _buildTitleAndButton()
+  -Widget _buildProjectTitleAndLocation()
+  -Widget _buildStatusBadge()
+  -Widget _buildProjectDetailsGrid()
+  -Widget _buildProjectDetailItem()
+  -Widget _buildFundingProgressSection()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::investedFarmDetails.dart::investedFarmDetails"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::investedFarmDetails.dart::ProjectDetailItem" {
+  +IconData icon
+  +String title
+  +String value
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorHome::investedFarmDetails.dart::ProjectDetailItem" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::investedFarmDetails.dart::ProjectDetailItem"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::InvestorHome" {
+  +_InvestorHomeState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::InvestorHome"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::_InvestorHomeState" {
+  -int _currentPage
+  -PageController _pageController
+  +dynamic fetchTopCompletedInvestments()
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::_InvestorHomeState" o-- "flutter::src::widgets::page_view.dart::PageController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::_InvestorHomeState"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::InvestmentCard" {
+  +String imageUrl
+  +String title
+  +String status
+  +String duration
+  +String returnRate
+  +String coverage
+  +void Function() onDetailsPressed
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::InvestmentCard" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::InvestmentCard"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::_InvestmentStat" {
+  +String title
+  +String value
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::InvestorHome.dart::_InvestmentStat"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::Myinvestments.dart::MyInvestments" {
+  +_MyInvestmentsState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorHome::Myinvestments.dart::MyInvestments"
+
+class "emdad_cpit499::InvestorPages::InvestorHome::Myinvestments.dart::_MyInvestmentsState" {
+  +String? userId
+  +List<Map<String, dynamic>> investments
+  +double totalReturns
+  +double totalInvestments
+  +void initState()
+  -dynamic _fetchInvestments()
+  +Widget build()
+  -Widget _buildAppBar()
+  -Widget _buildInvestmentContainer()
+  -Widget _buildSummaryCards()
+  -Widget _buildSummaryCard()
+  -Widget _buildInvestmentList()
+  -Widget _buildInvestmentOption()
+  -Widget _buildImage()
+  -Widget _buildDetailsButton()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorHome::Myinvestments.dart::_MyInvestmentsState"
+
+
+class "emdad_cpit499::InvestorPages::InvestorProfile::InvestorProfile.dart::InvestorProfile" {
+  +_InvestorProfileState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorProfile::InvestorProfile.dart::InvestorProfile"
+
+class "emdad_cpit499::InvestorPages::InvestorProfile::InvestorProfile.dart::_InvestorProfileState" {
+  -int _selectedTabIndex
+  +String userName
+  +void initState()
+  -dynamic _fetchUserName()
+  +Widget build()
+  -Widget _buildHeader()
+  -Widget _buildProfileSettings()
+  +Widget buildSettingsItem()
+  -Widget _buildLogoutButton()
+  -void _onNavBarTapped()
+  -void _showLogoutConfirmationDialog()
+  -void _showDeleteAccountConfirmationDialog()
+  -Widget _buildConfirmationButton()
+  -dynamic _logoutUser()
+  -dynamic _deleteUserAccount()
+  -dynamic _deleteRelatedData()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorProfile::InvestorProfile.dart::_InvestorProfileState"
+
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::AddBankAccountPage" {
+  +_AddBankAccountPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::AddBankAccountPage"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::_AddBankAccountPageState" {
+  -TextEditingController _ibanController
+  -TextEditingController _accountHolderController
+  -TextEditingController _bankNameController
+  -void _processAccountAddition()
+  -Widget _buildStyledTextField()
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::_AddBankAccountPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::_AddBankAccountPageState"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::LoadingScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::LoadingScreen"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::SuccessScreen" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::SuccessScreen"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::GradientButton" {
+  +String text
+  +void Function() onPressed
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::GradientButton" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::AddBankAccountPage.dart::GradientButton"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::FundsOperation::add_funds_page.dart::AddFundsPage" {
+  +_AddFundsPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::FundsOperation::add_funds_page.dart::AddFundsPage"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::FundsOperation::add_funds_page.dart::_AddFundsPageState" {
+  -TextEditingController _amountController
+  +String? selectedAccount
+  +dynamic addFundsToWallet()
+  -void _showSuccessMessage()
+  -void _handleNextButton()
+  -Widget _buildStyledTextField()
+  +Widget build()
+  -Widget _buildAccountOption()
+}
+
+"emdad_cpit499::InvestorPages::InvestorWallet::FundsOperation::add_funds_page.dart::_AddFundsPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::FundsOperation::add_funds_page.dart::_AddFundsPageState"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::WalletPage.dart::WalletPage" {
+  +_WalletPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::WalletPage.dart::WalletPage"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::WalletPage.dart::_WalletPageState" {
+  +String? userId
+  +void initState()
+  +dynamic createWalletIfNotExists()
+  +Stream<DocumentSnapshot<Map<String, dynamic>>> getWalletDetails()
+  +Widget build()
+  -Widget _buildHeader()
+  -Widget _buildTransactionList()
+  -Widget _buildButton()
+  -void _navigateToAddFundsPage()
+  -void _navigateToWithdrawPage()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::WalletPage.dart::_WalletPageState"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::wallet_service.dart::WalletService" {
+  -FirebaseFirestore _firestore
+  +dynamic createWalletIfNotExists()
+  +dynamic updateWallet()
+  +Stream<DocumentSnapshot<Map<String, dynamic>>> getWalletDetails()
+}
+
+"emdad_cpit499::InvestorPages::InvestorWallet::wallet_service.dart::WalletService" o-- "cloud_firestore::cloud_firestore.dart::FirebaseFirestore"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::WithdrawOperation::withdraw.dart::WithdrawPage" {
+  +_WithdrawPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::WithdrawOperation::withdraw.dart::WithdrawPage"
+
+class "emdad_cpit499::InvestorPages::InvestorWallet::WithdrawOperation::withdraw.dart::_WithdrawPageState" {
+  -TextEditingController _withdrawAmountController
+  +String? selectedAccount
+  +dynamic withdrawFundsFromWallet()
+  -Widget _buildStyledTextField()
+  -void _handleWithdrawButton()
+  +Widget build()
+  -Widget _buildAccountOption()
+}
+
+"emdad_cpit499::InvestorPages::InvestorWallet::WithdrawOperation::withdraw.dart::_WithdrawPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::InvestorWallet::WithdrawOperation::withdraw.dart::_WithdrawPageState"
+
+class "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::ZakatCalculatorApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::ZakatCalculatorApp"
+
+class "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::ZakatCalculatorPage" {
+  +_ZakatCalculatorPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::ZakatCalculatorPage"
+
+class "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::_ZakatCalculatorPageState" {
+  -TextEditingController _amountController
+  -double _zakatAmount
+  -bool _manualInput
+  +double nisab
+  +double investmentWalletBalance
+  +DateTime? walletDepositDate
+  -bool _showError
+  -bool _walletError
+  -int _currentIndex
+  -void _calculateZakat()
+  -void _calculateManualZakat()
+  -dynamic _calculateWalletZakat()
+  -void _onNavBarTapped()
+  -Widget _buildAppBar()
+  -Widget _buildStyledTextField()
+  -Widget _buildWalletSelector()
+  +Widget build()
+}
+
+"emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::_ZakatCalculatorPageState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::InvestorPages::ZakatCalculator::ZakatCalculatorApp.dart::_ZakatCalculatorPageState"
+
+class "emdad_cpit499::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::main.dart::MyApp"
+
+class "emdad_cpit499::main.dart::StartPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::main.dart::StartPage"
+
+
+class "emdad_cpit499::StartPages::Loginpage.dart::LoginPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::StartPages::Loginpage.dart::LoginPage"
+
+class "emdad_cpit499::StartPages::Loginpage.dart::SignScreen" {
+  +_LoginScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::StartPages::Loginpage.dart::SignScreen"
+
+class "emdad_cpit499::StartPages::Loginpage.dart::_LoginScreenState" {
+  -TextEditingController _emailController
+  -TextEditingController _passwordController
+  -String? _errorMessage
+  +void initState()
+  -dynamic _signInWithRole()
+  +Widget build()
+  +Widget buildInputField()
+  +Widget buildGradientLine()
+}
+
+"emdad_cpit499::StartPages::Loginpage.dart::_LoginScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::StartPages::Loginpage.dart::_LoginScreenState"
+
+
+
+class "emdad_cpit499::StartPages::signup.dart::SignupPage" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "emdad_cpit499::StartPages::signup.dart::SignupPage"
+
+class "emdad_cpit499::StartPages::signup.dart::SignScreen" {
+  +_SignScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "emdad_cpit499::StartPages::signup.dart::SignScreen"
+
+class "emdad_cpit499::StartPages::signup.dart::_SignScreenState" {
+  -String? _selectedRole
+  -List<String> _roles
+  -TextEditingController _nameController
+  -TextEditingController _emailController
+  -TextEditingController _phoneController
+  -TextEditingController _passwordController
+  -TextEditingController _confirmPasswordController
+  +void initState()
+  +Widget build()
+  -bool _validateInputs()
+  -void _showAlert()
+  +Widget buildInputField()
+  +Widget buildGradientLine()
+}
+
+"emdad_cpit499::StartPages::signup.dart::_SignScreenState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "emdad_cpit499::StartPages::signup.dart::_SignScreenState"
+
+
+@enduml

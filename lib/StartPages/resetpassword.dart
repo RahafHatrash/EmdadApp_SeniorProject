@@ -127,226 +127,230 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFF9FAF9),
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(
-                Icons.arrow_forward,
-                color: Colors.black,
-                size: 30,
+      body: Stack(
+        children: [
+          // Background color
+          Container(
+            color: Colors.white, // Set background color to white
+          ),
+          // Main content
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0), // Adjust padding for logos
+                child: Column(
+                  children: [
+                    // Back arrow
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15, top: 5),
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.black,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Add logos at the top
+                    Image.asset('assets/images/Logo1.png', height: 70),
+                    const SizedBox(height: 15), // Space between logos
+                    Image.asset('assets/images/Logo2.png', height: 50),
+                    const SizedBox(height: 50), // Space below logos
+                    Container(
+                      width: 352,
+                      height: 350,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(33),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 5,
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ShaderMask(
+                              shaderCallback: (bounds) => const LinearGradient(
+                                colors: [
+                                  Color(0xFF4B7960),
+                                  Color(0xFF728F66),
+                                  Color(0xFFA2AA6D),
+                                ],
+                              ).createShader(
+                                Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                              ),
+                              child: const Text(
+                                'كلمة المرور الجديدة',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontFamily: 'Markazi Text',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox(
+                                width: 300,
+                                child: TextFormField(
+                                  controller: _newPasswordController,
+                                  obscureText: true,
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(
+                                    fontFamily: 'Markazi Text',
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: 'ادخل كلمة المرور الجديدة',
+                                    labelStyle: TextStyle(
+                                      fontFamily: 'Markazi Text',
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: Icon(Icons.lock,
+                                        color: Color(0xFF4B7960)),
+                                    border: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 1),
+                            Container(
+                              height: 1,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF4B7960),
+                                    Color(0xFF728F66),
+                                    Color(0xFFA2AA6D),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox(
+                                width: 300,
+                                child: TextFormField(
+                                  controller: _confirmPasswordController,
+                                  obscureText: true,
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(
+                                    fontFamily: 'Markazi Text',
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: 'تأكيد كلمة المرور',
+                                    labelStyle: TextStyle(
+                                      fontFamily: 'Markazi Text',
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                    ),
+                                    suffixIcon: Icon(Icons.lock,
+                                        color: Color(0xFF4B7960)),
+                                    border: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide.none),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 1),
+                            Container(
+                              height: 1,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0xFF4B7960),
+                                    Color(0xFF728F66),
+                                    Color(0xFFA2AA6D),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Container(
+                      height: 35,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF4B7960),
+                            Color(0xFF728F66),
+                            Color(0xFFA2AA6D),
+                          ],
+                        ),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _resetPassword, // Disable button if loading
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          backgroundColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          shadowColor: Colors.transparent,
+                        ),
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                            : const Text(
+                          'إعادة تعيين',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Markazi Text',
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (errorMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          errorMessage!,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        height: MediaQuery.of(context).size.height - 140,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets /images/bg2.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 150.0),
-            child: Column(
-              children: [
-                Container(
-                  width: 352,
-                  height: 270,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(33),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (bounds) => const LinearGradient(
-                            colors: [
-                              Color(0xFF4B7960),
-                              Color(0xFF728F66),
-                              Color(0xFFA2AA6D),
-                            ],
-                          ).createShader(
-                            Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-                          ),
-                          child: const Text(
-                            'كلمة المرور الجديدة',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontFamily: 'Markazi Text',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: _newPasswordController,
-                              obscureText: true,
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                fontFamily: 'Markazi Text',
-                              ),
-                              decoration: InputDecoration(
-                                labelText: 'ادخل كلمة المرور الجديدة',
-                                labelStyle: const TextStyle(
-                                  fontFamily: 'Markazi Text',
-                                  color: Colors.grey,
-                                ),
-                                suffixIcon: const Icon(Icons.lock,
-                                    color: Color(0xFF4B7960)),
-                                border: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                enabledBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 1),
-                        Container(
-                          height: 1,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFF4B7960),
-                                Color(0xFF728F66),
-                                Color(0xFFA2AA6D),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            width: 300,
-                            child: TextFormField(
-                              controller: _confirmPasswordController,
-                              obscureText: true,
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(
-                                fontFamily: 'Markazi Text',
-                              ),
-                              decoration: InputDecoration(
-                                labelText: 'تأكيد كلمة المرور',
-                                labelStyle: const TextStyle(
-                                  fontFamily: 'Markazi Text',
-                                  color: Colors.grey,
-                                ),
-                                suffixIcon: const Icon(Icons.lock,
-                                    color: Color(0xFF4B7960)),
-                                border: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                enabledBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                focusedBorder: const UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 1),
-                        Container(
-                          height: 1,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFF4B7960),
-                                Color(0xFF728F66),
-                                Color(0xFFA2AA6D),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                Container(
-                  height: 35,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.0),
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color(0xFF4B7960),
-                        Color(0xFF728F66),
-                        Color(0xFFA2AA6D),
-                      ],
-                    ),
-                  ),
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _resetPassword, // Disable button if loading
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      backgroundColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      shadowColor: Colors.transparent,
-                    ),
-                    child: _isLoading
-                        ? const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                        : const Text(
-                      'إعادة تعيين',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Markazi Text',
-                      ),
-                    ),
-                  ),
-                ),
-                if (errorMessage != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Text(
-                      errorMessage!,
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

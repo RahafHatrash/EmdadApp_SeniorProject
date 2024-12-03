@@ -48,14 +48,14 @@ class InfoScreen extends StatelessWidget {
                   ),
                   // Title "عن إمداد" centered in the header
                   const Positioned(
-                    top: 60,
+                    top: 80,
                     left: 0,
                     right: 0,
                     child: Center(
                       child: Text(
                         'عن إمداد',
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 35,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Markazi Text',
@@ -70,14 +70,14 @@ class InfoScreen extends StatelessWidget {
           // Main content area below the header
           Padding(
             padding: const EdgeInsets.only(
-                top: 150), // Positions content below the header
+                top: 180), // Positions content below the header
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   // White container with detailed information about إمداد
                   Container(
-                    height: 500, // Increased height for a larger content area
+                    height: 300, // Increased height for a larger content area
                     padding: const EdgeInsets.all(24.0),
                     margin: const EdgeInsets.symmetric(horizontal: 16.0),
                     decoration: BoxDecoration(
@@ -96,28 +96,19 @@ class InfoScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         // Section title
-                        Text(
-                          'عن إمداد',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF4B7960),
-                            fontFamily: 'Markazi Text',
-                          ),
-                          textAlign: TextAlign.right,
-                        ),
+
                         SizedBox(height: 10),
                         // First paragraph
                         Text(
                           'إمداد هي منصة تقدم خدمات متنوعة في مجالات الاستثمار والتطوير الزراعي، بهدف تمكين المستثمرين من المشاركة في الفرص الزراعية بطريقة مبتكرة وآمنة.',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.right,
                         ),
                         SizedBox(height: 10),
                         // Second paragraph
                         Text(
                           'من خلال إمداد، يمكنك الحصول على معلومات مفصلة حول المشاريع، وحالتها، وأداءها الدوري، كما نقدم خدمات لدعم المستثمرين وتوفير الأدوات اللازمة لاتخاذ قرارات استثمارية مستنيرة.',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.right,
                         ),
                       ],

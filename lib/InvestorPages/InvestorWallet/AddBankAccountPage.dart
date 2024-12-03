@@ -18,6 +18,8 @@ import 'WalletPage.dart';
 }*/
 
 class AddBankAccountPage extends StatefulWidget {
+  const AddBankAccountPage({super.key});
+
   @override
   _AddBankAccountPageState createState() => _AddBankAccountPageState();
 }
@@ -34,7 +36,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         _bankNameController.text.isEmpty) {
       // Show an error message if any field is empty
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('يرجى ملء جميع الحقول المطلوبة.'),
         ),
       );
@@ -46,7 +48,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       MaterialPageRoute(builder: (context) => LoadingScreen()),
     );
 
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       bool additionSuccess = DateTime.now().second % 2 == 0;
       Navigator.pushReplacement(
         context,
@@ -62,12 +64,12 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         TextField(
           controller: controller,
           decoration: InputDecoration(
             hintText: labelText,
-            hintStyle: const TextStyle(color: Color(0xFFA09E9E)),
+            hintStyle: const TextStyle(color: Color(0xFFA09E9E),fontSize: 14),
             border: InputBorder.none,
           ),
           style: const TextStyle(color: Color(0xFFA09E9E)),
@@ -86,7 +88,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
             ),
           ),
         ),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
       ],
     );
   }
@@ -99,7 +101,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
           buildBackgroundWithAppBar(
             context,
             'إضافة حساب بنكي',
-            'لإضافة حساب بنكي جديد، يرجى إدخال المعلومات المطلوبة أدناه',
+            'لإضافة حساب بنكي جديد، يرجى إدخال المعلومات\n المطلوبة أدناه',
           ),
           Positioned.fill(
             child: Padding(
@@ -107,13 +109,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 200),
+                  const SizedBox(height: 230),
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 8,
@@ -127,7 +129,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                         _buildStyledTextField('رقم الآيبان', _ibanController),
                         _buildStyledTextField('اسم العميل المطابق للحساب البنكي', _accountHolderController),
                         _buildStyledTextField('اسم البنك', _bankNameController),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         Center( // Centering the button
                           child: GradientButton(
                             text: 'إضافة الحساب',
@@ -151,14 +153,14 @@ Widget buildBackgroundWithAppBar(BuildContext context, String title, String subt
   return Column(
     children: [
       ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
         ),
         child: Container(
-          height: 320,
+          height: 350,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Color(0xFF345E50),
@@ -170,8 +172,8 @@ Widget buildBackgroundWithAppBar(BuildContext context, String title, String subt
           child: Stack(
             children: [
               Positioned(
-                top: 50,
-                right: 15,
+                top: 60,
+                right: 20,
                 child: IconButton(
                   icon: const Icon(
                     Icons.arrow_forward,
@@ -186,22 +188,22 @@ Widget buildBackgroundWithAppBar(BuildContext context, String title, String subt
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 140.0),
+                  padding: const EdgeInsets.only(bottom: 160.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 32,
+                        style: const TextStyle(
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         subtitle,
-                        style: TextStyle(fontSize: 15, color: Colors.white70),
+                        style: const TextStyle(fontSize: 14, color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -222,6 +224,8 @@ Widget buildBackgroundWithAppBar(BuildContext context, String title, String subt
 }
 
 class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -241,7 +245,7 @@ class LoadingScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -253,11 +257,11 @@ class LoadingScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(
+                  const CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
                     strokeWidth: 6.0,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     'يرجى الانتظار لحظات قليلة',
                     style: TextStyle(
@@ -277,6 +281,8 @@ class LoadingScreen extends StatelessWidget {
 }
 
 class SuccessScreen extends StatelessWidget {
+  const SuccessScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -296,7 +302,7 @@ class SuccessScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -309,8 +315,8 @@ class SuccessScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/correct.png', height: 100, width: 100),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'تمت إضافة الحساب بنجاح',
                     style: TextStyle(
                       fontSize: 20,
@@ -318,13 +324,13 @@ class SuccessScreen extends StatelessWidget {
                       color: Color(0xFF335D4F),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   GradientButton(
                     text: "العودة للصفحة الرئيسية",
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => WalletPage()), // Replace with your actual wallet page widget
+                        MaterialPageRoute(builder: (context) => const WalletPage()), // Replace with your actual wallet page widget
                             (route) => false, // Removes all the previous routes
                       );
                     },
@@ -344,7 +350,7 @@ class GradientButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  GradientButton({required this.text, required this.onPressed});
+  const GradientButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -352,9 +358,9 @@ class GradientButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.5,
-        padding: EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [Color(0xFF335D4F), Color(0xFFA8B475)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -364,9 +370,9 @@ class GradientButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),

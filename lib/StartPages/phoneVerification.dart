@@ -10,13 +10,13 @@ class PhoneVerification extends StatefulWidget {
   final String userType;
 
   const PhoneVerification({
-    Key? key,
+    super.key,
     required this.userId,
     required this.name,
     required this.email,
     required this.phone,
     required this.userType,
-  }) : super(key: key);
+  });
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -84,43 +84,27 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         backgroundColor: const Color(0xFFF9FAF9),
         elevation: 0,
         automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(
-                Icons.arrow_forward,
-                color: Colors.black,
-                size: 30,
-              ),
-            ),
-          ),
+        actions: const [
+          // Removed the previous back button from the AppBar
         ],
       ),
       resizeToAvoidBottomInset: false,
-      body: Container(
-        height: MediaQuery.of(context).size.height - 140,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg2.png'),
-            fit: BoxFit.cover
-          ),
-        ),
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 150.0),
-                child: Column(
-                  children: [
-                    Container(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 1.0),
+              child: Column(
+                children: [
+                  Image.asset('assets/images/Logo1.png', height: 70),
+                  const SizedBox(height: 15),
+                  Image.asset('assets/images/Logo2.png', height: 50),
+                  const SizedBox(height: 30),
+                  Center( // Center widget added here
+                    child: Container(
                       width: 352,
-                      height: 300,
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      height: 320,
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(33),
@@ -153,7 +137,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                 'التحقق من رقم الجوال',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 32,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                   fontFamily: 'Markazi Text',
@@ -165,13 +149,13 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                               'تم إرسال رمز تفعيلي إلى رقم الجوال الخاص بك',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 14,
                                 color: Colors.grey,
                                 fontFamily: 'Markazi Text',
                                 height: 1.4,
                               ),
                             ),
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 20),
                             const Text(
                               'الرمز التفعيلي',
                               textAlign: TextAlign.center,
@@ -199,14 +183,14 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                                       counterText: '',
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0xFF4B7960),
                                           width: 2,
                                         ),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(8),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                           color: Color(0xFF4B7960),
                                           width: 2,
                                         ),
@@ -223,16 +207,16 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                             ),
                             const SizedBox(height: 8),
                             if (!_isCodeValid)
-                              Row(
+                              const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.close,
                                     color: Colors.red,
                                     size: 20,
                                   ),
-                                  const SizedBox(width: 8),
-                                  const Text(
+                                  SizedBox(width: 8),
+                                  Text(
                                     'رمز التفعيل المدخل غير صحيح',
                                     style: TextStyle(
                                       color: Colors.red,
@@ -246,47 +230,62 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
-                    Container(
-                      height: 50,
-                      width: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF4B7960),
-                            Color(0xFF728F66),
-                            Color(0xFFA2AA6D),
-                          ],
-                        ),
+                  ),
+                  const SizedBox(height: 50),
+                  Container(
+                    height: 50,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFF4B7960),
+                          Color(0xFF728F66),
+                          Color(0xFFA2AA6D),
+                        ],
                       ),
-                      child: ElevatedButton(
-                        onPressed: _verifyActivationCode,
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          backgroundColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          shadowColor: Colors.transparent,
+                    ),
+                    child: ElevatedButton(
+                      onPressed: _verifyActivationCode,
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        child: const Text(
-                          'تحقق',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Markazi Text',
-                          ),
+                        shadowColor: Colors.transparent,
+                      ),
+                      child: const Text(
+                        'تحقق',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Markazi Text',
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          // Positioned back button
+          Positioned(
+            bottom: 560,
+            right: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_forward,
+                color: Colors.black,
+                size: 30,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

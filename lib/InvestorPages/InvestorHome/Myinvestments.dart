@@ -5,6 +5,8 @@ import '../../custom_bottom_nav_bar.dart';
 import 'investedFarmDetails.dart';
 
 class MyInvestments extends StatefulWidget {
+  const MyInvestments({super.key});
+
   @override
   _MyInvestmentsState createState() => _MyInvestmentsState();
 }
@@ -74,8 +76,8 @@ class _MyInvestmentsState extends State<MyInvestments> {
         // إضافة البيانات المدمجة إلى القائمة النهائية
         fetchedInvestments.add({
           'farmName': projectName,
-          'investmentAmount': investmentAmount.toStringAsFixed(2) + " ريال",
-          'actualReturns': projectReturns.toStringAsFixed(2) + " ريال", // إجمالي العوائد
+          'investmentAmount': "${investmentAmount.toStringAsFixed(2)} ريال",
+          'actualReturns': "${projectReturns.toStringAsFixed(2)} ريال", // إجمالي العوائد
           'investmentDate': investmentDate,
 
           'expectedReturns': investment['expectedReturns'].toStringAsFixed(2) +
@@ -114,7 +116,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 220),
+                const SizedBox(height: 200),
                 Center(
                   child: _buildInvestmentContainer(context),
                 ),
@@ -151,26 +153,26 @@ class _MyInvestmentsState extends State<MyInvestments> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Stack(
+        child: const Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 150.0),
+              padding: EdgeInsets.only(bottom: 170.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'استثماراتي',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 28,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'يمكنك هنا متابعة جميع استثماراتك في الفُرص الزراعية، ومراجعة التفاصيل المتعلقة بها.',
-                    style: TextStyle(fontSize: 15, color: Colors.white70),
+                    'يمكنك هنا متابعة جميع استثماراتك في الفُرص الزراعية،\n ومراجعة التفاصيل المتعلقة بها.',
+                    style: TextStyle(fontSize: 13, color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -186,7 +188,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
   Widget _buildInvestmentContainer(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.64,
+      height: MediaQuery.of(context).size.height * 0.6,
       padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -217,7 +219,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildSummaryCard('مجموع العوائد', '${totalReturns.toStringAsFixed(2)} ريال'),
-        const SizedBox(width: 7),
+        const SizedBox(width: 6),
         _buildSummaryCard('مجموع الاستثمار', '${(totalInvestments+totalReturns).toStringAsFixed(2)} ريال'),
       ],
     );
@@ -243,7 +245,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
               const SizedBox(height: 5),
               Text(
                 amount,
-                style: const TextStyle(fontSize: 14, color: Color(0xFFA8B475)),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFA8B475)),
               ),
             ],
           ),
@@ -297,7 +299,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
                     farmData['farmName'],
                     textAlign: TextAlign.right,
                     style: const TextStyle(
-                      fontSize: 17,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF345E50),
                     ),
@@ -305,12 +307,12 @@ class _MyInvestmentsState extends State<MyInvestments> {
                   Text(
                     'المبلغ المستثمر: ${farmData['investmentAmount']}',
                     textAlign: TextAlign.right,
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    style: const TextStyle(fontSize: 13, color: Colors.grey),
                   ),
                   Text(
                     'العوائد المحققة: $actualReturnsText',
                     textAlign: TextAlign.right,
-                    style: const TextStyle(fontSize: 14, color: Colors.green),
+                    style: const TextStyle(fontSize: 13, color: Colors.green),
                   ),
                   const SizedBox(height: 10),
                   _buildDetailsButton(farmData),
@@ -387,7 +389,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
             'تفاصيل',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 12,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),

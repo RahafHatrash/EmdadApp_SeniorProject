@@ -10,10 +10,10 @@ class Investoperation extends StatefulWidget {
   final String projectId; // إضافة projectId كمعامل جديد
 
   const Investoperation({
-    Key? key,
+    super.key,
     required this.projectName,
     required this.projectId, // التأكد من تمريره
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _InvestmentPageState();
@@ -193,7 +193,7 @@ class _InvestmentPageState extends State<Investoperation> {
                     decoration: BoxDecoration(
                       color: Colors.white, // خلفية بيضاء
                       borderRadius: BorderRadius.circular(40), // زوايا مستديرة
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black26, // لون الظل
                           blurRadius: 6.0, // تمويه الظل
@@ -230,7 +230,7 @@ class _InvestmentPageState extends State<Investoperation> {
                         const SizedBox(height: 20),
                         Text(
                           'إجمالي مبلغ الاستثمار: ${totalInvestment.toStringAsFixed(2)} ر.س',
-                          style: const TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 14),
                         ),
 
                         const SizedBox(height: 20),
@@ -342,25 +342,25 @@ class _InvestmentPageState extends State<Investoperation> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Stack(
+        child: const Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 150.0),
+              padding: EdgeInsets.only(bottom: 150),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'استثمر الان',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 28,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'يمكنك هنا متابعة جميع استثماراتك في الفُرص الزراعية، ومراجعة التفاصيل المتعلقة بها.',
-                    style: TextStyle(fontSize: 15, color: Colors.white70),
+                    'يمكنك هنا متابعة جميع استثماراتك في الفُرص الزراعية,\n ومراجعة التفاصيل المتعلقة بها.',
+                    style: TextStyle(fontSize: 14, color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 4),

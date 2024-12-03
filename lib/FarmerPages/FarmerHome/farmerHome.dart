@@ -13,9 +13,10 @@ class FarmerHomePage extends StatefulWidget {
 
 class _FarmerHomePageState extends State<FarmerHomePage> {
   int _selectedTabIndex = 2; // Stores selected tab index
-  PageController _pageController = PageController(); // Controls the page view
+  final PageController _pageController = PageController(); // Controls the page view
   int _currentPage = 0; // Tracks the current page in PageView
-  final userId = FirebaseAuth.instance.currentUser!.uid; // Get current user's ID
+  final userId =
+      FirebaseAuth.instance.currentUser!.uid; // Get current user's ID
 
   @override
   void initState() {
@@ -59,19 +60,22 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
     {
       'imageUrl': 'assets/images/news1.png',
       'date': '23/03/1446',
-      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'text':
+          '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
       'additionalText': 'قراءة المزيد',
     },
     {
       'imageUrl': 'assets/images/news2.png',
       'date': '24/03/1446',
-      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'text':
+          '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
       'additionalText': 'قراءة المزيد',
     },
     {
       'imageUrl': 'assets/images/news3.png',
       'date': '24/03/1446',
-      'text': '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
+      'text':
+          '"البيئة": المملكة تسجل رقمًا قياسًا بإنتاج 558 مليون كجم من لحوم الدواجن خلال النصف الأول 2024م',
       'additionalText': 'قراءة المزيد',
     },
   ];
@@ -87,13 +91,13 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
             left: 0,
             right: 0,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
               child: Container(
-                height: MediaQuery.of(context).size.height * 0.32,
-                decoration: BoxDecoration(
+                height: MediaQuery.of(context).size.height * 0.31,
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFF335D4F), Color(0xFFA8B475)],
                     begin: Alignment.topCenter,
@@ -116,7 +120,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                         'assets/images/Logo1.png',
                         height: 70,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Image.asset(
                         'assets/images/Logo2.png',
                         height: 50,
@@ -139,29 +143,31 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                             color: Colors.grey.withOpacity(0.2),
                             spreadRadius: 2,
                             blurRadius: 5,
-                            offset: Offset(2, 3),
+                            offset: const Offset(2, 3),
                           ),
                         ],
                       ),
-                      child: TextField(
+                      child: const TextField(
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20),
+                          prefixIcon:
+                              Icon(Icons.search, color: Colors.grey, size: 20),
                           hintText: 'ابحث',
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 42),
-                Row(
+                const SizedBox(height: 30),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       'نظرة عامة عن مشاريعك الزراعية',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF48742C),
                       ),
@@ -215,14 +221,14 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 17),
-                Row(
+                const SizedBox(height: 20),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       'آخر الاخبار والأحداث',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF48742C),
                       ),
@@ -240,8 +246,8 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     ),
                   ],
                 ),
-                Container(
-                  height: 220,
+                SizedBox(
+                  height: 240, // Adjusted height for the PageView
                   child: PageView(
                     controller: _pageController,
                     children: farmCards.map((card) {
@@ -264,7 +270,9 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                         width: 8,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: _currentPage == index ? Colors.green : Colors.grey,
+                          color: _currentPage == index
+                              ? Colors.green
+                              : Colors.grey,
                         ),
                       );
                     }),
@@ -302,7 +310,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const FarmerHomePage()),
-                  (route) => route.isFirst,
+              (route) => route.isFirst,
             );
           }
         },
@@ -332,22 +340,24 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
   }) {
     return Container(
       margin: const EdgeInsets.all(12),
+      width: 300, // Set desired width for the card
+      height: 180, // Set desired height for the card
       decoration: BoxDecoration(
-        color: Color(0xFFE5EAE3),
+        color: const Color(0xFFE5EAE3),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
             spreadRadius: 3,
             blurRadius: 7,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25),
               topRight: Radius.circular(25),
             ),
@@ -359,11 +369,12 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 10,
+              style: const TextStyle(
+                fontSize: 9,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF89A06E),
               ),
@@ -377,7 +388,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
               children: [
                 Text(
                   additionalText,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF89A06E),
@@ -385,7 +396,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                 ),
                 Text(
                   date,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF89A06E),
@@ -406,32 +417,30 @@ class ProjectDetailItem extends StatelessWidget {
   final String value;
 
   const ProjectDetailItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      height: 120,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(12), // Padding for content
       decoration: BoxDecoration(
         color: Colors.green.shade50,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // Resize based on content
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 30, color: Colors.green.shade800),
+          Icon(icon, size: 30, color: Colors.green.shade800), // Icon size
           const SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 11,
+            style: const TextStyle(
+              fontSize: 10, // Font size
               color: Colors.grey,
               fontWeight: FontWeight.bold,
             ),
@@ -441,8 +450,8 @@ class ProjectDetailItem extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 9,
+            style: const TextStyle(
+              fontSize: 10, // Font size
               fontWeight: FontWeight.bold,
               color: Colors.black87,
             ),

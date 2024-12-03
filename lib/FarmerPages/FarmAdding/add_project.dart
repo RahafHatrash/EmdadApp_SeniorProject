@@ -17,8 +17,10 @@ class _AddProjectFormScreenState extends State<AddProject> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cropTypeController = TextEditingController();
   final TextEditingController totalAreaController = TextEditingController();
-  final TextEditingController opportunityDurationController = TextEditingController();
-  final TextEditingController productionRateController = TextEditingController();
+  final TextEditingController opportunityDurationController =
+      TextEditingController();
+  final TextEditingController productionRateController =
+      TextEditingController();
   final TextEditingController targetAmountController = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
@@ -27,9 +29,26 @@ class _AddProjectFormScreenState extends State<AddProject> {
 
   Future<void> _addProjectToDatabase() async {
     try {
+      // Validate input fields
+      if (projectNameController.text.isEmpty ||
+          regionController.text.isEmpty ||
+          addressController.text.isEmpty ||
+          cropTypeController.text.isEmpty ||
+          totalAreaController.text.isEmpty ||
+          opportunityDurationController.text.isEmpty ||
+          productionRateController.text.isEmpty ||
+          targetAmountController.text.isEmpty ||
+          double.tryParse(targetAmountController.text) == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('يرجى ملء جميع الحقول بشكل صحيح')),
+        );
+        return;
+      }
+
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final projectRef = FirebaseFirestore.instance.collection(
-          'investmentOpportunities').doc();
+      final projectRef = FirebaseFirestore.instance
+          .collection('investmentOpportunities')
+          .doc();
 
       // Randomly select an image number
       int imageNumber;
@@ -43,25 +62,28 @@ class _AddProjectFormScreenState extends State<AddProject> {
 
       await projectRef.set({
         'projectId': projectRef.id,
-        'projectName': projectNameController.text,
-        "userId": userId,
-        'region': regionController.text,
-        'address': addressController.text,
-        'cropType': cropTypeController.text,
-        'totalArea': totalAreaController.text,
-        'opportunityDuration': opportunityDurationController.text,
-        'productionRate': productionRateController.text,
-        'targetAmount': double.parse(targetAmountController.text),
+        'projectName': projectNameController.text, // Arabic text
+        'userId': userId,
+        'region': regionController.text, // Arabic text
+        'address': addressController.text, // Arabic text
+        'cropType': cropTypeController.text, // Arabic text
+        'totalArea': totalAreaController.text, // Arabic text
+        'opportunityDuration':
+            opportunityDurationController.text, // Arabic text
+        'productionRate': productionRateController.text, // Arabic text
+        'targetAmount':
+            double.parse(targetAmountController.text), // Ensure valid number
         'currentAmount': 0.0,
         'imageUrl': imagePath,
-        'status': 'تحت المعالجة',
+        'status': 'تحت المعالجة', // Arabic status
         'profitDeposited': false,
         'timestamp': FieldValue.serverTimestamp(),
       });
 
+      // Navigate on success
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => AddingFarmSuccess()),
+        MaterialPageRoute(builder: (context) => const AddingFarmSuccess()),
       );
     } catch (e) {
       print('Error adding project: $e');
@@ -85,7 +107,6 @@ class _AddProjectFormScreenState extends State<AddProject> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  // Align children to the right
                   children: [
                     Container(
                       height: 500,
@@ -105,7 +126,6 @@ class _AddProjectFormScreenState extends State<AddProject> {
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          // Right align
                           children: [
                             _buildTextField(
                                 projectNameController, 'اسم المشروع'),
@@ -152,7 +172,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
                           child: const Text(
                             'إضافة المزرعة',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 20,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
@@ -173,7 +193,6 @@ class _AddProjectFormScreenState extends State<AddProject> {
 
   Widget _buildAppBar() {
     return ClipRRect(
-
       borderRadius: const BorderRadius.only(
         bottomLeft: Radius.circular(20),
         bottomRight: Radius.circular(20),
@@ -202,13 +221,13 @@ class _AddProjectFormScreenState extends State<AddProject> {
                 onPressed: () => Navigator.pop(context),
               ),
             ),
-            Align(
+            const Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 150.0),
+                padding: EdgeInsets.only(bottom: 150.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text(
                       'بيانات الفرصة الزراعية',
                       style: TextStyle(
@@ -220,7 +239,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
                     SizedBox(height: 4),
                     Text(
                       'يرجى ملء جميع التفاصيل المتعلقة بمزرعتك.',
-                      style: TextStyle(fontSize: 15, color: Colors.white70),
+                      style: TextStyle(fontSize: 14, color: Colors.white70),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -244,7 +263,6 @@ class _AddProjectFormScreenState extends State<AddProject> {
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          // Align text fields to the right
           children: [
             TextField(
               controller: controller,
@@ -257,8 +275,9 @@ class _AddProjectFormScreenState extends State<AddProject> {
               decoration: InputDecoration(
                 labelText: labelText,
                 labelStyle: TextStyle(
-                  color: focusNode.hasFocus ? Colors.grey : const Color(
-                      0xFFA09E9E),
+                  color: focusNode.hasFocus
+                      ? Colors.grey
+                      : const Color(0xFFA09E9E),
                 ),
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent),

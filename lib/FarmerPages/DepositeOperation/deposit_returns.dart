@@ -6,7 +6,7 @@ import 'AddBankAccountFarmer.dart';
 class DepositReturnsScreen extends StatefulWidget {
   final String documentId;
 
-  const DepositReturnsScreen({required this.documentId, Key? key}) : super(key: key);
+  const DepositReturnsScreen({required this.documentId, super.key});
 
   @override
   _DepositReturnsScreenState createState() => _DepositReturnsScreenState();
@@ -55,13 +55,13 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 145.0),
+                    padding: EdgeInsets.only(bottom: 140.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Text(
                           'إيداع عوائد المزرعة',
                           style: TextStyle(
@@ -84,7 +84,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 200, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 210, left: 16, right: 16),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -106,7 +106,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 10),
                         _buildLabel('أدخل عائد المزرعة'),
                         const SizedBox(height: 5),
                         _buildAmountInput(),
@@ -140,7 +140,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
           color: Color(0xFF345E50),
         ),
@@ -155,7 +155,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       textAlign: TextAlign.right,
       decoration: const InputDecoration(
         hintText: 'القيمة بالريال السعودي',
-        hintStyle: TextStyle(color: Color(0xFFA09E9E)),
+        hintStyle: TextStyle(color: Color(0xFFA09E9E), fontSize: 12),
         border: InputBorder.none,
       ),
       style: const TextStyle(color: Color(0xFFA09E9E)),
@@ -198,7 +198,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           child: const Text(
             'إيداع العوائد',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -222,7 +222,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           'أضف حساب جديد +',
           style: TextStyle(
             color: Colors.blueAccent, // لون النص
-            fontSize: 13, // حجم النص
+            fontSize: 15, // حجم النص
           ),
           textAlign: TextAlign.center,
         ),
@@ -236,7 +236,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
     // Check if the amount is valid
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('يرجى إدخال قيمة صحيحة للعوائد')),
+        const SnackBar(content: Text('يرجى إدخال مبلغ العائد')),
       );
       return;
     }
@@ -253,28 +253,28 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       // Confirmation dialog
       final confirmation = await showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: const Text('تأكيد الإيداع'),
-              content: Text(
-                  'هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('إلغاء'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('تأكيد'),
-                ),
-              ],
+        builder: (context) => AlertDialog(
+          title: const Text('تأكيد الإيداع'),
+          content:
+              Text('هل أنت متأكد من إيداع مبلغ $amount ر.س لجميع المستثمرين؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('إلغاء'),
             ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('تأكيد'),
+            ),
+          ],
+        ),
       );
 
       if (confirmation != true) return;
 
       // Update status and profitDeposited field
-      await FirebaseFirestore.instance.collection('investmentOpportunities')
+      await FirebaseFirestore.instance
+          .collection('investmentOpportunities')
           .doc(widget.documentId)
           .update({
         'status': 'مكتملة',
@@ -299,8 +299,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       // Calculate total investments and update wallets
       final totalInvestment = investmentsSnapshot.docs.fold<double>(
         0.0,
-            (sum, doc) =>
-        sum + (doc.data()['investmentAmount'] as num).toDouble(),
+        (sum, doc) => sum + (doc.data()['investmentAmount'] as num).toDouble(),
       );
 
       final WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -308,16 +307,16 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
       for (var investmentDoc in investmentsSnapshot.docs) {
         final investmentData = investmentDoc.data();
         final userId = investmentData['userId'];
-        final investmentAmount = (investmentData['investmentAmount'] as num)
-            .toDouble();
+        final investmentAmount =
+            (investmentData['investmentAmount'] as num).toDouble();
 
         // Calculate return share
-        final double returnShare = (investmentAmount / totalInvestment) *
-            amount;
+        final double returnShare =
+            (investmentAmount / totalInvestment) * amount;
 
         // Update investor wallet
-        final walletRef = FirebaseFirestore.instance.collection('wallets').doc(
-            userId);
+        final walletRef =
+            FirebaseFirestore.instance.collection('wallets').doc(userId);
         batch.update(walletRef, {
           'currentBalance': FieldValue.increment(returnShare),
           'transactions': FieldValue.arrayUnion([
@@ -331,8 +330,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         });
 
         // Create return history record
-        final returnsHistoryRef = investmentDoc.reference.collection(
-            'returnsHistory').doc();
+        final returnsHistoryRef =
+            investmentDoc.reference.collection('returnsHistory').doc();
         batch.set(returnsHistoryRef, {
           'amount': returnShare,
           'timestamp': FieldValue.serverTimestamp(),
@@ -372,11 +371,11 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                 ? const Color(0xFF4B7960)
                 : Colors.grey.shade300,
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
                 color: Colors.black12,
                 blurRadius: 8,
-                offset: const Offset(0, 4))
+                offset: Offset(0, 4))
           ],
         ),
         child: Row(
@@ -394,12 +393,12 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
                 children: [
                   Text(accountName,
                       style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87)),
                   Text(accountNumber,
-                      style: const TextStyle(
-                          fontSize: 14, color: Colors.black54)),
+                      style:
+                          const TextStyle(fontSize: 15, color: Colors.black54)),
                 ],
               ),
             ),

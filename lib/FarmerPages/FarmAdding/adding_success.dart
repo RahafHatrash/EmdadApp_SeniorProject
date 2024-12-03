@@ -45,17 +45,17 @@ class AddingFarmSuccess extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Stack(
+        child: const Stack(
           children: [
             // Center-aligned title text
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 150.0),
-                child: const Text(
+                padding: EdgeInsets.only(bottom: 130.0),
+                child: Text(
                   'تأكيد عملية إضافة\nالمزرعة',
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 25,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
@@ -92,9 +92,9 @@ class AddingFarmSuccess extends StatelessWidget {
           children: [
             const SizedBox(height: 60), // Space before the icon
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [
                     Color(0xFF4B7960),
                     Color(0xFF728F66),
@@ -113,7 +113,7 @@ class AddingFarmSuccess extends StatelessWidget {
             const Text(
               'تم إضافة مزرعتك\n بنجاح',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF527D62),
                 fontFamily: 'Markazi Text',
@@ -155,7 +155,7 @@ class AddingFarmSuccess extends StatelessWidget {
                 child: const Text(
                   'الصفحة الرئيسية',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),

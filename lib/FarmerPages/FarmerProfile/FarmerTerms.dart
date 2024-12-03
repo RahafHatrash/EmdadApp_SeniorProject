@@ -46,7 +46,7 @@ class farmerTerms extends StatelessWidget {
                   ),
                   // Title "الشروط والأحكام" centered in the header
                   const Positioned(
-                    top: 60,
+                    top: 70,
                     left: 0,
                     right: 0,
                     child: Center(
@@ -67,7 +67,7 @@ class farmerTerms extends StatelessWidget {
           ),
           // Main content section with terms and conditions
           Padding(
-            padding: const EdgeInsets.only(top: 130), // Positioning content below the header
+            padding: const EdgeInsets.only(top: 150), // Positioning content below the header
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -95,7 +95,7 @@ class farmerTerms extends StatelessWidget {
                         // Introductory text for the farmer
                         const Text(
                           'عزيزي المزارع، منصة إمداد هي منصة إلكترونية تهدف إلى جمع أموال مجموعة من المستثمرين لتمويل المشاريع الزراعية وتقديم الدعم المالي للمزارعين، وتلتزم إمداد بتوفير بيئة آمنة للمزارعين والمستثمرين على حد سواء. لاستكمال عملية التسجيل، يتطلب موافقتك على الشروط والأحكام، وهي كالتالي:',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 15),
                           textAlign: TextAlign.right,
                         ),
                         const SizedBox(height: 20),
@@ -149,7 +149,7 @@ class farmerTerms extends StatelessWidget {
       children: [
         // Section title with gradient background
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               colors: [
@@ -179,7 +179,7 @@ class farmerTerms extends StatelessWidget {
         for (var item in content) ...[
           Text(
             item,
-            style: const TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 15),
             textAlign: TextAlign.right,
             textDirection: TextDirection.rtl, // Align text to the right for numbers
           ),

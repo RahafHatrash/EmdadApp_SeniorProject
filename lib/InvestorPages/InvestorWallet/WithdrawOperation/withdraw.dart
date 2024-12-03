@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../AddBankAccountPage.dart';
 
 class WithdrawPage extends StatefulWidget {
+  const WithdrawPage({super.key});
+
   @override
   _WithdrawPageState createState() => _WithdrawPageState();
 }
@@ -30,7 +32,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         print('الرصيد غير كافي');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('الرصيد غير كافي للسحب'),
+            content: Text('رصيد المحفظة غير كافي'),
             backgroundColor: Colors.red,
           ),
         );
@@ -70,7 +72,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
   }
 
   Widget _buildStyledTextField(String labelText, TextEditingController controller) {
-    FocusNode _focusNode = FocusNode();
+    FocusNode focusNode = FocusNode();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,8 +80,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
         Align(
           alignment: Alignment.centerRight,
           child: Text(
-            'ادخل المبلغ المراد سحبه',
-            style: TextStyle(
+            labelText,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               color: Color.fromARGB(216, 53, 94, 79),
@@ -91,29 +93,29 @@ class _WithdrawPageState extends State<WithdrawPage> {
           keyboardType: TextInputType.number,
           textAlign: TextAlign.right,
           decoration: InputDecoration(
-            hintText: _focusNode.hasFocus ? null : 'القيمة بالريال السعودي',
-            hintStyle: TextStyle(
-              color: Color.fromARGB(216, 53, 94, 79),
-              fontSize: 13,
+            hintText: focusNode.hasFocus ? null : 'القيمة بالريال السعودي',
+            hintStyle: const TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
             ),
             border: InputBorder.none,
             prefixText: 'ر.س ',
           ),
-          style: TextStyle(
+          style: const TextStyle(
             color: Color.fromARGB(216, 53, 94, 79),
           ),
-          focusNode: _focusNode,
+          focusNode: focusNode,
         ),
         Container(
           height: 1,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF345E50), Color(0xFF49785E), Color(0xFFA8B475)],
             ),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -126,7 +128,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('يرجى إدخال مبلغ للسحب'),
+          content: Text('يرجى إدخال مبلغ السحب'),
           backgroundColor: Colors.red,
         ),
       );
@@ -155,14 +157,14 @@ class _WithdrawPageState extends State<WithdrawPage> {
           Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.36,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFF345E50),
@@ -171,14 +173,14 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       ],
                     ),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: 85),
                       Text(
                         'سحب من المحفظة',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -201,11 +203,11 @@ class _WithdrawPageState extends State<WithdrawPage> {
             left: 16,
             right: 16,
             child: Container(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
@@ -216,7 +218,14 @@ class _WithdrawPageState extends State<WithdrawPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(
+                  // Amount input field comes first
+                  _buildStyledTextField(
+                    'ادخل المبلغ المراد سحبه',
+                    _withdrawAmountController,
+                  ),
+                  const SizedBox(height: 30),
+                  // Bank account selection comes after the amount input
+                  const Align(
                     alignment: Alignment.centerRight,
                     child: Text(
                       'اختر حسابك البنكي',
@@ -228,17 +237,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       textAlign: TextAlign.right,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   _buildAccountOption(
                     "SA846... البنك السعودي للاستثمار",
                     "SA03 8000 0000 6080 1016 7519",
                   ),
-                  SizedBox(height: 50),
-                  _buildStyledTextField(
-                    'ادخل المبلغ المراد سحبه',
-                    _withdrawAmountController,
-                  ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 50),
                   Center(
                     child: Column(
                       children: [
@@ -272,20 +276,24 @@ class _WithdrawPageState extends State<WithdrawPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        TextButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddBankAccountPage(),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AddBankAccountPage(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'أضف حساب جديد +',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 14,
                               ),
-                            );
-                          },
-                          icon: Icon(Icons.add),
-                          label: Text("أضف حساب جديد"),
-                          style: TextButton.styleFrom(
-                            foregroundColor: Color(0xFF335D4F),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ],
@@ -318,16 +326,16 @@ class _WithdrawPageState extends State<WithdrawPage> {
         });
       },
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selectedAccount == accountName
-                ? Color(0xFF4B7960)
+                ? const Color(0xFF4B7960)
                 : Colors.grey.shade300,
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
           ],
         ),
@@ -337,20 +345,20 @@ class _WithdrawPageState extends State<WithdrawPage> {
               selectedAccount == accountName
                   ? Icons.radio_button_checked
                   : Icons.radio_button_unchecked,
-              color: Color(0xFF4B7960),
+              color: const Color(0xFF4B7960),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(accountName,
-                      style: TextStyle(
-                          fontSize: 16,
+                      style: const TextStyle(
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87)),
                   Text(accountNumber,
-                      style: TextStyle(fontSize: 14, color: Colors.black54)),
+                      style: const TextStyle(fontSize: 14, color: Colors.black54)),
                 ],
               ),
             ),

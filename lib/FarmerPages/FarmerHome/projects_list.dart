@@ -210,7 +210,7 @@ class _ProjectListState extends State<ProjectList> {
                   Text(
                     title,
                     style: const TextStyle(
-                        color: Color(0xFF345E50), fontSize: 16, fontWeight: FontWeight.bold),
+                        color: Color(0xFF345E50), fontSize: 20, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(height: 20.0),
@@ -333,7 +333,6 @@ class _ProjectListState extends State<ProjectList> {
   // Bottom navigation bar for different pages
   BottomNavigationBar _buildBottomNavigation() {
     return BottomNavigationBar(
-      backgroundColor: Colors.white,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
         BottomNavigationBarItem(icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),

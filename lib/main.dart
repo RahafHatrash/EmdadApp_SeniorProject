@@ -13,6 +13,7 @@ import 'StartPages/forgetpassword.dart';
 import 'StartPages/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dcdg/dcdg.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/', // Set initial route
       routes: {
         '/': (context) => StartPage(),
-        '/farmer': (context) => FarmerHomePage(),
+        '/farmer': (context) => const FarmerHomePage(),
         '/login': (context) => const LoginPage(),
         '/forgetpassword': (context) => const ForgotPasswordScreen(),
         '/signup': (context) => const SignupPage(),
@@ -46,14 +49,14 @@ class MyApp extends StatelessWidget {
         '/FAQ': (context) => const FAQscreen(),
         '/farmerterms': (context) => const farmerTerms(),
         '/investorterms': (context) => const investorTerms(),
-
-
       },
     );
   }
 }
 
 class StartPage extends StatelessWidget {
+  const StartPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +73,8 @@ class StartPage extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 300,
-              decoration: BoxDecoration(
+              height: 320,
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -80,20 +83,20 @@ class StartPage extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   // Small line at the top
                   Container(
-                    width: 40,
-                    height: 4,
+                    width: 50,
+                    height: 5,
                     decoration: BoxDecoration(
                       color: Colors.grey[400],
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 40),
                   // Buttons
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: Column(
                       children: [
                         CustomButton(
@@ -102,7 +105,7 @@ class StartPage extends StatelessWidget {
                             Navigator.pushNamed(context, '/login');
                           },
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         CustomButton(
                           text: ' تسجيل',
                           onPressed: () {
@@ -112,7 +115,7 @@ class StartPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   // Divider with text
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -124,13 +127,13 @@ class StartPage extends StatelessWidget {
                             thickness: 1,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Text(
                             'أو التسجيل مع',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 15,
                               fontFamily: 'Markazi Text',
                             ),
                           ),
@@ -194,7 +197,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const CustomButton({required this.text, required this.onPressed});
+  const CustomButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +205,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [Color(0xFF335D4F), Color(0xFFA8B475)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -220,7 +223,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,

@@ -7,6 +7,8 @@ import 'FarmDetails.dart';
 import 'Myinvestments.dart';
 
 class InvestorHome extends StatefulWidget {
+  const InvestorHome({super.key});
+
   @override
   _InvestorHomeState createState() => _InvestorHomeState();
 }
@@ -36,19 +38,19 @@ class _InvestorHomeState extends State<InvestorHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        Container(color: Color(0xFFF9FAF9)),
+        Container(color: const Color(0xFFF9FAF9)),
         Positioned(
           top: 0,
           left: 0,
           right: 0,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20),
             ),
             child: Container(
               height: MediaQuery.of(context).size.height * 0.35,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF335D4F), Color(0xFFA8B475)],
                   begin: Alignment.topCenter,
@@ -68,7 +70,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                 child: Column(
                   children: [
                     Image.asset('assets/images/Logo1.png', height: 70),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Image.asset('assets/images/Logo2.png', height: 50),
                   ],
                 ),
@@ -88,11 +90,11 @@ class _InvestorHomeState extends State<InvestorHome> {
                           color: Colors.grey.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 5,
-                          offset: Offset(2, 3),
+                          offset: const Offset(2, 3),
                         ),
                       ],
                     ),
-                    child: TextField(
+                    child: const TextField(
                       decoration: InputDecoration(
                         prefixIcon:
                         Icon(Icons.search, color: Colors.grey, size: 20),
@@ -125,20 +127,20 @@ class _InvestorHomeState extends State<InvestorHome> {
                       MaterialPageRoute(builder: (context) => AllInvestments()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'شاهد المزيد',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.normal,
                       color: Color(0xFF355E4F),
                       decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'الفرص الاستثمارية',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(216, 53, 94, 79),
                   ),
@@ -151,17 +153,17 @@ class _InvestorHomeState extends State<InvestorHome> {
           top: MediaQuery.of(context).size.height * 0.46,
           left: 0,
           right: 0,
-          child: Container(
+          child: SizedBox(
             height: 340, // Set your desired height for the white box here
             child: FutureBuilder<List<Map<String, dynamic>>>(
               future: fetchTopCompletedInvestments(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('لا يوجد أي فرصة مطروحة بعد.'));
+                  return const Center(child: Text('لا يوجد أي فرصة مطروحة بعد.'));
                 }
 
                 List<Map<String, dynamic>> investments = snapshot.data!;
@@ -227,7 +229,7 @@ class InvestmentCard extends StatelessWidget {
   final VoidCallback onDetailsPressed;
 
   const InvestmentCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.status,
@@ -235,7 +237,7 @@ class InvestmentCard extends StatelessWidget {
     required this.returnRate,
     required this.coverage,
     required this.onDetailsPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -253,7 +255,7 @@ class InvestmentCard extends StatelessWidget {
             children: [
               // Card image section
               ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                 child: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
@@ -269,8 +271,8 @@ class InvestmentCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 21,
+                      style: const TextStyle(
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(218, 73, 120, 94),
                       ),
@@ -292,25 +294,25 @@ class InvestmentCard extends StatelessWidget {
                         height: 40,
                         child: Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               colors: [Color(0xFF345E50), Color(0xFFA8B475)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'تفاصيل المزرعة',
                               style:
-                              TextStyle(color: Colors.white, fontSize: 16),
+                              TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Divider(),
+                    const Divider(),
 
                     // Investment stats like status, duration, return rate, and coverage
                     Row(
@@ -346,12 +348,12 @@ class _InvestmentStat extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 14, color: Color(0xFF49785E)),
+          style: const TextStyle(fontSize: 13, color: Color(0xFF49785E)),
         ),
         Text(
           value,
-          style: TextStyle(
-              fontSize: 14,
+          style: const TextStyle(
+              fontSize: 13,
               fontWeight: FontWeight.bold,
               color: Color(0xFF89A06E)),
         ),

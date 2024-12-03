@@ -127,11 +127,11 @@ class _WalletPageState extends State<WalletPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 60),
             const Text(
-              'محفظتي',
+              'محفظتي الأستثمارية',
               style: TextStyle(
-                fontSize: 32,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -139,12 +139,12 @@ class _WalletPageState extends State<WalletPage> {
             const SizedBox(height: 8),
             const Text(
               'الرصيد الحالي',
-              style: TextStyle(fontSize: 16, color: Colors.white70),
+              style: TextStyle(fontSize: 18, color: Colors.white70),
             ),
             Text(
               'ريال ${balance.toStringAsFixed(2)}',
               style: const TextStyle(
-                fontSize: 27,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -248,7 +248,7 @@ class _WalletPageState extends State<WalletPage> {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, size: 20),
-      label: Text(label, style: TextStyle(fontSize: 14)),
+      label: Text(label, style: const TextStyle(fontSize: 14)),
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         backgroundColor: Colors.white,
