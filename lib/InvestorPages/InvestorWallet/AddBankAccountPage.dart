@@ -26,7 +26,8 @@ class AddBankAccountPage extends StatefulWidget {
 
 class _AddBankAccountPageState extends State<AddBankAccountPage> {
   final TextEditingController _ibanController = TextEditingController();
-  final TextEditingController _accountHolderController = TextEditingController();
+  final TextEditingController _accountHolderController =
+      TextEditingController();
   final TextEditingController _bankNameController = TextEditingController();
 
   void _processAccountAddition() {
@@ -45,7 +46,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoadingScreen()),
+      MaterialPageRoute(builder: (context) => const LoadingScreen()),
     );
 
     Timer(const Duration(seconds: 3), () {
@@ -54,13 +55,14 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-          additionSuccess ? SuccessScreen() : SuccessScreen(),
+              additionSuccess ? const SuccessScreen() : const SuccessScreen(),
         ),
       );
     });
   }
 
-  Widget _buildStyledTextField(String labelText, TextEditingController controller) {
+  Widget _buildStyledTextField(
+      String labelText, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -69,7 +71,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
           controller: controller,
           decoration: InputDecoration(
             hintText: labelText,
-            hintStyle: const TextStyle(color: Color(0xFFA09E9E),fontSize: 14),
+            hintStyle: const TextStyle(color: Color(0xFFA09E9E), fontSize: 14),
             border: InputBorder.none,
           ),
           style: const TextStyle(color: Color(0xFFA09E9E)),
@@ -127,10 +129,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildStyledTextField('رقم الآيبان', _ibanController),
-                        _buildStyledTextField('اسم العميل المطابق للحساب البنكي', _accountHolderController),
+                        _buildStyledTextField(
+                            'اسم العميل المطابق للحساب البنكي',
+                            _accountHolderController),
                         _buildStyledTextField('اسم البنك', _bankNameController),
                         const SizedBox(height: 30),
-                        Center( // Centering the button
+                        Center(
+                          // Centering the button
                           child: GradientButton(
                             text: 'إضافة الحساب',
                             onPressed: _processAccountAddition,
@@ -149,7 +154,8 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
   }
 }
 
-Widget buildBackgroundWithAppBar(BuildContext context, String title, String subtitle) {
+Widget buildBackgroundWithAppBar(
+    BuildContext context, String title, String subtitle) {
   return Column(
     children: [
       ClipRRect(
@@ -203,7 +209,8 @@ Widget buildBackgroundWithAppBar(BuildContext context, String title, String subt
                       const SizedBox(height: 8),
                       Text(
                         subtitle,
-                        style: const TextStyle(fontSize: 14, color: Colors.white70),
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -258,7 +265,8 @@ class LoadingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
                     strokeWidth: 6.0,
                   ),
                   const SizedBox(height: 20),
@@ -314,7 +322,8 @@ class SuccessScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/images/correct.png', height: 100, width: 100),
+                  Image.asset('assets/images/correct.png',
+                      height: 100, width: 100),
                   const SizedBox(height: 20),
                   const Text(
                     'تمت إضافة الحساب بنجاح',
@@ -330,8 +339,10 @@ class SuccessScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => const WalletPage()), // Replace with your actual wallet page widget
-                            (route) => false, // Removes all the previous routes
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const WalletPage()), // Replace with your actual wallet page widget
+                        (route) => false, // Removes all the previous routes
                       );
                     },
                   ),
@@ -345,12 +356,12 @@ class SuccessScreen extends StatelessWidget {
   }
 }
 
-
 class GradientButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const GradientButton({super.key, required this.text, required this.onPressed});
+  const GradientButton(
+      {super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

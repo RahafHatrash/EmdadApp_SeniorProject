@@ -11,7 +11,8 @@ class WithdrawPage extends StatefulWidget {
 }
 
 class _WithdrawPageState extends State<WithdrawPage> {
-  final TextEditingController _withdrawAmountController = TextEditingController();
+  final TextEditingController _withdrawAmountController =
+      TextEditingController();
   String? selectedAccount;
 
   Future<void> withdrawFundsFromWallet(double amount) async {
@@ -22,7 +23,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
         return;
       }
 
-      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final walletDoc =
+          FirebaseFirestore.instance.collection('wallets').doc(userId);
       final timestamp = FieldValue.serverTimestamp();
 
       final walletSnapshot = await walletDoc.get();
@@ -71,7 +73,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
     }
   }
 
-  Widget _buildStyledTextField(String labelText, TextEditingController controller) {
+  Widget _buildStyledTextField(
+      String labelText, TextEditingController controller) {
     FocusNode focusNode = FocusNode();
 
     return Column(
@@ -282,7 +285,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => AddBankAccountPage(),
+                                  builder: (context) =>
+                                      const AddBankAccountPage(),
                                 ),
                               );
                             },
@@ -307,7 +311,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
             top: 50,
             right: 15,
             child: IconButton(
-              icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Colors.white, size: 30),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -336,7 +341,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 : Colors.grey.shade300,
           ),
           boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
           ],
         ),
         child: Row(
@@ -358,7 +364,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black87)),
                   Text(accountNumber,
-                      style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.black54)),
                 ],
               ),
             ),

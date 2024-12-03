@@ -28,9 +28,13 @@ class _InvestorProfileState extends State<InvestorProfile> {
   Future<void> _fetchUserName() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
       setState(() {
-        userName = userDoc['name'] ?? 'اسم المستخدم'; // Default if name is not found
+        userName =
+            userDoc['name'] ?? 'اسم المستخدم'; // Default if name is not found
       });
     } catch (e) {
       print('Failed to fetch user name: $e');
@@ -139,22 +143,23 @@ class _InvestorProfileState extends State<InvestorProfile> {
             context,
             "تغيير اللغة",
             Icons.language,
-                () => _showLanguageChangeDialog(context),
+            () => _showLanguageChangeDialog(context),
           ),
           buildSettingsItem(
             context,
             "تواصل معنا",
             Icons.contact_support,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const CustomerServiceScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const CustomerServiceScreen()),
             ),
           ),
           buildSettingsItem(
             context,
             "الأسئلة الشائعة",
             Icons.security,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const FAQscreen()),
             ),
@@ -163,7 +168,7 @@ class _InvestorProfileState extends State<InvestorProfile> {
             context,
             "الشروط والأحكام",
             Icons.rule,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const investorTerms()),
             ),
@@ -172,7 +177,7 @@ class _InvestorProfileState extends State<InvestorProfile> {
             context,
             "عن إمداد",
             Icons.info,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const InfoScreen()),
             ),
@@ -181,7 +186,7 @@ class _InvestorProfileState extends State<InvestorProfile> {
             context,
             "حذف الحساب",
             Icons.delete,
-                () => _showDeleteAccountConfirmationDialog(context),
+            () => _showDeleteAccountConfirmationDialog(context),
           ),
         ],
       ),
@@ -189,8 +194,8 @@ class _InvestorProfileState extends State<InvestorProfile> {
   }
 
   // Widget for individual setting items
-  Widget buildSettingsItem(BuildContext context, String title, IconData icon,
-      VoidCallback onTap) {
+  Widget buildSettingsItem(
+      BuildContext context, String title, IconData icon, VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
       leading: Icon(icon, color: const Color(0xFF4B7960)),
@@ -320,7 +325,8 @@ class _InvestorProfileState extends State<InvestorProfile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(context, "تسجيل الخروج", isLogout: true),
+                    _buildConfirmationButton(context, "تسجيل الخروج",
+                        isLogout: true),
                   ],
                 ),
               ],
@@ -353,14 +359,14 @@ class _InvestorProfileState extends State<InvestorProfile> {
                     color: Color(0xFF4B7960),
                   ),
                   textAlign: TextAlign.right,
-
                 ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(context, "حذف الحساب", isDeleteAccount: true),
+                    _buildConfirmationButton(context, "حذف الحساب",
+                        isDeleteAccount: true),
                   ],
                 ),
               ],
@@ -416,8 +422,10 @@ class _InvestorProfileState extends State<InvestorProfile> {
       await FirebaseAuth.instance.signOut(); // Sign out from Firebase
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
-            (route) => false,
+        MaterialPageRoute(
+            builder: (context) =>
+                const StartPage()), // Replace with your main page
+        (route) => false,
       );
     } catch (e) {
       print('Error signing out: $e');
@@ -447,8 +455,10 @@ class _InvestorProfileState extends State<InvestorProfile> {
       // Navigate to the main page after deletion
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your main page
-            (route) => false,
+        MaterialPageRoute(
+            builder: (context) =>
+                const StartPage()), // Replace with your main page
+        (route) => false,
       );
     } catch (e) {
       print('Error deleting account: $e');
@@ -485,7 +495,8 @@ class _InvestorProfileState extends State<InvestorProfile> {
       }
 
       // Delete user-related investment opportunities
-      QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore.instance
+      QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore
+          .instance
           .collection('investmentOpportunities')
           .where('userId', isEqualTo: userId)
           .get();

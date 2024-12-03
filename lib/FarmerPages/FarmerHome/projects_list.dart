@@ -17,7 +17,8 @@ class ProjectList extends StatefulWidget {
 class _ProjectListState extends State<ProjectList> {
   int _selectedTopTabIndex = 0; // Initial tab index
   int _selectedBottomTabIndex = 1; // Default selected bottom navigation tab
-  final String? userId = FirebaseAuth.instance.currentUser?.uid; // الحصول على userId للمستخدم الحالي
+  final String? userId = FirebaseAuth
+      .instance.currentUser?.uid; // الحصول على userId للمستخدم الحالي
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _ProjectListState extends State<ProjectList> {
               children: [
                 const SizedBox(height: 200),
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: Container(
@@ -101,14 +102,14 @@ class _ProjectListState extends State<ProjectList> {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Stack(
+        child: const Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 150.0),
+              padding: EdgeInsets.only(bottom: 150.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text(
                     'المشاريع الزراعية',
                     style: TextStyle(
@@ -175,7 +176,10 @@ class _ProjectListState extends State<ProjectList> {
   }
 
   // Widget for each project item
-  Widget _buildProjectItem({required String imagePath, required String title, required String documentId}) {
+  Widget _buildProjectItem(
+      {required String imagePath,
+      required String title,
+      required String documentId}) {
     // Check if the project status is 'In Process'
     final bool isInProcess = _selectedTopTabIndex == 0;
 
@@ -200,7 +204,8 @@ class _ProjectListState extends State<ProjectList> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.asset(imagePath, width: 60, height: 60, fit: BoxFit.cover),
+              child: Image.asset(imagePath,
+                  width: 60, height: 60, fit: BoxFit.cover),
             ),
             const SizedBox(width: 15.0),
             Expanded(
@@ -210,7 +215,9 @@ class _ProjectListState extends State<ProjectList> {
                   Text(
                     title,
                     style: const TextStyle(
-                        color: Color(0xFF345E50), fontSize: 20, fontWeight: FontWeight.bold),
+                        color: Color(0xFF345E50),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                     textAlign: TextAlign.right,
                   ),
                   const SizedBox(height: 20.0),
@@ -222,7 +229,8 @@ class _ProjectListState extends State<ProjectList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ProjectDetailsScreen(documentId: documentId),
+                              builder: (context) =>
+                                  ProjectDetailsScreen(documentId: documentId),
                             ),
                           );
                         },
@@ -232,7 +240,9 @@ class _ProjectListState extends State<ProjectList> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      if (isInProcess) _buildDepositButton(documentId), // Show the button only if in process
+                      if (isInProcess)
+                        _buildDepositButton(
+                            documentId), // Show the button only if in process
                     ],
                   ),
                 ],
@@ -266,7 +276,8 @@ class _ProjectListState extends State<ProjectList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DepositReturnsScreen(documentId: documentId),
+              builder: (context) =>
+                  DepositReturnsScreen(documentId: documentId),
             ),
           );
         },
@@ -280,7 +291,8 @@ class _ProjectListState extends State<ProjectList> {
         ),
         child: const Text(
           "إيداع الأرباح",
-          style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -315,14 +327,18 @@ class _ProjectListState extends State<ProjectList> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
         decoration: BoxDecoration(
-          color: _selectedTopTabIndex == index ? Colors.white54 : Colors.transparent,
+          color: _selectedTopTabIndex == index
+              ? Colors.white54
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 15,
-            color: _selectedTopTabIndex == index ? Color(0xFF345E50) : Colors.white,
+            color: _selectedTopTabIndex == index
+                ? const Color(0xFF345E50)
+                : Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -335,7 +351,8 @@ class _ProjectListState extends State<ProjectList> {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'حسابي'),
-        BottomNavigationBarItem(icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.nature), label: 'المشاريع الزراعية'),
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
       ],
       currentIndex: _selectedBottomTabIndex,
@@ -343,14 +360,15 @@ class _ProjectListState extends State<ProjectList> {
       unselectedItemColor: Colors.grey,
       onTap: (index) {
         if (index == 0) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const Farmerprofile()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const Farmerprofile()));
         } else if (index == 1) {
           setState(() => _selectedBottomTabIndex = index);
         } else if (index == 2) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const FarmerHomePage()),
-                (route) => route.isFirst,
+            (route) => route.isFirst,
           );
         }
       },

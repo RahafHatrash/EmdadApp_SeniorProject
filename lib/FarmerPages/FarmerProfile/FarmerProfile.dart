@@ -29,9 +29,13 @@ class _FarmerprofileState extends State<Farmerprofile> {
   Future<void> _fetchUserName() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
       setState(() {
-        userName = userDoc['name'] ?? 'اسم المستخدم'; // Default if name is not found
+        userName =
+            userDoc['name'] ?? 'اسم المستخدم'; // Default if name is not found
       });
     } catch (e) {
       print('Failed to fetch user name: $e');
@@ -181,22 +185,23 @@ class _FarmerprofileState extends State<Farmerprofile> {
             context,
             "تغيير اللغة",
             Icons.language,
-                () => _showLanguageChangeDialog(context),
+            () => _showLanguageChangeDialog(context),
           ),
           buildSettingsItem(
             context,
             "تواصل معنا",
             Icons.contact_support,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const CustomerServiceScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const CustomerServiceScreen()),
             ),
           ),
           buildSettingsItem(
             context,
             "الأسئلة الشائعة",
             Icons.security,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const FAQscreen()),
             ),
@@ -205,7 +210,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
             context,
             "الشروط والأحكام",
             Icons.rule,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const farmerTerms()),
             ),
@@ -214,7 +219,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
             context,
             "عن إمداد",
             Icons.info,
-                () => Navigator.push(
+            () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const InfoScreen()),
             ),
@@ -223,7 +228,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
             context,
             "حذف الحساب",
             Icons.delete,
-                () => _showDeleteAccountConfirmationDialog(context),
+            () => _showDeleteAccountConfirmationDialog(context),
           ),
         ],
       ),
@@ -231,8 +236,8 @@ class _FarmerprofileState extends State<Farmerprofile> {
   }
 
   // Widget for individual setting items
-  Widget buildSettingsItem(BuildContext context, String title, IconData icon,
-      VoidCallback onTap) {
+  Widget buildSettingsItem(
+      BuildContext context, String title, IconData icon, VoidCallback onTap) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
       leading: Icon(icon, color: const Color(0xFF4B7960)),
@@ -270,15 +275,13 @@ class _FarmerprofileState extends State<Farmerprofile> {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
-
         child: const Text(
           "تسجيل الخروج",
           style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontFamily: 'Markazi Text'
-          ),
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontFamily: 'Markazi Text'),
         ),
       ),
     );
@@ -356,7 +359,8 @@ class _FarmerprofileState extends State<Farmerprofile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(context, "تسجيل الخروج", isLogout: true),
+                    _buildConfirmationButton(context, "تسجيل الخروج",
+                        isLogout: true),
                   ],
                 ),
               ],
@@ -394,7 +398,8 @@ class _FarmerprofileState extends State<Farmerprofile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildConfirmationButton(context, "الرجوع"),
-                    _buildConfirmationButton(context, "حذف الحساب", isDeleteAccount: true),
+                    _buildConfirmationButton(context, "حذف الحساب",
+                        isDeleteAccount: true),
                   ],
                 ),
               ],
@@ -450,8 +455,10 @@ class _FarmerprofileState extends State<Farmerprofile> {
       await FirebaseAuth.instance.signOut(); // Sign out from Firebase
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your home page
-            (route) => false,
+        MaterialPageRoute(
+            builder: (context) =>
+                const StartPage()), // Replace with your home page
+        (route) => false,
       );
     } catch (e) {
       print('Error signing out: $e');
@@ -481,8 +488,10 @@ class _FarmerprofileState extends State<Farmerprofile> {
       // Navigate to the home page after deletion
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => StartPage()), // Replace with your home page
-            (route) => false,
+        MaterialPageRoute(
+            builder: (context) =>
+                const StartPage()), // Replace with your home page
+        (route) => false,
       );
     } catch (e) {
       print('Error deleting account: $e');
@@ -519,7 +528,8 @@ class _FarmerprofileState extends State<Farmerprofile> {
       }
 
       // Delete user-related investment opportunities
-      QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore.instance
+      QuerySnapshot investmentOpportunitiesSnapshot = await FirebaseFirestore
+          .instance
           .collection('investmentOpportunities')
           .where('userId', isEqualTo: userId)
           .get();

@@ -268,7 +268,7 @@ class _WalletPageState extends State<WalletPage> {
 
   void _navigateToWithdrawPage() {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => WithdrawPage()),
+      MaterialPageRoute(builder: (context) => const WithdrawPage()),
     );
   }
 }

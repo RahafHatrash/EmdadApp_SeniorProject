@@ -11,20 +11,20 @@ class InvestVerification extends StatelessWidget {
   void _verifyOtp(BuildContext context) {
     // Navigate to loading screen
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => LoadingScreen()));
+        .push(MaterialPageRoute(builder: (context) => const LoadingScreen()));
 
     // Simulate a delay for OTP verification
     Future.delayed(const Duration(seconds: 3), () {
       bool isInvestmentSuccessful =
-      true; // Modify based on actual verification logic
+          true; // Modify based on actual verification logic
 
       // Navigate to success or failure screen based on verification result
       if (isInvestmentSuccessful) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => SuccessScreen()));
+            MaterialPageRoute(builder: (context) => const SuccessScreen()));
       } else {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => FailureScreen()));
+            MaterialPageRoute(builder: (context) => const FailureScreen()));
       }
     });
   }
@@ -111,7 +111,8 @@ class InvestVerification extends StatelessWidget {
                         const Text(
                           'التحقق من رقم الجوال',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFF5B8263),
                           ),
                         ),
@@ -154,7 +155,8 @@ class InvestVerification extends StatelessWidget {
                         GestureDetector(
                           onTap: () => _verifyOtp(context),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 20),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
                                 colors: [
@@ -186,10 +188,9 @@ class InvestVerification extends StatelessWidget {
                           child: const Text(
                             'أعد إرسال الرمز',
                             style: TextStyle(
-                              color: Color(0xFF4B7960),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13
-                            ),
+                                color: Color(0xFF4B7960),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13),
                           ),
                         ),
                       ],
@@ -268,7 +269,7 @@ class LoadingScreen extends StatelessWidget {
                 children: [
                   const CircularProgressIndicator(
                     valueColor:
-                    AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
+                        AlwaysStoppedAnimation<Color>(Color(0xFF335D4F)),
                     strokeWidth: 6.0,
                   ),
                   const SizedBox(height: 20),
@@ -375,7 +376,9 @@ class SuccessScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => InvestorHome()), // هنا ضع اسم الصفحة الرئيسية
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const InvestorHome()), // هنا ضع اسم الصفحة الرئيسية
                       );
                     },
                     child: Container(
@@ -527,7 +530,9 @@ class FailureScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => InvestorHome()), // هنا ضع اسم الصفحة الرئيسية
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                const InvestorHome()), // هنا ضع اسم الصفحة الرئيسية
                       ); // Navigate back to retry
                     },
                     child: Container(

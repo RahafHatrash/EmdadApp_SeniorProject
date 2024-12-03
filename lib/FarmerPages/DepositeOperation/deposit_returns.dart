@@ -215,7 +215,8 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           // Navigate to the Add Bank Account Page
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddBankAccountFarmer()),
+            MaterialPageRoute(
+                builder: (context) => const AddBankAccountFarmer()),
           );
         },
         child: const Text(
@@ -373,9 +374,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           ),
           boxShadow: const [
             BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: Offset(0, 4))
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
           ],
         ),
         child: Row(

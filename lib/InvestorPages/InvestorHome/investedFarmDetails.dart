@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../custom_bottom_nav_bar.dart';
-import '../InvestmentProccess/InvestOperation.dart';
 
 class investedFarmDetails extends StatelessWidget {
   final String imageUrl;
@@ -8,7 +7,8 @@ class investedFarmDetails extends StatelessWidget {
   final Map<String, dynamic> farmData;
   final String projectId;
 
-  const investedFarmDetails({super.key, 
+  const investedFarmDetails({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.farmData,
@@ -54,8 +54,8 @@ class investedFarmDetails extends StatelessWidget {
           top: 50,
           right: 15,
           child: IconButton(
-            icon: const Icon(Icons.arrow_forward,
-                color: Colors.white, size: 30),
+            icon:
+                const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -108,7 +108,6 @@ class investedFarmDetails extends StatelessWidget {
     );
   }
 
-
   // Method for building project title and location
   Widget _buildProjectTitleAndLocation(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -118,9 +117,11 @@ class investedFarmDetails extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == true)
+            if (farmData['status'] == 'مكتملة' &&
+                farmData['profitDeposited'] == true)
               _buildStatusBadge(Colors.green, 'مكتملة'),
-            if (farmData['status'] == 'مكتملة' && farmData['profitDeposited'] == false)
+            if (farmData['status'] == 'مكتملة' &&
+                farmData['profitDeposited'] == false)
               _buildStatusBadge(const Color(0xffa1ad71), 'تحت المعالجة'),
             const SizedBox(width: 10),
             Flexible(
@@ -174,17 +175,22 @@ class investedFarmDetails extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildProjectDetailsGrid(BuildContext context) {
     double targetAmount = farmData['targetAmount'] ?? 0.0;
     double currentInvestment = farmData['currentInvestment'] ?? 0.0;
     double remainingAmount = targetAmount - currentInvestment;
 
     // إزالة النصوص غير الرقمية وتحويل القيم
-    double investmentAmount = double.tryParse(
-        farmData['investmentAmount']?.toString().replaceAll(RegExp(r'[^0-9.]'), '') ?? '0') ??
+    double investmentAmount = double.tryParse(farmData['investmentAmount']
+                ?.toString()
+                .replaceAll(RegExp(r'[^0-9.]'), '') ??
+            '0') ??
         0.0;
-    double actualReturns = double.tryParse(
-        farmData['actualReturns']?.toString().replaceAll(RegExp(r'[^0-9.]'), '') ?? '0') ??
+    double actualReturns = double.tryParse(farmData['actualReturns']
+                ?.toString()
+                .replaceAll(RegExp(r'[^0-9.]'), '') ??
+            '0') ??
         0.0;
 
     // الربح أو الخسارة الافتراضية
@@ -193,11 +199,13 @@ class investedFarmDetails extends StatelessWidget {
     if (investmentAmount > 0 && actualReturns > 0.0) {
       if (actualReturns > investmentAmount) {
         // حساب نسبة الربح
-        double profitPercentage = ((actualReturns - investmentAmount) / investmentAmount) * 100;
+        double profitPercentage =
+            ((actualReturns - investmentAmount) / investmentAmount) * 100;
         profitOrLoss = '+ ${profitPercentage.toStringAsFixed(2)}%';
       } else if (actualReturns < investmentAmount) {
         // حساب نسبة الخسارة
-        double lossPercentage = ((investmentAmount - actualReturns) / investmentAmount) * 100;
+        double lossPercentage =
+            ((investmentAmount - actualReturns) / investmentAmount) * 100;
         profitOrLoss = '- ${lossPercentage.toStringAsFixed(2)}%';
       } else {
         profitOrLoss = 'لا ربح ولا خسارة';
@@ -205,7 +213,9 @@ class investedFarmDetails extends StatelessWidget {
     }
 
     // عرض النص "بإنتظار الايداع" إذا كانت العوائد المحققة تساوي 0
-    String actualReturnsText = actualReturns == 0.0 ? 'بإنتظار الايداع' : '${actualReturns.toStringAsFixed(2)} رس';
+    String actualReturnsText = actualReturns == 0.0
+        ? 'بإنتظار الايداع'
+        : '${actualReturns.toStringAsFixed(2)} رس';
 
     return GridView.count(
       crossAxisCount: 3,
@@ -217,19 +227,19 @@ class investedFarmDetails extends StatelessWidget {
       children: [
         _buildProjectDetailItem(Icons.timer, 'مدة الفرصة',
             farmData['opportunityDuration'] ?? 'غير متوفر'),
-        _buildProjectDetailItem(Icons.analytics, 'الربح والخسارة', actualReturns == 0.0 ? 'غير متوفر' : profitOrLoss),
+        _buildProjectDetailItem(Icons.analytics, 'الربح والخسارة',
+            actualReturns == 0.0 ? 'غير متوفر' : profitOrLoss),
         _buildProjectDetailItem(Icons.bar_chart, 'العائد المتوقع',
             farmData['expectedReturns'] ?? 'غير متوفر'),
         _buildProjectDetailItem(Icons.monetization_on, 'مبلغ الاستثمار',
             farmData['investmentAmount'] ?? 'بانتظار الايداع'),
-        _buildProjectDetailItem(Icons.trending_up, 'العائد المحقق',
-            actualReturnsText),
+        _buildProjectDetailItem(
+            Icons.trending_up, 'العائد المحقق', actualReturnsText),
         _buildProjectDetailItem(Icons.money, 'المبلغ المتبقي',
             '${remainingAmount.toStringAsFixed(2)} رس'),
       ],
     );
   }
-
 
   // Method for building an individual project detail item
   Widget _buildProjectDetailItem(IconData icon, String title, String value) {
@@ -242,62 +252,59 @@ class investedFarmDetails extends StatelessWidget {
 
   // Method for building funding progress section
   Widget _buildFundingProgressSection(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double screenWidth = MediaQuery.of(context).size.width;
     return // Funding progress section
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            'نسبة التمويل',
-            style: TextStyle(
-              fontSize: screenWidth * 0.05,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF5B8263),
-            ),
+        Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          'نسبة التمويل',
+          style: TextStyle(
+            fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF5B8263),
           ),
-          const SizedBox(height: 8),
-          Container(
-            height: 10,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.15),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: LinearProgressIndicator(
-                value: (farmData['currentInvestment'] ?? 0.0) /
-                    (farmData['targetAmount'] ?? 1.0),
-                minHeight: 10,
-                backgroundColor: Colors.grey.shade200,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  Color(0xFFA8B475),
-                ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 10,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.15),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: LinearProgressIndicator(
+              value: (farmData['currentInvestment'] ?? 0.0) /
+                  (farmData['targetAmount'] ?? 1.0),
+              minHeight: 10,
+              backgroundColor: Colors.grey.shade200,
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color(0xFFA8B475),
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            '(مقدار التمويل الذي تم جمعه مقارنة بالهدف الإجمالي للمشروع)',
-            style: TextStyle(
-              fontSize: screenWidth * 0.03,
-              color: Colors.grey,
-            ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          '(مقدار التمويل الذي تم جمعه مقارنة بالهدف الإجمالي للمشروع)',
+          style: TextStyle(
+            fontSize: screenWidth * 0.03,
+            color: Colors.grey,
           ),
-        ],
-      );
-
+        ),
+      ],
+    );
   }
 }
+
 Widget _buildBottomNavigationBar() {
   return CustomBottomNavBar(
     currentIndex: -1, // المؤشر الحالي للعنصر المختار
@@ -326,7 +333,6 @@ class ProjectDetailItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12.0),
       margin: const EdgeInsets.all(0.7),
-
       decoration: BoxDecoration(
         color: Colors.green.shade50, // اللون الأخضر الفاتح
         borderRadius: BorderRadius.circular(15),
@@ -334,7 +340,9 @@ class ProjectDetailItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 25, color: const Color.fromARGB(255, 131, 176, 134)), // لون الأيقونة
+          Icon(icon,
+              size: 25,
+              color: const Color.fromARGB(255, 131, 176, 134)), // لون الأيقونة
           const SizedBox(height: 8),
           Text(
             title,

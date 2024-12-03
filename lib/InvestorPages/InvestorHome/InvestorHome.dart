@@ -22,7 +22,7 @@ class _InvestorHomeState extends State<InvestorHome> {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('investmentOpportunities')
         .where('status',
-        isEqualTo: 'تحت المعالجة') // Filter for completed investments
+            isEqualTo: 'تحت المعالجة') // Filter for completed investments
         .limit(4) // Limit to 4 items
         .get();
 
@@ -97,11 +97,11 @@ class _InvestorHomeState extends State<InvestorHome> {
                     child: const TextField(
                       decoration: InputDecoration(
                         prefixIcon:
-                        Icon(Icons.search, color: Colors.grey, size: 20),
+                            Icon(Icons.search, color: Colors.grey, size: 20),
                         hintText: 'ابحث',
                         border: InputBorder.none,
                         contentPadding:
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                       ),
                     ),
                   ),
@@ -124,7 +124,8 @@ class _InvestorHomeState extends State<InvestorHome> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AllInvestments()),
+                      MaterialPageRoute(
+                          builder: (context) => const AllInvestments()),
                     );
                   },
                   child: const Text(
@@ -163,7 +164,8 @@ class _InvestorHomeState extends State<InvestorHome> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('لا يوجد أي فرصة مطروحة بعد.'));
+                  return const Center(
+                      child: Text('لا يوجد أي فرصة مطروحة بعد.'));
                 }
 
                 List<Map<String, dynamic>> investments = snapshot.data!;
@@ -173,7 +175,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                   children: investments.map((investment) {
                     return InvestmentCard(
                       imageUrl:
-                      investment['imageUrl'] ?? 'assets/images/default.png',
+                          investment['imageUrl'] ?? 'assets/images/default.png',
                       title: investment['projectName'] ?? 'Unknown Project',
                       status: investment['status'] ?? 'Unknown',
                       duration: investment['opportunityDuration'] ?? 'Unknown',
@@ -184,8 +186,10 @@ class _InvestorHomeState extends State<InvestorHome> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => FarmDetails(
-                              imageUrl: investment['imageUrl'] ?? 'assets/images/default.png',
-                              title: investment['projectName'] ?? 'اسم غير متوفر',
+                              imageUrl: investment['imageUrl'] ??
+                                  'assets/images/default.png',
+                              title:
+                                  investment['projectName'] ?? 'اسم غير متوفر',
                               farmData: investment,
                               projectId: investment['id'],
                             ),
@@ -206,8 +210,10 @@ class _InvestorHomeState extends State<InvestorHome> {
           setState(() {
             _currentPage = index;
             if (index == 2) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyInvestments()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MyInvestments()));
             } else if (index == 4) {
               _pageController.jumpToPage(0);
             }
@@ -255,7 +261,8 @@ class InvestmentCard extends StatelessWidget {
             children: [
               // Card image section
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
                 child: Image.asset(
                   imageUrl,
                   fit: BoxFit.cover,
@@ -305,7 +312,7 @@ class InvestmentCard extends StatelessWidget {
                             child: Text(
                               'تفاصيل المزرعة',
                               style:
-                              TextStyle(color: Colors.white, fontSize: 15),
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         ),
@@ -320,8 +327,8 @@ class InvestmentCard extends StatelessWidget {
                       children: [
                         _InvestmentStat(title: 'حالة الفرصة', value: status),
                         _InvestmentStat(title: 'مدة الفرصة', value: duration),
-                        _InvestmentStat(title: ' العائد المتوقع', value: returnRate),
-
+                        _InvestmentStat(
+                            title: ' العائد المتوقع', value: returnRate),
                       ],
                     ),
                   ],

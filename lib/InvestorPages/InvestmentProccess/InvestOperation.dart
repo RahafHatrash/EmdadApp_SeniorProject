@@ -35,7 +35,8 @@ class _InvestmentPageState extends State<Investoperation> {
 
   Future<void> _fetchWalletBalance() async {
     try {
-      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final walletDoc =
+          FirebaseFirestore.instance.collection('wallets').doc(userId);
       final snapshot = await walletDoc.get();
 
       if (snapshot.exists) {
@@ -87,6 +88,7 @@ class _InvestmentPageState extends State<Investoperation> {
       return false;
     }
   }
+
   Future<bool> _processInvestment() async {
     try {
       // التحقق من المشروع أولاً
@@ -98,8 +100,10 @@ class _InvestmentPageState extends State<Investoperation> {
         return false; // الرصيد غير كافٍ
       }
 
-      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
-      final investmentsCollection = FirebaseFirestore.instance.collection('investments');
+      final walletDoc =
+          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final investmentsCollection =
+          FirebaseFirestore.instance.collection('investments');
       final projectDoc = FirebaseFirestore.instance
           .collection('investmentOpportunities')
           .doc(widget.projectId);
@@ -143,14 +147,12 @@ class _InvestmentPageState extends State<Investoperation> {
         await projectDoc.update({'status': 'مكتملة'});
       }
 
-
       return true; // العملية ناجحة
     } catch (e) {
       _showFailureMessage('حدث خطأ أثناء عملية الاستثمار: $e');
       return false; // العملية فشلت
     }
   }
-
 
   void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -174,10 +176,8 @@ class _InvestmentPageState extends State<Investoperation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
       body: Stack(
-
         children: [
           _buildAppBar(),
           Padding(
@@ -203,7 +203,8 @@ class _InvestmentPageState extends State<Investoperation> {
                     ),
                     child: Column(
                       children: [
-                        Text('رصيد المحفظة: ${walletBalance.toStringAsFixed(2)} ر.س'),
+                        Text(
+                            'رصيد المحفظة: ${walletBalance.toStringAsFixed(2)} ر.س'),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +217,8 @@ class _InvestmentPageState extends State<Investoperation> {
                                 });
                               },
                             ),
-                            Text('$unitCount وحدة', style: const TextStyle(fontSize: 18)),
+                            Text('$unitCount وحدة',
+                                style: const TextStyle(fontSize: 18)),
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
@@ -245,7 +247,8 @@ class _InvestmentPageState extends State<Investoperation> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => InvestVerification(), // الانتقال لصفحة InvestVerification
+                                  builder: (context) =>
+                                      const InvestVerification(), // الانتقال لصفحة InvestVerification
                                 ),
                               );
                             }
@@ -275,13 +278,14 @@ class _InvestmentPageState extends State<Investoperation> {
                           ),
                         ),
 
-
-                        const SizedBox(height: 15), // مسافة صغيرة بين الزر والنص
+                        const SizedBox(
+                            height: 15), // مسافة صغيرة بين الزر والنص
                         GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const AddFundsPage(), // انتقال إلى صفحة AddFundsPage
+                                builder: (context) =>
+                                    const AddFundsPage(), // انتقال إلى صفحة AddFundsPage
                               ),
                             );
                           },
@@ -294,7 +298,6 @@ class _InvestmentPageState extends State<Investoperation> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -364,7 +367,6 @@ class _InvestmentPageState extends State<Investoperation> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 4),
-
                 ],
               ),
             ),

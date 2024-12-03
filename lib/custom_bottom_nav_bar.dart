@@ -32,13 +32,13 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       case 1:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ZakatCalculatorPage()),
+          MaterialPageRoute(builder: (context) => const ZakatCalculatorPage()),
         );
         break;
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyInvestments()),
+          MaterialPageRoute(builder: (context) => const MyInvestments()),
         );
         break;
       case 3:
@@ -50,7 +50,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InvestorHome()),
+          MaterialPageRoute(builder: (context) => const InvestorHome()),
         );
         break;
       default:

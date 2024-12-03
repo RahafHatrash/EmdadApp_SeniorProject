@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +6,8 @@ class PasswordResetPage extends StatefulWidget {
   final String email;
   final String userType;
 
-  const PasswordResetPage({super.key, required this.email, required this.userType});
+  const PasswordResetPage(
+      {super.key, required this.email, required this.userType});
 
   @override
   _PasswordResetPageState createState() => _PasswordResetPageState();
@@ -15,7 +15,8 @@ class PasswordResetPage extends StatefulWidget {
 
 class _PasswordResetPageState extends State<PasswordResetPage> {
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   String? errorMessage;
   bool _isLoading = false; // Track loading state
 
@@ -105,7 +106,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           title: const Text('إعادة المصادقة'),
           content: TextField(
             controller: passwordController,
-            decoration: const InputDecoration(hintText: "ادخل كلمة المرور الحالية"),
+            decoration:
+                const InputDecoration(hintText: "ادخل كلمة المرور الحالية"),
             obscureText: true,
           ),
           actions: <Widget>[
@@ -137,7 +139,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(top: 20.0), // Adjust padding for logos
+                padding: const EdgeInsets.only(
+                    top: 20.0), // Adjust padding for logos
                 child: Column(
                   children: [
                     // Back arrow
@@ -192,7 +195,8 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                                   Color(0xFFA2AA6D),
                                 ],
                               ).createShader(
-                                Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                                Rect.fromLTWH(
+                                    0.0, 0.0, bounds.width, bounds.height),
                               ),
                               child: const Text(
                                 'كلمة المرور الجديدة',
@@ -313,7 +317,9 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                         ),
                       ),
                       child: ElevatedButton(
-                        onPressed: _isLoading ? null : _resetPassword, // Disable button if loading
+                        onPressed: _isLoading
+                            ? null
+                            : _resetPassword, // Disable button if loading
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
                           backgroundColor: Colors.transparent,
@@ -324,17 +330,18 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                         ),
                         child: _isLoading
                             ? const CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        )
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
                             : const Text(
-                          'إعادة تعيين',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Markazi Text',
-                          ),
-                        ),
+                                'إعادة تعيين',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Markazi Text',
+                                ),
+                              ),
                       ),
                     ),
                     if (errorMessage != null)

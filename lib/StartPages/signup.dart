@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emdad_cpit499/StartPages/phoneVerification.dart';
 import 'package:emdad_cpit499/StartPages/Loginpage.dart';
 import 'package:flutter/material.dart';

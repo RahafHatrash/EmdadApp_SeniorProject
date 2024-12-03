@@ -18,7 +18,7 @@ import 'package:dcdg/dcdg.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,12 +33,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/', // Set initial route
       routes: {
-        '/': (context) => StartPage(),
+        '/': (context) => const StartPage(),
         '/farmer': (context) => const FarmerHomePage(),
         '/login': (context) => const LoginPage(),
         '/forgetpassword': (context) => const ForgotPasswordScreen(),
         '/signup': (context) => const SignupPage(),
-        '/investorPage': (context) => InvestorHome(),
+        '/investorPage': (context) => const InvestorHome(),
 
         // Farmer-related routes
         '/home': (context) => const FarmerHomePage(),

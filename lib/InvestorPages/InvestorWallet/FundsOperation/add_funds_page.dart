@@ -23,7 +23,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
         return;
       }
 
-      final walletDoc = FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final walletDoc =
+          FirebaseFirestore.instance.collection('wallets').doc(userId);
       final timestamp = FieldValue.serverTimestamp();
 
       await walletDoc.update({
@@ -86,7 +87,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
     Navigator.pop(context);
   }
 
-  Widget _buildStyledTextField(String labelText, TextEditingController controller) {
+  Widget _buildStyledTextField(
+      String labelText, TextEditingController controller) {
     FocusNode focusNode = FocusNode();
 
     return Column(
@@ -271,7 +273,7 @@ class _AddFundsPageState extends State<AddFundsPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => AddBankAccountPage(),
+                            builder: (context) => const AddBankAccountPage(),
                           ),
                         );
                       },
@@ -293,7 +295,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
             top: 50,
             right: 15,
             child: IconButton(
-              icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 30),
+              icon: const Icon(Icons.arrow_forward,
+                  color: Colors.white, size: 30),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -322,7 +325,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
                 : Colors.grey.shade300,
           ),
           boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))
           ],
         ),
         child: Row(
@@ -344,7 +348,8 @@ class _AddFundsPageState extends State<AddFundsPage> {
                           fontWeight: FontWeight.bold,
                           color: Colors.black87)),
                   Text(accountNumber,
-                      style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.black54)),
                 ],
               ),
             ),

@@ -35,7 +35,7 @@ class _AddBankAccountFarmerState extends State<AddBankAccountFarmer> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoadingScreen()),
+      MaterialPageRoute(builder: (context) => const LoadingScreen()),
     );
 
     Timer(const Duration(seconds: 3), () {
@@ -44,7 +44,7 @@ class _AddBankAccountFarmerState extends State<AddBankAccountFarmer> {
         context,
         MaterialPageRoute(
           builder: (context) =>
-              additionSuccess ? SuccessScreen() : SuccessScreen(),
+              additionSuccess ? const SuccessScreen() : const SuccessScreen(),
         ),
       );
     });
@@ -208,7 +208,8 @@ Widget buildBackgroundWithAppBar(
                       const SizedBox(height: 8),
                       Text(
                         subtitle,
-                        style: const TextStyle(fontSize: 15, color: Colors.white70),
+                        style: const TextStyle(
+                            fontSize: 15, color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -360,7 +361,8 @@ class GradientButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const GradientButton({super.key, required this.text, required this.onPressed});
+  const GradientButton(
+      {super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
