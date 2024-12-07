@@ -6,7 +6,7 @@ import '../FarmerHome/farmerHome.dart';
 import 'CustomerServiceScreen.dart';
 import 'FAQscreen.dart';
 import 'InfoScreen.dart';
-import '../FarmerHome/projects_list.dart';
+import '../FarmerHome/FarmsList.dart';
 import 'FarmerTerms.dart';
 
 class Farmerprofile extends StatefulWidget {
@@ -84,7 +84,7 @@ class _FarmerprofileState extends State<Farmerprofile> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ProjectList()),
+              MaterialPageRoute(builder: (context) => const FarmsList()),
             );
           } else if (index == 2) {
             Navigator.push(
@@ -504,19 +504,9 @@ class _FarmerprofileState extends State<Farmerprofile> {
     }
   }
 
-  // Method to delete related data (wallets, investments, investment opportunities)
+  // Method to delete related data (investments, investment opportunities)
   Future<void> _deleteRelatedData(String userId) async {
     try {
-      // Delete user-related wallets
-      QuerySnapshot walletsSnapshot = await FirebaseFirestore.instance
-          .collection('wallets')
-          .where('userId', isEqualTo: userId)
-          .get();
-
-      for (var doc in walletsSnapshot.docs) {
-        await doc.reference.delete();
-      }
-
       // Delete user-related investments
       QuerySnapshot investmentsSnapshot = await FirebaseFirestore.instance
           .collection('investments')

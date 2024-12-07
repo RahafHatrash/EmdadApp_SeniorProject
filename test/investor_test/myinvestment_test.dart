@@ -17,16 +17,16 @@ void main() {
       // Add mock investments with individual amounts
       await fakeFirestore.collection('investments').add({
         'userId': userId,
-        'projectName': 'Farm A',
+        'FarmName': 'Farm A',
         'investmentAmount': 1000.0,
-        'projectId': 'project1',
+        'FarmId': 'project1',
       });
 
       await fakeFirestore.collection('investments').add({
         'userId': userId,
-        'projectName': 'Farm B',
+        'FarmName': 'Farm B',
         'investmentAmount': 500.0,
-        'projectId': 'project2',
+        'FarmId': 'project2',
       });
 
       // Fetch investments for the user
@@ -48,7 +48,7 @@ void main() {
         // Calculate 20% return for this investment
         final investmentReturn = investmentAmount * 0.2;
 
-        print('Project: ${investment['projectName']}');
+        print('Project: ${investment['FarmName']}');
         print('Investment Amount: $investmentAmount');
         print('Investment Return (20%): $investmentReturn');
 

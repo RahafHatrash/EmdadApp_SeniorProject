@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'WalletPage.dart';
+import 'investmentPortfolio.dart';
 
 /*class MyApp extends StatelessWidget {
   @override
@@ -341,7 +341,7 @@ class SuccessScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const WalletPage()), // Replace with your actual wallet page widget
+                                const PortfolioPage()), // Replace with your actual Portfolio page widget
                         (route) => false, // Removes all the previous routes
                       );
                     },

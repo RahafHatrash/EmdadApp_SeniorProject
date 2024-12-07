@@ -31,41 +31,29 @@ class _SignScreenState extends State<SignScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
-  Future<void> _signInWithRole() async {
-    setState(() {
-      _errorMessage = null; // Clear previous error messages
-    });
-
+  Future<void> _signIn() async {
     String email = _emailController.text.trim();
-
-    // Check if the email contains Arabic characters
     if (email.contains(RegExp(r'[\u0600-\u06FF]'))) {
       _showErrorDialog(
           'يرجى إدخال عنوان بريد إلكتروني صحيح (لا يسمح بالعربية)');
       return;
     }
-
-    // Check if the email is badly formatted
     if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
         .hasMatch(email)) {
       _showErrorDialog('يرجى إدخال بريد إلكتروني صحيح');
       return;
     }
-
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: _passwordController.text.trim(),
       );
-
       User? user = userCredential.user;
-
       if (user == null) {
         _showErrorDialog('المستخدم غير موجود');
         return;
       }
-
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -255,7 +243,7 @@ class _SignScreenState extends State<SignScreen> {
                       ),
                     ),
                     child: ElevatedButton(
-                      onPressed: _signInWithRole,
+                      onPressed: _signIn,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         backgroundColor: Colors.transparent,

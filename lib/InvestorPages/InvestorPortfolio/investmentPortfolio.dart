@@ -5,14 +5,14 @@ import 'WithdrawOperation/withdraw.dart';
 import 'FundsOperation/add_funds_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class WalletPage extends StatefulWidget {
-  const WalletPage({super.key});
+class PortfolioPage extends StatefulWidget {
+  const PortfolioPage({super.key});
 
   @override
-  _WalletPageState createState() => _WalletPageState();
+  _PortfolioPageState createState() => _PortfolioPageState();
 }
 
-class _WalletPageState extends State<WalletPage> {
+class _PortfolioPageState extends State<PortfolioPage> {
   String? userId;
 
   @override
@@ -20,18 +20,17 @@ class _WalletPageState extends State<WalletPage> {
     super.initState();
     userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
-      createWalletIfNotExists(userId!);
+      createInvestmentPortfolio(userId!);
     }
   }
 
-  Future<void> createWalletIfNotExists(String userId) async {
+  Future<void> createInvestmentPortfolio(String userId) async {
     try {
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final PortfolioDoc = FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
 
-      final snapshot = await walletDoc.get();
+      final snapshot = await PortfolioDoc.get();
       if (!snapshot.exists) {
-        await walletDoc.set({
+        await PortfolioDoc.set({
           'userId': userId,
           'currentBalance': 0.0,
           'lastUpdated': FieldValue.serverTimestamp(),
@@ -46,59 +45,93 @@ class _WalletPageState extends State<WalletPage> {
     }
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getWalletDetails(
-      String userId) {
-    return FirebaseFirestore.instance
-        .collection('wallets')
-        .doc(userId)
-        .snapshots();
+  Future<void> updatePortfolio(String userId, double amount, String transactionType) async {
+    try {
+      final PortfolioDoc = FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final snapshot = await transaction.get(PortfolioDoc);
+
+        if (!snapshot.exists) {
+          throw Exception('المحفظة غير موجودة');
+        }
+
+        final currentBalance = snapshot.data()?['currentBalance'] ?? 0.0;
+
+        if (transactionType == 'withdraw' && currentBalance < amount) {
+          throw Exception('الرصيد غير كافٍ لإتمام العملية');
+        }
+
+        final newBalance = transactionType == 'deposit'
+            ? currentBalance + amount
+            : currentBalance - amount;
+
+        transaction.update(PortfolioDoc, {
+          'currentBalance': newBalance,
+          'lastUpdated': FieldValue.serverTimestamp(),
+          'transactions': FieldValue.arrayUnion([
+            {
+              'type': transactionType,
+              'amount': amount,
+              'timestamp': FieldValue.serverTimestamp(),
+            },
+          ]),
+        });
+      });
+
+      print('تم تحديث المحفظة بنجاح');
+    } catch (e) {
+      print('خطأ أثناء تحديث المحفظة: $e');
+    }
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getPortfolioDetails(String userId) {
+    return FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId).snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: userId == null
-          ? const Center(child: Text('يرجى تسجيل الدخول لعرض المحفظة'))
-          : StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: getWalletDetails(userId!),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: getPortfolioDetails(userId!),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                if (!snapshot.hasData || snapshot.data?.data() == null) {
-                  return const Center(child: Text('لا توجد بيانات للمحفظة'));
-                }
+          if (!snapshot.hasData || snapshot.data?.data() == null) {
+            return const Center(child: Text('لا توجد بيانات للمحفظة'));
+          }
 
-                final data = snapshot.data!.data();
-                final balance = data?['currentBalance'] ?? 0.0;
-                final transactions = List.from(data?['transactions'] ?? []);
+          final data = snapshot.data!.data();
+          final balance = data?['currentBalance'] ?? 0.0;
+          final transactions = List.from(data?['transactions'] ?? []);
 
-                return Stack(
-                  children: [
-                    Positioned.fill(
-                      top: MediaQuery.of(context).size.height * 0.35,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                        child: Container(
-                          color: const Color(0xFFF9FAF9),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        _buildHeader(balance),
-                        Expanded(child: _buildTransactionList(transactions)),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
+          return Stack(
+            children: [
+              Positioned.fill(
+                top: MediaQuery.of(context).size.height * 0.35,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  child: Container(
+                    color: const Color(0xFFF9FAF9),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  _buildHeader(balance),
+                  Expanded(child: _buildTransactionList(transactions)),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: 3,
         onTap: (index) {
@@ -155,8 +188,7 @@ class _WalletPageState extends State<WalletPage> {
               children: [
                 _buildButton("إضافة أموال", Icons.add, _navigateToAddFundsPage),
                 const SizedBox(width: 10),
-                _buildButton(
-                    "سحب", Icons.arrow_downward, _navigateToWithdrawPage),
+                _buildButton("سحب", Icons.arrow_downward, _navigateToWithdrawPage),
               ],
             ),
           ],
@@ -178,16 +210,14 @@ class _WalletPageState extends State<WalletPage> {
     return Container(
       height: 550,
       width: 400,
-      color: const Color(0xFFF9FAF9), // الخلفية الخاصة بالكونتينر
+      color: const Color(0xFFF9FAF9),
       child: SingleChildScrollView(
         child: Column(
           children: transactions.map((transaction) {
-            // تحديد نوع العملية بناءً على النوع المخزن
             String transactionType;
             IconData transactionIcon;
             Color transactionColor;
 
-            // التحقق من النوع
             switch (transaction['type']) {
               case 'add_funds':
                 transactionType = 'شحن رصيد';
@@ -199,8 +229,8 @@ class _WalletPageState extends State<WalletPage> {
                 transactionIcon = Icons.remove_circle;
                 transactionColor = Colors.red;
                 break;
-              case 'investmentWithdrawal':
-                transactionType = 'سحب للاستثمار';
+              case 'investmentOperation':
+                transactionType = 'عملية للاستثمار';
                 transactionIcon = Icons.trending_down;
                 transactionColor = Colors.orange;
                 break;
@@ -215,7 +245,6 @@ class _WalletPageState extends State<WalletPage> {
                 transactionColor = Colors.grey;
             }
 
-            // جلب المبلغ والتاريخ
             final amount = transaction['amount'] ?? 0.0;
             final timestamp = transaction['timestamp'] != null
                 ? (transaction['timestamp'] as Timestamp).toDate()
@@ -228,12 +257,11 @@ class _WalletPageState extends State<WalletPage> {
                     transactionIcon,
                     color: transactionColor,
                   ),
-                  title: Text(
-                      '$transactionType: ${amount.toStringAsFixed(2)} ريال'),
+                  title: Text('$transactionType: ${amount.toStringAsFixed(2)} ريال'),
                   subtitle: Text('التاريخ: ${timestamp.toLocal()}'),
                 ),
                 Divider(
-                  color: Colors.grey.withOpacity(0.5), // خط وهمي خفيف
+                  color: Colors.grey.withOpacity(0.5),
                   height: 1,
                 ),
               ],

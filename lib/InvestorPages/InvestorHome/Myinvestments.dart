@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../custom_bottom_nav_bar.dart';
-import 'investedFarmDetails.dart';
+import 'investedOpportunityDetails.dart';
 
 class MyInvestments extends StatefulWidget {
   const MyInvestments({super.key});
@@ -38,8 +38,8 @@ class _MyInvestmentsState extends State<MyInvestments> {
       double tempTotalInvestments = 0.0; // مجموع الاستثمار
 
       for (var investment in investmentSnapshot.docs) {
-        String projectId = investment['projectId'];
-        String projectName = investment['projectName'];
+        String FarmId = investment['FarmId'];
+        String FarmName = investment['FarmName'];
         double investmentAmount = investment['investmentAmount'];
         DateTime investmentDate =
         (investment['investmentDate'] as Timestamp).toDate();
@@ -65,7 +65,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
         // جلب بيانات إضافية من investmentOpportunities
         final opportunitySnapshot = await FirebaseFirestore.instance
             .collection('investmentOpportunities')
-            .doc(projectId)
+            .doc(FarmId)
             .get();
 
         Map<String, dynamic> farmData = {};
@@ -75,11 +75,10 @@ class _MyInvestmentsState extends State<MyInvestments> {
 
         // إضافة البيانات المدمجة إلى القائمة النهائية
         fetchedInvestments.add({
-          'farmName': projectName,
+          'FarmName': FarmName,
           'investmentAmount': "${investmentAmount.toStringAsFixed(2)} ريال",
           'actualReturns': "${projectReturns.toStringAsFixed(2)} ريال", // إجمالي العوائد
           'investmentDate': investmentDate,
-
           'expectedReturns': investment['expectedReturns'].toStringAsFixed(2) +
               " ريال", // العائد المتوقع
           'imageUrl': farmData['imageUrl'] ?? '',
@@ -296,7 +295,7 @@ class _MyInvestmentsState extends State<MyInvestments> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    farmData['farmName'],
+                    farmData['FarmName'],
                     textAlign: TextAlign.right,
                     style: const TextStyle(
                       fontSize: 22,
@@ -368,11 +367,11 @@ class _MyInvestmentsState extends State<MyInvestments> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => investedFarmDetails(
+                builder: (context) => investedOpportunityDetails(
                   imageUrl: farmData['imageUrl'] ?? 'assets/images/default.png',
-                  title: farmData['farmName'] ?? 'اسم غير متوفر',
+                  title: farmData['FarmName'] ?? 'اسم غير متوفر',
                   farmData: farmData,
-                  projectId: farmData['projectId'] ?? '',
+                  FarmId: farmData['FarmId'] ?? '',
                 ),
               ),
             );

@@ -476,7 +476,7 @@ class _InvestorProfileState extends State<InvestorProfile> {
     try {
       // Delete user-related wallets
       QuerySnapshot walletsSnapshot = await FirebaseFirestore.instance
-          .collection('wallets')
+          .collection('InvestmentPortfolio')
           .where('userId', isEqualTo: userId)
           .get();
 

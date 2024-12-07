@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emdad_cpit499/FarmerPages/FarmerHome/projects_list.dart';
+import 'package:emdad_cpit499/FarmerPages/FarmerHome/FarmsList.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../FarmerProfile/FarmerProfile.dart';
@@ -192,7 +192,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     StreamBuilder<int>(
                       stream: _getCompletedProjectsCount(),
                       builder: (context, snapshot) {
-                        return ProjectDetailItem(
+                        return FarmDetailItem(
                           icon: Icons.check_circle,
                           title: '${snapshot.data ?? 0} مشاريع زراعية',
                           value: 'المشاريع الزراعية \nالمكتملة الأستثمار',
@@ -202,7 +202,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     StreamBuilder<int>(
                       stream: _getInProcessProjectsCount(),
                       builder: (context, snapshot) {
-                        return ProjectDetailItem(
+                        return FarmDetailItem(
                           icon: Icons.sync,
                           title: '${snapshot.data ?? 0} مشاريع زراعية',
                           value: 'المشاريع الزراعية \nالمفتوحة للأستثمار',
@@ -212,7 +212,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
                     StreamBuilder<int>(
                       stream: _getTotalProjectsCount(),
                       builder: (context, snapshot) {
-                        return ProjectDetailItem(
+                        return FarmDetailItem(
                           icon: Icons.list,
                           title: '${snapshot.data ?? 0} مشروع زراعي',
                           value: 'إجمالي المشاريع \nالزراعية المطروحة',
@@ -304,7 +304,7 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ProjectList()),
+              MaterialPageRoute(builder: (context) => const FarmsList()),
             );
           } else if (index == 2) {
             Navigator.pushAndRemoveUntil(
@@ -411,12 +411,12 @@ class _FarmerHomePageState extends State<FarmerHomePage> {
   }
 }
 
-class ProjectDetailItem extends StatelessWidget {
+class FarmDetailItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String value;
 
-  const ProjectDetailItem({
+  const FarmDetailItem({
     super.key,
     required this.icon,
     required this.title,

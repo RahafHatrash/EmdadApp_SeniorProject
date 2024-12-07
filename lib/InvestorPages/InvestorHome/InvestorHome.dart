@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../custom_bottom_nav_bar.dart';
 import 'Allinvestments.dart';
-import 'FarmDetails.dart';
+import 'OpportunityDetails.dart';
 import 'Myinvestments.dart';
 
 class InvestorHome extends StatefulWidget {
@@ -176,7 +176,7 @@ class _InvestorHomeState extends State<InvestorHome> {
                     return InvestmentCard(
                       imageUrl:
                           investment['imageUrl'] ?? 'assets/images/default.png',
-                      title: investment['projectName'] ?? 'Unknown Project',
+                      title: investment['FarmName'] ?? 'Unknown Project',
                       status: investment['status'] ?? 'Unknown',
                       duration: investment['opportunityDuration'] ?? 'Unknown',
                       returnRate: '20%',
@@ -185,13 +185,13 @@ class _InvestorHomeState extends State<InvestorHome> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => FarmDetails(
+                            builder: (context) => Opportunitydetails(
                               imageUrl: investment['imageUrl'] ??
                                   'assets/images/default.png',
                               title:
-                                  investment['projectName'] ?? 'اسم غير متوفر',
+                                  investment['FarmName'] ?? 'اسم غير متوفر',
                               farmData: investment,
-                              projectId: investment['id'],
+                              FarmId: investment['id'],
                             ),
                           ),
                         );

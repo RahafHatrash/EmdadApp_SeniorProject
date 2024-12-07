@@ -21,8 +21,8 @@ void main() {
   }
 
   group('Add Funds Logic', () {
-    test('Add positive amount to wallet', () {
-      // Initial wallet balance
+    test('Add positive amount to Portfolio', () {
+      // Initial Portfolio balance
       const double currentBalance = 1000.0;
       const double amountToAdd = 500.0;
 

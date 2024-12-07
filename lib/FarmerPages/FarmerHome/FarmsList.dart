@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emdad_cpit499/FarmerPages/FarmerHome/projectDetails.dart';
+import 'package:emdad_cpit499/FarmerPages/FarmerHome/FarmDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../DepositeOperation/deposit_returns.dart';
-import '../FarmAdding/add_project.dart';
+import '../FarmAdding/addFarm.dart';
 import '../FarmerProfile/FarmerProfile.dart';
 import 'farmerHome.dart';
 
-class ProjectList extends StatefulWidget {
-  const ProjectList({super.key});
+class FarmsList extends StatefulWidget {
+  const FarmsList({super.key});
 
   @override
-  _ProjectListState createState() => _ProjectListState();
+  _FarmsListState createState() => _FarmsListState();
 }
-class _ProjectListState extends State<ProjectList> {
+class _FarmsListState extends State<FarmsList> {
   int _selectedTopTabIndex = 0; // Initial tab index
   int _selectedBottomTabIndex = 1; // Default selected bottom navigation tab
   final String? userId = FirebaseAuth
@@ -58,12 +58,12 @@ class _ProjectListState extends State<ProjectList> {
                               thickness: 5.0,
                               radius: const Radius.circular(20),
                               child: SingleChildScrollView(
-                                child: _buildProjectList(),
+                                child: _buildFarmsList(),
                               ),
                             ),
                           ),
                           const SizedBox(height: 10),
-                          _buildAddProjectButton(),
+                          _buildAddFarmsButton(),
                         ],
                       ),
                     ),
@@ -131,7 +131,7 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
-  Widget _buildProjectList() {
+  Widget _buildFarmsList() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('investmentOpportunities')
@@ -146,21 +146,21 @@ class _ProjectListState extends State<ProjectList> {
           return const Center(child: Text("لا يوجد لديك أي مشروع زراعي"));
         }
 
-        final projects = snapshot.data!.docs.where((doc) {
-          final projectData = doc.data() as Map<String, dynamic>;
-          bool isCompleted = projectData['profitDeposited'] == true;
+        final Farms = snapshot.data!.docs.where((doc) {
+          final FarmsData = doc.data() as Map<String, dynamic>;
+          bool isCompleted = FarmsData['profitDeposited'] == true;
 
           return _selectedTopTabIndex == 0 ? !isCompleted : isCompleted;
         }).toList();
 
         return Column(
-          children: projects.map((document) {
-            final projectData = document.data() as Map<String, dynamic>;
+          children: Farms.map((document) {
+            final FarmsData = document.data() as Map<String, dynamic>;
             final documentId = document.id;
 
-            return _buildProjectItem(
-              imagePath: projectData['imageUrl'] ?? 'assets/images/farm1.png',
-              title: projectData['projectName'] ?? 'مشروع زراعي',
+            return _buildFarmsItem(
+              imagePath: FarmsData['imageUrl'] ?? 'assets/images/farm1.png',
+              title: FarmsData['FarmName'] ?? 'مشروع زراعي',
               documentId: documentId,
             );
           }).toList(),
@@ -169,7 +169,7 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
-  Widget _buildProjectItem(
+  Widget _buildFarmsItem(
       {required String imagePath,
       required String title,
       required String documentId}) {
@@ -221,7 +221,7 @@ class _ProjectListState extends State<ProjectList> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  ProjectDetailsScreen(documentId: documentId),
+                                  FarmDetails(documentId: documentId),
                             ),
                           );
                         },
@@ -248,7 +248,7 @@ class _ProjectListState extends State<ProjectList> {
     return FutureBuilder<QuerySnapshot>(
       future: FirebaseFirestore.instance
           .collection('investments')
-          .where('projectId', isEqualTo: documentId)
+          .where('FarmId', isEqualTo: documentId)
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -389,7 +389,7 @@ class _ProjectListState extends State<ProjectList> {
     );
   }
 
-  Widget _buildAddProjectButton() {
+  Widget _buildAddFarmsButton() {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
@@ -407,7 +407,7 @@ class _ProjectListState extends State<ProjectList> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const AddProject()),
+                MaterialPageRoute(builder: (context) => const Addfarm()),
               );
             },
             icon: const Icon(Icons.add, color: Colors.white),

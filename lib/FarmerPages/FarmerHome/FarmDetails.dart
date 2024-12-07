@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import '../FarmerProfile/FarmerProfile.dart';
 import 'farmerHome.dart';
 
-class ProjectDetailsScreen extends StatefulWidget {
+class FarmDetails extends StatefulWidget {
   final String documentId; // معرف المستند في Firestore
 
-  const ProjectDetailsScreen({super.key, required this.documentId});
+  const FarmDetails({super.key, required this.documentId});
 
   @override
-  _ProjectDetailsScreenState createState() => _ProjectDetailsScreenState();
+  _FarmDetailsScreenState createState() => _FarmDetailsScreenState();
 }
 
-class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
+class _FarmDetailsScreenState extends State<FarmDetails> {
   int _selectedBottomTabIndex =
       1; // Default selected tab (Agricultural Projects)
 
@@ -38,8 +38,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   return const Center(
                       child: Text('لم يتم العثور على بيانات المشروع.'));
                 }
-                var projectData = snapshot.data!.data() as Map<String, dynamic>;
-                return ProjectDetails(projectData: projectData);
+                var FarmData = snapshot.data!.data() as Map<String, dynamic>;
+                return farmDetails(FarmData: FarmData);
               },
             ),
           ],
@@ -80,15 +80,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 }
 
-class ProjectDetails extends StatelessWidget {
-  final Map<String, dynamic> projectData;
+class farmDetails extends StatelessWidget {
+  final Map<String, dynamic> FarmData;
 
-  const ProjectDetails({super.key, required this.projectData});
+  const farmDetails({super.key, required this.FarmData});
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    String imageUrl = projectData['imageUrl'] ?? 'assets/images/12.png';
+    String imageUrl = FarmData['imageUrl'] ?? 'assets/images/12.png';
 
     return Stack(
       children: [
@@ -145,7 +145,7 @@ class ProjectDetails extends StatelessWidget {
         children: [
           _buildHeader(screenWidth),
           const SizedBox(height: 10),
-          _buildProjectDetailsGrid(),
+          _buildFarmDetailsGrid(),
           const SizedBox(height: 10),
           _buildFundingInformation(screenWidth),
         ],
@@ -161,7 +161,7 @@ class ProjectDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              projectData['projectName'] ?? 'مشروع زراعي',
+              FarmData['FarmName'] ?? 'مشروع زراعي',
               style: TextStyle(
                 fontSize: screenWidth * 0.08,
                 fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class ProjectDetails extends StatelessWidget {
                 const Icon(Icons.location_on, size: 15, color: Colors.grey),
                 const SizedBox(width: 2),
                 Text(
-                  "saudi arabia, " + projectData['region'] ?? 'غير معروف',
+                  "saudi arabia, " + FarmData['region'] ?? 'غير معروف',
                   style: TextStyle(
                       fontSize: screenWidth * 0.03, color: Colors.grey),
                   textAlign: TextAlign.right,
@@ -188,9 +188,9 @@ class ProjectDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectDetailsGrid() {
-    double targetAmount = projectData['targetAmount'] ?? 0.0;
-    double currentInvestment = projectData['currentInvestment'] ?? 0.0;
+  Widget _buildFarmDetailsGrid() {
+    double targetAmount = FarmData['targetAmount'] ?? 0.0;
+    double currentInvestment = FarmData['currentInvestment'] ?? 0.0;
     double remainingAmount = targetAmount - currentInvestment;
 
     return SizedBox(
@@ -203,38 +203,38 @@ class ProjectDetails extends StatelessWidget {
         mainAxisSpacing: 5,
         crossAxisSpacing: 5,
         children: [
-          ProjectDetailItem(
+          FarmDetailItem(
               icon: Icons.grain,
               title: 'نوع المحصول',
-              value: projectData['cropType'] ?? 'غير محدد'),
-          ProjectDetailItem(
+              value: FarmData['cropType'] ?? 'غير محدد'),
+          FarmDetailItem(
               icon: Icons.production_quantity_limits,
               title: 'معدل الإنتاج',
-              value: projectData['productionRate'] + "٪" ?? 'غير محدد'),
-          ProjectDetailItem(
+              value: FarmData['productionRate'] + "٪" ?? 'غير محدد'),
+          FarmDetailItem(
               icon: Icons.bar_chart,
               title: 'المبلغ المتبقي',
               value: '${remainingAmount.toStringAsFixed(2)} ر.س'),
-          ProjectDetailItem(
+          FarmDetailItem(
               icon: Icons.grain,
               title: 'المساحة الكلية',
-              value: projectData['totalArea'] + "متر" ?? 'غير محدد'),
-          ProjectDetailItem(
+              value: FarmData['totalArea'] + "متر" ?? 'غير محدد'),
+          FarmDetailItem(
               icon: Icons.grain,
               title: 'حالة الفرصة',
-              value: projectData['status'] ?? 'غير معروف'),
-          ProjectDetailItem(
+              value: FarmData['status'] ?? 'غير معروف'),
+          FarmDetailItem(
               icon: Icons.grain,
               title: 'مدة الفرصة',
-              value: projectData['opportunityDuration'] ?? 'غير محدد'),
+              value: FarmData['opportunityDuration'] ?? 'غير محدد'),
         ],
       ),
     );
   }
 
   Widget _buildFundingInformation(double screenWidth) {
-    double targetAmount = projectData['targetAmount'] ?? 0.0;
-    double currentInvestment = projectData['currentInvestment'] ?? 0.0;
+    double targetAmount = FarmData['targetAmount'] ?? 0.0;
+    double currentInvestment = FarmData['currentInvestment'] ?? 0.0;
     double fundingProgress = currentInvestment / targetAmount;
 
     return Column(
@@ -265,12 +265,12 @@ class ProjectDetails extends StatelessWidget {
   }
 }
 
-class ProjectDetailItem extends StatelessWidget {
+class FarmDetailItem extends StatelessWidget {
   final IconData icon;
   final String title;
   final String value;
 
-  const ProjectDetailItem({
+  const FarmDetailItem({
     super.key,
     required this.icon,
     required this.title,

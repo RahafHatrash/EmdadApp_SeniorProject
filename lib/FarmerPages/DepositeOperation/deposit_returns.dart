@@ -279,14 +279,14 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
           .doc(widget.documentId)
           .update({
         'status': 'مكتملة',
-        'totalEarnings': amount,
+        'totalReturns': amount,
         'profitDeposited': true, // Set profitDeposited to true
       });
 
-      // Fetch all investments related to the project
+      // Fetch all investments related to the FarmProject
       final investmentsSnapshot = await FirebaseFirestore.instance
           .collection('investments')
-          .where('projectId', isEqualTo: widget.documentId)
+          .where('FarmId', isEqualTo: widget.documentId)
           .get();
 
       if (investmentsSnapshot.docs.isEmpty) {
@@ -297,7 +297,7 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         return;
       }
 
-      // Calculate total investments and update wallets
+      // Calculate total investments and update Portfolio
       final totalInvestment = investmentsSnapshot.docs.fold<double>(
         0.0,
         (sum, doc) => sum + (doc.data()['investmentAmount'] as num).toDouble(),
@@ -315,15 +315,15 @@ class _DepositReturnsScreenState extends State<DepositReturnsScreen> {
         final double returnShare =
             (investmentAmount / totalInvestment) * amount;
 
-        // Update investor wallet
-        final walletRef =
-            FirebaseFirestore.instance.collection('wallets').doc(userId);
-        batch.update(walletRef, {
+        // Update investor Portfolio
+        final PortfolioRef =
+            FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
+        batch.update(PortfolioRef, {
           'currentBalance': FieldValue.increment(returnShare),
           'transactions': FieldValue.arrayUnion([
             {
               'type': 'returnDeposit',
-              'projectId': widget.documentId,
+              'FarmId': widget.documentId,
               'amount': returnShare,
               'timestamp': DateTime.now(),
             },

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'dart:math'; // Import for random number generation
 import 'adding_success.dart';
 
-class AddProject extends StatefulWidget {
-  const AddProject({super.key});
+class Addfarm extends StatefulWidget {
+  const Addfarm({super.key});
 
   @override
-  _AddProjectFormScreenState createState() => _AddProjectFormScreenState();
+  _AddFarmFormScreenState createState() => _AddFarmFormScreenState();
 }
 
-class _AddProjectFormScreenState extends State<AddProject> {
-  final TextEditingController projectNameController = TextEditingController();
+class _AddFarmFormScreenState extends State<Addfarm> {
+  final TextEditingController  FarmNameController = TextEditingController();
   final TextEditingController regionController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cropTypeController = TextEditingController();
@@ -27,10 +27,9 @@ class _AddProjectFormScreenState extends State<AddProject> {
   final List<int> usedImages = []; // List to track used images
   final Random random = Random(); // Random number generator
 
-  Future<void> _addProjectToDatabase() async {
+  Future<void> _addFarm() async {
     try {
-      // Validate input fields
-      if (projectNameController.text.isEmpty ||
+      if (FarmNameController.text.isEmpty ||
           regionController.text.isEmpty ||
           addressController.text.isEmpty ||
           cropTypeController.text.isEmpty ||
@@ -44,38 +43,31 @@ class _AddProjectFormScreenState extends State<AddProject> {
         );
         return;
       }
-
       final userId = FirebaseAuth.instance.currentUser!.uid;
-      final projectRef = FirebaseFirestore.instance
+      final FarmProjectRef = FirebaseFirestore.instance
           .collection('investmentOpportunities')
           .doc();
-
-      // Randomly select an image number
       int imageNumber;
       do {
-        imageNumber = random.nextInt(11) + 1; // Random number between 1 and 11
+        imageNumber = random.nextInt(11) + 1; // Random number between 1 and 13
       } while (usedImages.contains(imageNumber) && usedImages.length < 13);
-
-      // Add the image to the used list
       usedImages.add(imageNumber);
       String imagePath = 'assets/farm/$imageNumber.png';
-
-      await projectRef.set({
-        'projectId': projectRef.id,
-        'projectName': projectNameController.text, // Arabic text
+      await FarmProjectRef.set({
+        'FarmId': FarmProjectRef.id,
+        'FarmName': FarmNameController.text,
         'userId': userId,
-        'region': regionController.text, // Arabic text
-        'address': addressController.text, // Arabic text
-        'cropType': cropTypeController.text, // Arabic text
-        'totalArea': totalAreaController.text, // Arabic text
+        'region': regionController.text,
+        'address': addressController.text,
+        'cropType': cropTypeController.text,
+        'totalArea': totalAreaController.text,
         'opportunityDuration':
-            opportunityDurationController.text, // Arabic text
-        'productionRate': productionRateController.text, // Arabic text
+            opportunityDurationController.text,
+        'productionRate': productionRateController.text,
         'targetAmount':
-            double.parse(targetAmountController.text), // Ensure valid number
-        'currentAmount': 0.0,
+            double.parse(targetAmountController.text),
         'imageUrl': imagePath,
-        'status': 'تحت المعالجة', // Arabic status
+        'status': 'تحت المعالجة',
         'profitDeposited': false,
         'timestamp': FieldValue.serverTimestamp(),
       });
@@ -86,7 +78,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
         MaterialPageRoute(builder: (context) => const AddingFarmSuccess()),
       );
     } catch (e) {
-      print('Error adding project: $e');
+      print('Error adding  FarmProject: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('فشل في إضافة المشروع، حاول مرة أخرى')),
       );
@@ -128,7 +120,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             _buildTextField(
-                                projectNameController, 'اسم المشروع'),
+                                FarmNameController, 'اسم المشروع'),
                             _buildTextField(regionController, 'المنطقة'),
                             _buildTextField(addressController, 'العنوان'),
                             _buildTextField(cropTypeController, 'نوع المحصول'),
@@ -160,7 +152,7 @@ class _AddProjectFormScreenState extends State<AddProject> {
                           ),
                         ),
                         child: ElevatedButton(
-                          onPressed: _addProjectToDatabase,
+                          onPressed: _addFarm,
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
                             backgroundColor: Colors.transparent,

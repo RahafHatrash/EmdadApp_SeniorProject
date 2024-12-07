@@ -13,19 +13,19 @@ class ZakatCalculatorPage extends StatefulWidget {
 class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
   final TextEditingController _amountController = TextEditingController();
   double _zakatAmount = 0.0;
-  bool _manualInput = true; // Manual input or wallet balance mode
+  bool _manualInput = true; // Manual input or Portfolio balance mode
   double nisab = 1749.3; // Nisab in currency (SAR)
-  double investmentWalletBalance = 0.0; // Wallet balance
-  DateTime? walletDepositDate; // Deposit date for wallet balance
+  double investmentPortfolioBalance = 0.0; // Portfolio balance
+  DateTime? PortfolioDepositDate; // Deposit date for Portfolio balance
   bool _showError = false; // Error message for manual input
-  bool _walletError = false; // Error message for wallet calculation
+  bool _PortfolioError = false; // Error message for Portfolio calculation
   int _currentIndex = 1;
 
   void _calculateZakat() async {
     if (_manualInput) {
       _calculateManualZakat();
     } else {
-      await _calculateWalletZakat();
+      await _calculatePortfolioZakat();
     }
   }
 
@@ -44,34 +44,32 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
     });
   }
 
-  // Wallet Zakat Calculation
-  Future<void> _calculateWalletZakat() async {
+  Future<void> _calculatePortfolioZakat() async {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
-        final walletDoc = await FirebaseFirestore.instance
-            .collection('wallets')
+        final PortfolioDoc = await FirebaseFirestore.instance
+            .collection('InvestmentPortfolio')
             .doc(userId)
             .get();
 
-        if (walletDoc.exists) {
-          investmentWalletBalance = walletDoc.data()?['currentBalance'] ?? 0.0;
+        if (PortfolioDoc.exists) {
+          investmentPortfolioBalance = PortfolioDoc.data()?['currentBalance'] ?? 0.0;
         }
       }
-
       setState(() {
-        if (investmentWalletBalance < nisab) {
-          _walletError = true;
+        if (investmentPortfolioBalance < nisab) {
+          _PortfolioError = true;
           _zakatAmount = 0.0;
         } else {
-          _walletError = false;
-          _zakatAmount = investmentWalletBalance * 0.025;
+          _PortfolioError = false;
+          _zakatAmount = investmentPortfolioBalance * 0.025;
         }
       });
     } catch (e) {
-      print("Error fetching wallet balance: $e");
+      print("Error fetching Portfolio balance: $e");
       setState(() {
-        _walletError = true;
+        _PortfolioError = true;
         _zakatAmount = 0.0;
       });
     }
@@ -183,7 +181,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
     );
   }
 
-  Widget _buildWalletSelector() {
+  Widget _buildPortfolioSelector() {
     return Container(
       padding: const EdgeInsets.all(6),
       margin: const EdgeInsets.symmetric(vertical: 20),
@@ -280,7 +278,7 @@ class _ZakatCalculatorPageState extends State<ZakatCalculatorPage> {
                     ),
                     child: Column(
                       children: [
-                        _buildWalletSelector(),
+                        _buildPortfolioSelector(),
                         if (_manualInput)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

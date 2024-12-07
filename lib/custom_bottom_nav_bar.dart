@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'InvestorPages/InvestorHome/Myinvestments.dart';
 import 'InvestorPages/InvestorHome/InvestorHome.dart';
+import 'InvestorPages/InvestorPortfolio/investmentPortfolio.dart';
 import 'InvestorPages/InvestorProfile/InvestorProfile.dart';
-import 'InvestorPages/InvestorWallet/WalletPage.dart';
 import 'InvestorPages/ZakatCalculator/ZakatCalculatorApp.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
@@ -44,7 +44,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const WalletPage()),
+          MaterialPageRoute(builder: (context) => const PortfolioPage()),
         );
         break;
       case 4:

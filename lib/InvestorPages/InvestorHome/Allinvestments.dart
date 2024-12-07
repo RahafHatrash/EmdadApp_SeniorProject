@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../custom_bottom_nav_bar.dart';
-import 'FarmDetails.dart';
+import 'OpportunityDetails.dart';
 
 class AllInvestments extends StatefulWidget {
   const AllInvestments({super.key});
@@ -289,7 +289,7 @@ class _AllInvestmentsState extends State<AllInvestments> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  investment['projectName'] ?? 'اسم غير متوفر',
+                  investment['FarmName'] ?? 'اسم غير متوفر',
                   textAlign: TextAlign.right,
                   style: const TextStyle(
                     fontSize: 17,
@@ -307,12 +307,12 @@ class _AllInvestmentsState extends State<AllInvestments> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FarmDetails(
+                          builder: (context) => Opportunitydetails(
                             imageUrl: investment['imageUrl'] ??
                                 'assets/images/default.png',
-                            title: investment['projectName'] ?? 'اسم غير متوفر',
+                            title: investment['FarmName'] ?? 'اسم غير متوفر',
                             farmData: investment,
-                            projectId: investment['id'],
+                            FarmId: investment['id'],
                           ),
                         ),
                       );

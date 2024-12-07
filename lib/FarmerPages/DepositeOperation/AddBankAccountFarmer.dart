@@ -1,9 +1,5 @@
-import 'package:emdad_cpit499/FarmerPages/FarmAdding/add_project.dart';
-import 'package:emdad_cpit499/InvestorPages/InvestorWallet/WalletPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import '../../InvestorPages/InvestorWallet/AddBankAccountPage.dart';
 import 'deposit_returns.dart';
 
 class AddBankAccountFarmer extends StatefulWidget {
@@ -342,7 +338,7 @@ class SuccessScreen extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const DepositReturnsScreen(
                                   documentId: '',
-                                )), // Replace with your actual wallet page widget
+                                )), // Replace with your actual Portfolio page widget
                         (route) => false, // Removes all the previous routes
                       );
                     },

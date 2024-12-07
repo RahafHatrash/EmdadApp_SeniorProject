@@ -1,76 +1,81 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import '../AddBankAccountPage.dart';
 
-class WithdrawPage extends StatefulWidget {
-  const WithdrawPage({super.key});
+class AddFundsPage extends StatefulWidget {
+  const AddFundsPage({super.key});
 
   @override
-  _WithdrawPageState createState() => _WithdrawPageState();
+  _AddFundsPageState createState() => _AddFundsPageState();
 }
 
-class _WithdrawPageState extends State<WithdrawPage> {
-  final TextEditingController _withdrawAmountController =
-      TextEditingController();
+class _AddFundsPageState extends State<AddFundsPage> {
+  final TextEditingController _amountController = TextEditingController();
   String? selectedAccount;
 
-  Future<void> withdrawFundsFromWallet(double amount) async {
+  Future<void> addFundsToPortfolio(double amount, String type) async {
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId == null) {
-        print('المستخدم غير مسجل الدخول');
-        return;
-      }
-
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final PortfolioDoc =
+          FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
       final timestamp = FieldValue.serverTimestamp();
-
-      final walletSnapshot = await walletDoc.get();
-      final currentBalance = walletSnapshot.data()?['currentBalance'] ?? 0.0;
-
-      if (currentBalance < amount) {
-        print('الرصيد غير كافي');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('رصيد المحفظة غير كافي'),
-            backgroundColor: Colors.red,
-          ),
-        );
-        return;
-      }
-
-      await walletDoc.update({
-        'currentBalance': FieldValue.increment(-amount),
+      await PortfolioDoc.update({
+        'currentBalance': FieldValue.increment(amount),
         'lastUpdated': timestamp,
         'transactions': FieldValue.arrayUnion([
           {
-            'type': 'withdrawal',
+            'type': type,
             'amount': amount,
             'timestamp': DateTime.now(),
           }
         ]),
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم سحب الأموال بنجاح من المحفظة'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      _withdrawAmountController.clear();
-      Navigator.pop(context);
+      print('تمت إضافة الأموال وتسجيل العملية بنجاح');
     } catch (e) {
-      print('حدث خطأ أثناء سحب الأموال: $e');
+      print('حدث خطأ أثناء إضافة الأموال: $e');
+    }
+  }
+
+  void _showSuccessMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('تمت إضافة الأموال بنجاح إلى المحفظة'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void _handleNextButton(BuildContext context) async {
+    final amountText = _amountController.text;
+    final amount = double.tryParse(amountText);
+
+    // Check if the amount is valid
+    if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('حدث خطأ أثناء سحب الأموال'),
+          content: Text('يرجى إدخال مبلغ الشحن'),
           backgroundColor: Colors.red,
         ),
       );
+      return;
     }
+    // Check if an account is selected
+    if (selectedAccount == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('يرجى اختيار حساب بنكي'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    const operationType = "add_funds";
+    await addFundsToPortfolio(amount, operationType);
+    _showSuccessMessage(context);
+    _amountController.clear();
+    Navigator.pop(context);
   }
 
   Widget _buildStyledTextField(
@@ -99,7 +104,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
             hintText: focusNode.hasFocus ? null : 'القيمة بالريال السعودي',
             hintStyle: const TextStyle(
               color: Colors.grey,
-              fontSize: 12,
+              fontSize: 13,
             ),
             border: InputBorder.none,
             prefixText: 'ر.س ',
@@ -121,35 +126,6 @@ class _WithdrawPageState extends State<WithdrawPage> {
         const SizedBox(height: 20),
       ],
     );
-  }
-
-  void _handleWithdrawButton(BuildContext context) async {
-    final amountText = _withdrawAmountController.text;
-    final amount = double.tryParse(amountText);
-
-    // Check if the amount is valid
-    if (amount == null || amount <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('يرجى إدخال مبلغ السحب'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    // Check if an account is selected
-    if (selectedAccount == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('يرجى اختيار حساب بنكي'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    await withdrawFundsFromWallet(amount);
   }
 
   @override
@@ -174,6 +150,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
                         Color(0xFF49785E),
                         Color(0xFFA8B475),
                       ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
                   child: const Column(
@@ -181,28 +159,32 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     children: [
                       SizedBox(height: 85),
                       Text(
-                        'سحب من المحفظة',
+                        'اشحن محفظتك',
                         style: TextStyle(
-                          fontSize: 30,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 8),
                       Text(
-                        'اختر الحساب البنكي وأدخل المبلغ الذي تريد سحبه',
-                        style: TextStyle(fontSize: 15, color: Colors.white70),
+                        'اختر الحساب البنكي وأدخل المبلغ الذي تريد إضافته',
+                        style: TextStyle(fontSize: 14, color: Colors.white70),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
-              Expanded(child: Container(color: Colors.white)),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height * 0.23,
+            top: MediaQuery.of(context).size.height * 0.25,
             left: 16,
             right: 16,
             child: Container(
@@ -221,13 +203,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Amount input field comes first
+                  // Amount field comes first
                   _buildStyledTextField(
-                    'ادخل المبلغ المراد سحبه',
-                    _withdrawAmountController,
+                    'ادخل مبلغ الشحن',
+                    _amountController,
                   ),
                   const SizedBox(height: 30),
-                  // Bank account selection comes after the amount input
+                  // Bank account selection
                   const Align(
                     alignment: Alignment.centerRight,
                     child: Text(
@@ -245,62 +227,55 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     "SA846... البنك السعودي للاستثمار",
                     "SA03 8000 0000 6080 1016 7519",
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   Center(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _handleWithdrawButton(context);
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            padding: const EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF345E50),
-                                  Color(0xFFA8B475),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'سحب مبلغ',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
+                    child: GestureDetector(
+                      onTap: () => _handleNextButton(context),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color(0xFF345E50),
+                              Color(0xFFA8B475),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'التالي',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AddBankAccountPage(),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'أضف حساب جديد +',
-                              style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AddBankAccountPage(),
                           ),
+                        );
+                      },
+                      child: const Text(
+                        'أضف حساب جديد +',
+                        style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontSize: 12,
                         ),
-                      ],
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],

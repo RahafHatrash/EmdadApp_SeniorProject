@@ -1,5 +1,5 @@
 import 'package:emdad_cpit499/StartPages/phoneVerification.dart';
-import 'package:emdad_cpit499/StartPages/Loginpage.dart';
+import 'package:emdad_cpit499/StartPages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -302,43 +302,31 @@ class _SignScreenState extends State<SignScreen> {
     String password = _passwordController.text.trim();
     String confirmPassword = _confirmPasswordController.text.trim();
     String phone = _phoneController.text.trim();
-
     // Check for Arabic characters in email
     if (email.contains(RegExp(r'[\u0600-\u06FF]'))) {
       _showAlert('يرجى إدخال بريد إلكتروني صحيح (لا يسمح بالعربية)');
       return false;
     }
-
-    // Validate email format
     if (email.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       _showAlert('يرجى إدخال بريد إلكتروني صحيح');
       return false;
     }
-
-    // Validate phone number
     if (phone.isEmpty || phone.length < 10) {
       _showAlert('يرجى إدخال رقم جوال صحيح');
       return false;
     }
-
-    // Validate password
     if (password.isEmpty || password.length < 6) {
       _showAlert('يجب أن تتكون كلمة المرور من 6 أحرف على الأقل');
       return false;
     }
-
-    // Validate password confirmation
     if (password != confirmPassword) {
       _showAlert('كلمة المرور وتأكيد كلمة المرور غير متطابقتين');
       return false;
     }
-
-    // Validate user role selection
     if (_selectedRole == null) {
       _showAlert('يرجى اختيار نوع المستخدم');
       return false;
     }
-
     return true; // All validations passed
   }
 

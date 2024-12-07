@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../custom_bottom_nav_bar.dart';
-import '../InvestorWallet/FundsOperation/add_funds_page.dart';
+import '../InvestorPortfolio/FundsOperation/add_funds_page.dart';
 import 'InvestVerification.dart'; // Make sure to import your custom bottom nav bar
 
 class Investoperation extends StatefulWidget {
-  final String projectName; // اسم المشروع الذي سيتم تمريره
-  final String projectId; // إضافة projectId كمعامل جديد
+  final String FarmName; // اسم المشروع الذي سيتم تمريره
+  final String FarmId; // إضافة FarmId كمعامل جديد
 
   const Investoperation({
     super.key,
-    required this.projectName,
-    required this.projectId, // التأكد من تمريره
+    required this.FarmName,
+    required this.FarmId, // التأكد من تمريره
   });
 
   @override
@@ -22,7 +22,7 @@ class Investoperation extends StatefulWidget {
 class _InvestmentPageState extends State<Investoperation> {
   static const double unitPrice = 1000.0; // Fixed price per unit
   int unitCount = 1; // Default unit count
-  double walletBalance = 0.0; // Wallet balance
+  double PortfolioBalance = 0.0; // Portfolio balance
   String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   double get totalInvestment => unitCount * unitPrice;
@@ -30,22 +30,22 @@ class _InvestmentPageState extends State<Investoperation> {
   @override
   void initState() {
     super.initState();
-    _fetchWalletBalance();
+    _fetchPortfolioBalance();
   }
 
-  Future<void> _fetchWalletBalance() async {
+  Future<void> _fetchPortfolioBalance() async {
     try {
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
-      final snapshot = await walletDoc.get();
+      final PortfolioDoc =
+          FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
+      final snapshot = await PortfolioDoc.get();
 
       if (snapshot.exists) {
         setState(() {
-          walletBalance = snapshot.data()?['currentBalance'] ?? 0.0;
+          PortfolioBalance = snapshot.data()?['currentBalance'] ?? 0.0;
         });
       }
     } catch (e) {
-      print('Error fetching wallet balance: $e');
+      print('Error fetching Portfolio balance: $e');
     }
   }
 
@@ -53,7 +53,7 @@ class _InvestmentPageState extends State<Investoperation> {
     try {
       final projectDoc = await FirebaseFirestore.instance
           .collection('investmentOpportunities')
-          .doc(widget.projectId)
+          .doc(widget.FarmId)
           .get();
 
       if (projectDoc.exists) {
@@ -95,65 +95,58 @@ class _InvestmentPageState extends State<Investoperation> {
       final isEligible = await _fetchProjectDetails();
       if (!isEligible) return false; // المشروع غير مؤهل للاستثمار
 
-      if (totalInvestment > walletBalance) {
+      if (totalInvestment > PortfolioBalance) {
         _showFailureMessage('رصيد المحفظة غير كافٍ');
         return false; // الرصيد غير كافٍ
       }
-
-      final walletDoc =
-          FirebaseFirestore.instance.collection('wallets').doc(userId);
+      final PortfolioDoc =
+          FirebaseFirestore.instance.collection('InvestmentPortfolio').doc(userId);
       final investmentsCollection =
           FirebaseFirestore.instance.collection('investments');
       final projectDoc = FirebaseFirestore.instance
           .collection('investmentOpportunities')
-          .doc(widget.projectId);
+          .doc(widget.FarmId);
 
       // تحديث المحفظة
-      await walletDoc.update({
+      await PortfolioDoc.update({
         'currentBalance': FieldValue.increment(-totalInvestment),
         'transactions': FieldValue.arrayUnion([
           {
-            'type': 'investmentWithdrawal',
-            'projectName': widget.projectName,
+            'type': 'investmentOperation',
+            'FarmName': widget.FarmName,
             'amount': totalInvestment,
-            'investmentDate': DateTime.now(),
-            'returnAmount': 0,
+            'timestamp': DateTime.now(),
           }
         ]),
       });
-
       // إضافة عملية الاستثمار
       await investmentsCollection.add({
         'userId': userId,
-        'projectId': widget.projectId,
+        'FarmId': widget.FarmId,
         'investmentAmount': totalInvestment,
         'investmentDate': FieldValue.serverTimestamp(),
-        'projectName': widget.projectName,
+        'FarmName': widget.FarmName,
         'expectedReturns': totalInvestment * 0.2,
       });
-
       // تحديث الاستثمار الحالي في المشروع
       await projectDoc.update({
         'currentInvestment': FieldValue.increment(totalInvestment),
       });
-
       // التحقق من اكتمال المشروع
       final projectSnapshot = await projectDoc.get();
-      final projectData = projectSnapshot.data();
-      final targetAmount = projectData?['targetAmount'] ?? 0.0;
-      final currentInvestment = projectData?['currentInvestment'] ?? 0.0;
+      final FarmData = projectSnapshot.data();
+      final targetAmount = FarmData?['targetAmount'] ?? 0.0;
+      final currentInvestment = FarmData?['currentInvestment'] ?? 0.0;
 
       if (currentInvestment >= targetAmount) {
         await projectDoc.update({'status': 'مكتملة'});
       }
-
       return true; // العملية ناجحة
     } catch (e) {
       _showFailureMessage('حدث خطأ أثناء عملية الاستثمار: $e');
       return false; // العملية فشلت
     }
   }
-
   void _showSuccessMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -163,7 +156,6 @@ class _InvestmentPageState extends State<Investoperation> {
     );
     Navigator.of(context).pop();
   }
-
   void _showFailureMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -204,7 +196,7 @@ class _InvestmentPageState extends State<Investoperation> {
                     child: Column(
                       children: [
                         Text(
-                            'رصيد المحفظة: ${walletBalance.toStringAsFixed(2)} ر.س'),
+                            'رصيد المحفظة: ${PortfolioBalance.toStringAsFixed(2)} ر.س'),
                         const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
